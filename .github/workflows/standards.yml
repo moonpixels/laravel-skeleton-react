@@ -1,0 +1,47 @@
+name: Code Standards
+
+on:
+  pull_request:
+
+concurrency:
+  group: standards-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  standards:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup project
+        uses: ./.github/workflows/setup-project
+
+      - name: Cache Rector
+        uses: actions/cache@v4
+        with:
+          path: /tmp/rector
+          key: ${{ runner.os }}-rector-${{ github.run_id }}
+          restore-keys: ${{ runner.os }}-rector-
+
+      - name: Format code
+        run: npm run lint && npm run format && composer rector && composer pint
+
+      - name: Cache PHPStan
+        uses: actions/cache@v4
+        with:
+          path: /tmp/phpstan
+          key: ${{ runner.os }}-phpstan-${{ github.run_id }}
+          restore-keys: ${{ runner.os }}-phpstan-
+
+      - name: Analyse code
+        run: composer stan
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Fix styling'
