@@ -1,28 +1,21 @@
-import { AxiosInstance } from 'axios'
-
+import { PageProps as InertiaPageProps } from '@inertiajs/core'
+import { AxiosInstance, AxiosStatic } from 'axios'
 import { route as ziggyRoute } from 'ziggy-js'
-import Echo from 'laravel-echo'
-
-import Pusher from 'pusher-js'
-import { SharedData } from '@/Types/index'
+import { PageProps as AppPageProps } from './'
 
 declare global {
   interface Window {
     axios: AxiosInstance
     Pusher: typeof Pusher
-    Echo: Echo
+    Echo: typeof Echo
   }
 
+  const axios: AxiosStatic
+  const Pusher: typeof Pusher
+  const Echo: typeof Echo
   const route: typeof ziggyRoute
-  const axios: AxiosInstance
-}
-
-declare module 'vue' {
-  interface ComponentCustomProperties {
-    route: typeof ziggyRoute
-  }
 }
 
 declare module '@inertiajs/core' {
-  interface PageProps extends InertiaPageProps, SharedData {}
+  interface PageProps extends InertiaPageProps, AppPageProps {}
 }

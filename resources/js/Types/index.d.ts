@@ -1,7 +1,4 @@
-import { WritableComputedRef } from 'vue'
-import { SupportedLocales } from '@/Utils/locale'
-
-export type UseDarkMode = WritableComputedRef<boolean>
+import { SupportedLocales } from '@/Hooks/useLocale'
 
 export interface User {
   id: number
@@ -13,7 +10,7 @@ export interface User {
   avatar_url: string | null
 }
 
-export type SharedData = {
+export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
   user: User
   supportedLocales: SupportedLocales
 }

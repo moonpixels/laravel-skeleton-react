@@ -97,7 +97,7 @@ final class TwoFactorLoginRequest extends FormRequest
 
     private function throttleKey(): string
     {
-        $email = Str::lower($this->getChallengedUser()?->email ?? '');
+        $email = Str::lower($this->getChallengedUser()->email ?? '');
 
         return Str::transliterate("two_factor_login_attempt:{$email}:{$this->ip()}");
     }

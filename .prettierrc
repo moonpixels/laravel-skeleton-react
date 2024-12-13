@@ -4,9 +4,10 @@
   "bracketSpacing": true,
   "endOfLine": "lf",
   "plugins": [
+    "prettier-plugin-organize-imports",
     "prettier-plugin-tailwindcss"
   ],
-  "printWidth": 80,
+  "printWidth": 100,
   "semi": false,
   "singleQuote": true,
   "tabWidth": 2,

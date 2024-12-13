@@ -1,23 +1,16 @@
 import { defineConfig } from 'vite'
 import laravel from 'laravel-vite-plugin'
-import vue from '@vitejs/plugin-vue'
-import i18n from 'laravel-vue-i18n/vite'
+import react from '@vitejs/plugin-react'
+import i18n from 'laravel-react-i18n/vite'
 
 export default defineConfig({
   plugins: [
     laravel({
-      input: 'resources/js/app.ts',
+      input: 'resources/js/app.tsx',
       refresh: true,
     }),
 
-    vue({
-      template: {
-        transformAssetUrls: {
-          base: null,
-          includeAbsolute: false,
-        },
-      },
-    }),
+    react(),
 
     i18n(),
   ],

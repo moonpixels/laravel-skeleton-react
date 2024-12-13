@@ -13,7 +13,7 @@ use Override;
  * @method static string getLanguageFromLocale(string $locale)
  * @method static void setLocale(string $locale)
  * @method static void setLocaleFromRequest()
- * @method static array getSupportedLocales(string $format = 'iso15897')
+ * @method static array<string, array<string, string>> getSupportedLocales(string $format = 'iso15897')
  * @method static string getDefaultLocale()
  * @method static bool isSupportedLocale(string $locale)
  *

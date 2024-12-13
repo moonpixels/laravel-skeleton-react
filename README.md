@@ -1,6 +1,6 @@
-# Laravel Skeleton
+# Laravel Skeleton React
 
-This is the Moon Pixels skeleton for building Laravel applications.
+This is the Moon Pixels skeleton for building Laravel applications with Inertia and React.
 
 ## Local installation
 
@@ -16,7 +16,7 @@ alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
 1. Clone the repository and cd into the project directory
 
    ```shell
-   git clone git@github.com:moonpixels/laravel-skeleton-vue.git && cd laravel-skeleton
+   git clone git@github.com:moonpixels/laravel-skeleton-react.git && cd laravel-skeleton-react
    ```
 
 2. Install the dependencies
@@ -26,7 +26,7 @@ alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
     -u "$(id -u):$(id -g)" \
     -v "$(pwd):/var/www/html" \
     -w /var/www/html \
-    laravelsail/php83-composer:latest \
+    laravelsail/php84-composer:latest \
     composer install --ignore-platform-reqs
    ```
 

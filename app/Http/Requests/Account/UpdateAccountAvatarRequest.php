@@ -19,7 +19,7 @@ final class UpdateAccountAvatarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'avatar' => ['nullable', File::image()->max(1024 * 5)],
+            'avatar' => ['required', File::image()->max(1024 * 5)],
         ];
     }
 

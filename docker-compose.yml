@@ -1,5 +1,5 @@
 services:
-  laravel-skeleton-vue:
+  laravel-skeleton-react:
     build:
       context: ./docker/8.4
       dockerfile: Dockerfile

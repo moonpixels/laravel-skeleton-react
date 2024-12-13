@@ -16,6 +16,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
 
     Route::controller(AccountAvatarController::class)->group(function (): void {
         Route::put('account/avatar', 'update')->name('account.avatar.update');
+        Route::delete('account/avatar', 'destroy')->name('account.avatar.destroy');
     });
 
     Route::controller(AccountController::class)->group(function (): void {

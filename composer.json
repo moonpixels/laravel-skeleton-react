@@ -1,5 +1,5 @@
 {
-  "name": "moonpixels/laravel-skeleton-vue",
+  "name": "moonpixels/laravel-skeleton-react",
   "type": "project",
   "description": "The Moon Pixels skeleton application for the Laravel framework.",
   "license": "proprietary",
@@ -19,9 +19,9 @@
     "tightenco/ziggy": "^v2.0"
   },
   "require-dev": {
-    "driftingly/rector-laravel": "^1.0",
+    "driftingly/rector-laravel": "^2.0.0",
     "fakerphp/faker": "^v1.23",
-    "larastan/larastan": "^v2.9",
+    "larastan/larastan": "^v3.0.2",
     "laravel/pint": "^v1.14",
     "laravel/sail": "^v1.28",
     "laravel/telescope": "^5.0",
@@ -30,8 +30,8 @@
     "pestphp/pest": "^v3.0",
     "pestphp/pest-plugin-laravel": "^v3.0",
     "pestphp/pest-plugin-type-coverage": "^v3.0",
-    "phpstan/phpstan": "^1.10",
-    "rector/rector": "^1.2",
+    "phpstan/phpstan": "^2.0.3",
+    "rector/rector": "^2.0.3",
     "spatie/laravel-ignition": "^2.4"
   },
   "autoload": {

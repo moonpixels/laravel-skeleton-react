@@ -24,7 +24,7 @@ use Override;
  * @property string $language
  * @property string $password
  * @property ?string $two_factor_secret
- * @property ?array $two_factor_recovery_codes
+ * @property ?list<string> $two_factor_recovery_codes
  * @property ?string $remember_token
  * @property ?string $avatar_path
  * @property ?Carbon $email_verified_at
@@ -54,10 +54,6 @@ final class User extends Authenticatable implements MustVerifyEmail
     protected $attributes = [
         'language' => 'en',
         'avatar_path' => null,
-    ];
-
-    protected $appends = [
-        'avatar_url',
     ];
 
     /**

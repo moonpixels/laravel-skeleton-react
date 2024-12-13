@@ -30,15 +30,6 @@ test('avatar can be set', function (): void {
         ->avatar_path->toExistInStorage();
 });
 
-test('avatar can be removed', function (): void {
-    $this->put(route('account.avatar.update'), ['avatar' => null])
-        ->assertValid()
-        ->assertRedirect();
-
-    expect($this->user->avatar_path)->toBeNull()
-        ->and($this->previousAvatarPath)->not->toExistInStorage();
-});
-
 test('avatar can be replaced', function (): void {
     $file = UploadedFile::fake()->image('new-avatar.jpg');
 

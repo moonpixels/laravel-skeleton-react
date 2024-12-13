@@ -1,22 +1,29 @@
 import eslint from '@eslint/js'
-import tseslint from 'typescript-eslint'
-import pluginVue from 'eslint-plugin-vue'
 import prettierRecommended from 'eslint-plugin-prettier/recommended'
+import reactPlugin from 'eslint-plugin-react'
+import tseslint from 'typescript-eslint'
 
-export default tseslint.config(
+export default [
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
-  ...pluginVue.configs['flat/recommended'],
+  reactPlugin.configs.flat.recommended,
   prettierRecommended,
   {
     languageOptions: {
+      parser: tseslint.parser,
       parserOptions: {
-        parser: tseslint.parser,
+        ecmaVersion: 'latest',
+        sourceType: 'module',
       },
     },
     rules: {
-      'no-undef': 'off',
-      'vue/multi-word-component-names': 'off',
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
     },
-  }
-)
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
+  },
+]
