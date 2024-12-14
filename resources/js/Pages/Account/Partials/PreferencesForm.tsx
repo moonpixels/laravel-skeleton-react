@@ -1,5 +1,6 @@
 import { IconFlagFR } from '@/Components/Icons/IconFlagFR'
 import { IconFlagGB } from '@/Components/Icons/IconFlagGB'
+import { useDarkMode } from '@/Components/Providers/DarkModeProvider'
 import { SettingsGrid } from '@/Components/SettingsGrid'
 import { Button } from '@/Components/UI/Button'
 import {
@@ -21,7 +22,6 @@ import {
 import { Switch } from '@/Components/UI/Switch'
 import { useFormValidation } from '@/Hooks/useFormValidation'
 import { useLocale } from '@/Hooks/useLocale'
-import { useTheme } from '@/Hooks/useTheme'
 import { useToast } from '@/Hooks/useToast'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'
@@ -35,19 +35,19 @@ const formSchema = z.object({
   language: z.string(),
 })
 
-export function ThemeForm() {
+export function DarkModeForm() {
   const { t } = useLaravelReactI18n()
 
-  const { isDarkTheme, toggleTheme } = useTheme()
+  const { isDarkMode, setDarkMode } = useDarkMode()
 
   const form = useForm({
     defaultValues: {
-      use_dark_theme: isDarkTheme,
+      use_dark_mode: isDarkMode,
     },
   })
 
-  function handleThemeChange() {
-    toggleTheme()
+  function handleDarkModeChange(useDarkMode: boolean) {
+    setDarkMode(useDarkMode)
   }
 
   return (
@@ -55,7 +55,7 @@ export function ThemeForm() {
       <form className="mt-6 space-y-6">
         <FormField
           control={form.control}
-          name="use_dark_theme"
+          name="use_dark_mode"
           render={({ field }) => (
             <FormItem className="flex justify-between space-x-4">
               <div className="space-y-2">
@@ -65,10 +65,10 @@ export function ThemeForm() {
 
               <FormControl>
                 <Switch
-                  checked={isDarkTheme}
+                  checked={isDarkMode}
                   onCheckedChange={(e) => {
                     field.onChange(e)
-                    handleThemeChange()
+                    handleDarkModeChange(e)
                   }}
                 />
               </FormControl>
@@ -144,7 +144,7 @@ export function PreferencesForm() {
       description={t('account.preferences_description')}
       title={t('account.preferences')}
     >
-      <ThemeForm />
+      <DarkModeForm />
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-6">

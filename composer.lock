@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "8e12488a031fd4ee5647b0b3a7a0c850",
+  "content-hash": "b71102e2f470a43df8f376fd1263dafb",
   "packages": [
     {
       "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
     },
     {
       "name": "aws/aws-sdk-php",
-      "version": "3.334.5",
+      "version": "3.334.6",
       "source": {
         "type": "git",
         "url": "https://github.com/aws/aws-sdk-php.git",
-        "reference": "3b4fa2180f5c6307c2d3c577392d3702d1f78eaf"
+        "reference": "2b0be3aded849d3b7bb0b53ea3295c7cecdeeee7"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3b4fa2180f5c6307c2d3c577392d3702d1f78eaf",
-        "reference": "3b4fa2180f5c6307c2d3c577392d3702d1f78eaf",
+        "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2b0be3aded849d3b7bb0b53ea3295c7cecdeeee7",
+        "reference": "2b0be3aded849d3b7bb0b53ea3295c7cecdeeee7",
         "shasum": ""
       },
       "require": {
@@ -154,9 +154,9 @@
       "support": {
         "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
         "issues": "https://github.com/aws/aws-sdk-php/issues",
-        "source": "https://github.com/aws/aws-sdk-php/tree/3.334.5"
+        "source": "https://github.com/aws/aws-sdk-php/tree/3.334.6"
       },
-      "time": "2024-12-12T19:25:15+00:00"
+      "time": "2024-12-13T19:18:29+00:00"
     },
     {
       "name": "bacon/bacon-qr-code",
@@ -1489,7 +1489,7 @@
     },
     {
       "name": "inertiajs/inertia-laravel",
-      "version": "2.x-dev",
+      "version": "v2.0.0",
       "source": {
         "type": "git",
         "url": "https://github.com/inertiajs/inertia-laravel.git",
@@ -1517,7 +1517,6 @@
       "suggest": {
         "ext-pcntl": "Recommended when running the Inertia SSR server via the `inertia:start-ssr` artisan command."
       },
-      "default-branch": true,
       "type": "library",
       "extra": {
         "laravel": {
@@ -11704,9 +11703,7 @@
   ],
   "aliases": [],
   "minimum-stability": "stable",
-  "stability-flags": {
-    "inertiajs/inertia-laravel": 20
-  },
+  "stability-flags": {},
   "prefer-stable": true,
   "prefer-lowest": false,
   "platform": {
