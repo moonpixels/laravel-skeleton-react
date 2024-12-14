@@ -18,13 +18,17 @@ const avatarVariants = cva(
         square: 'rounded-md',
       },
     },
+    defaultVariants: {
+      size: 'sm',
+      shape: 'square',
+    },
   }
 )
 
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> & VariantProps<typeof avatarVariants>
->(({ size = 'sm', shape = 'circle', className, ...props }, ref) => (
+>(({ size, shape, className, ...props }, ref) => (
   <AvatarPrimitive.Root
     ref={ref}
     className={cn(avatarVariants({ size, shape }), className)}
@@ -51,10 +55,7 @@ const AvatarFallback = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AvatarPrimitive.Fallback
     ref={ref}
-    className={cn(
-      'flex h-full w-full items-center justify-center rounded-full bg-muted',
-      className
-    )}
+    className={cn('flex h-full w-full items-center justify-center bg-muted', className)}
     {...props}
   />
 ))

@@ -114,7 +114,7 @@ export function AvatarForm() {
                 <div className="flex items-center space-x-4">
                   <div className="size-11 shrink-0">
                     {form.formState.isSubmitting || isRemovingAvatar ? (
-                      <Skeleton className="size-11 rounded-full" />
+                      <Skeleton className="size-11 rounded-md" />
                     ) : (
                       <Avatar size="md">
                         {user.avatar_url ? (

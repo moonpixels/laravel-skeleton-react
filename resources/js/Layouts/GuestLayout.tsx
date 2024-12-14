@@ -1,4 +1,4 @@
-import { AppLogo } from '@/Components/AppLogo'
+import { Logo } from '@/Components/Logo'
 import { Text } from '@/Components/Text'
 import { Link } from '@inertiajs/react'
 import dayjs from 'dayjs'
@@ -9,10 +9,10 @@ export function GuestLayout({ children }: PropsWithChildren) {
   const { t } = useLaravelReactI18n()
 
   return (
-    <div className="flex min-h-dvh flex-col">
+    <div className="flex min-h-dvh w-full flex-col">
       <header className="flex h-16 shrink-0 items-center justify-between px-4">
         <Link href={route('home')}>
-          <AppLogo className="h-6 w-auto" />
+          <Logo className="h-6 w-auto" />
         </Link>
       </header>
 

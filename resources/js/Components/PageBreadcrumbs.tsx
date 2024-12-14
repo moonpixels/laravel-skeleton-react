@@ -44,7 +44,9 @@ export function PageBreadcrumbs({ items }: PageBreadcrumbsProps) {
                 <BreadcrumbPage>{item.label}</BreadcrumbPage>
               ) : item.href ? (
                 <BreadcrumbLink asChild>
-                  <Link href={item.href}>{item.label}</Link>
+                  <Link prefetch href={item.href}>
+                    {item.label}
+                  </Link>
                 </BreadcrumbLink>
               ) : (
                 item.label

@@ -3,7 +3,7 @@ import { Text } from '@/Components/Text'
 import dayjs from 'dayjs'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 
-export function PrimaryFooter() {
+export function AppFooter() {
   const { t } = useLaravelReactI18n()
 
   const socials = [

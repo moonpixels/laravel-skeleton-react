@@ -19,6 +19,7 @@ export function PageNavigation({ items }: PageNavigationProps) {
           {items.map((item) => (
             <li key={item.href} className="-mb-px">
               <Link
+                prefetch
                 className={cn(
                   'group flex h-full items-center border-b-2',
                   item.current ? 'border-primary' : 'border-transparent'
