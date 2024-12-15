@@ -33,7 +33,7 @@ const buttonVariants = cva(
   }
 )
 
-const loadingSpinnerVariants = cva('', {
+const loadingSpinnerVariants = cva('ml-2 -mr-2', {
   variants: {
     variant: {
       default: 'text-primary-foreground',
@@ -69,23 +69,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={loading}
         {...props}
       >
-        <span
-          className={cn(
-            loading ? 'scale-100 opacity-100' : 'scale-50 opacity-0',
-            'absolute inset-0 flex items-center justify-center transition-all duration-300 ease-in-out'
-          )}
-        >
-          <LoadingSpinner className={loadingSpinnerVariants({ variant })} />
-        </span>
-
-        <span
-          className={cn(
-            loading ? 'scale-95 opacity-0' : 'scale-100 opacity-100',
-            'inline-flex transition-all duration-300 ease-out'
-          )}
-        >
-          {children}
-        </span>
+        {children}
+        {loading && <LoadingSpinner className={loadingSpinnerVariants({ variant })} />}
       </Comp>
     )
   }

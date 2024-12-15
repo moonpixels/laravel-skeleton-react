@@ -1,4 +1,5 @@
 import { DarkModeProvider } from '@/Components/Providers/DarkModeProvider'
+import { SidebarProvider } from '@/Components/UI/Sidebar'
 import { DefaultLayout } from '@/Layouts/DefaultLayout'
 import { createInertiaApp } from '@inertiajs/react'
 import { LaravelReactI18nProvider } from 'laravel-react-i18n'
@@ -28,7 +29,9 @@ createInertiaApp({
     createRoot(el).render(
       <LaravelReactI18nProvider files={import.meta.glob('/lang/*.json')}>
         <DarkModeProvider>
-          <App {...props} />
+          <SidebarProvider>
+            <App {...props} />
+          </SidebarProvider>
         </DarkModeProvider>
       </LaravelReactI18nProvider>
     )
