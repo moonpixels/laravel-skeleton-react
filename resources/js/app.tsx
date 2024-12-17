@@ -1,17 +1,17 @@
-import { DarkModeProvider } from '@/Components/Providers/DarkModeProvider'
 import { SidebarProvider } from '@/Components/UI/Sidebar'
+import { DarkModeProvider } from '@/Contexts/DarkModeContext'
 import { DefaultLayout } from '@/Layouts/DefaultLayout'
 import { createInertiaApp } from '@inertiajs/react'
 import { LaravelReactI18nProvider } from 'laravel-react-i18n'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
-import { ReactElement, ReactNode } from 'react'
+import { ReactElement } from 'react'
 import { createRoot } from 'react-dom/client'
 import '../css/app.css'
 import './bootstrap'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 
-type Page = ReactNode & { default: { layout: (page: ReactElement) => ReactElement } }
+type Page = ReactElement & { default: { layout: (page: ReactElement) => ReactElement } }
 
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,

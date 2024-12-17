@@ -1,7 +1,7 @@
 import { createContext, PropsWithChildren, useContext, useEffect } from 'react'
 import { useLocalStorage } from 'react-use'
 
-type DarkModeProviderState = {
+type DarkModeState = {
   isDarkMode: boolean
   setDarkMode: (darkMode: boolean) => void
 }
@@ -11,7 +11,7 @@ const initialState = {
   setDarkMode: () => null,
 }
 
-const DarkModeProviderContext = createContext<DarkModeProviderState>(initialState)
+const DarkModeContext = createContext<DarkModeState>(initialState)
 
 export function DarkModeProvider({ children, ...props }: PropsWithChildren) {
   const [isDarkMode, setIsDarkMode] = useLocalStorage(
@@ -34,14 +34,14 @@ export function DarkModeProvider({ children, ...props }: PropsWithChildren) {
   }
 
   return (
-    <DarkModeProviderContext.Provider {...props} value={{ isDarkMode: !!isDarkMode, setDarkMode }}>
+    <DarkModeContext.Provider {...props} value={{ isDarkMode: !!isDarkMode, setDarkMode }}>
       {children}
-    </DarkModeProviderContext.Provider>
+    </DarkModeContext.Provider>
   )
 }
 
 export function useDarkMode() {
-  const context = useContext(DarkModeProviderContext)
+  const context = useContext(DarkModeContext)
 
   if (context === undefined) {
     throw new Error('useDarkMode must be used within a DarkModeProvider')
