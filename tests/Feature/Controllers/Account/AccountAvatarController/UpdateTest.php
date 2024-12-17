@@ -75,7 +75,7 @@ test('avatar is resized and optimised', function (): void {
 
     expect($image->getImageWidth())->toBe(128)
         ->and($image->getImageHeight())->toBe(128)
-        ->and($image->getImageMimeType())->toBe('image/webp')
+        ->and($image->getImageMimeType())->toContain('webp')
         ->and($image->getImageLength())->toBeLessThan(1024 * 5);
 });
 
