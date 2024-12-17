@@ -1,8 +1,8 @@
 import { useUser } from '@/Hooks/useUser'
 import { usePage } from '@inertiajs/react'
-import { useLocalStorage } from '@reactuses/core'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useEffect } from 'react'
+import { useLocalStorage } from 'react-use'
 
 export type SupportedLocale = {
   name: string

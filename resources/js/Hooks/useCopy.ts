@@ -1,15 +1,15 @@
-import { useClipboard } from '@reactuses/core'
 import { useState } from 'react'
+import { useCopyToClipboard } from 'react-use'
 
 export function useCopy() {
-  const [copiedText, copy] = useClipboard()
+  const [state, copyToClipboard] = useCopyToClipboard()
 
   const [copied, setCopied] = useState(false)
 
-  async function copyText(text: string) {
-    await copy(text)
+  function copyText(text: string) {
+    copyToClipboard(text)
 
-    if (copiedText === text) {
+    if (state.value === text) {
       setCopied(true)
 
       setTimeout(() => {

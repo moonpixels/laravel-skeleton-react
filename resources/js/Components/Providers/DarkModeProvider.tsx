@@ -1,5 +1,5 @@
-import { useDarkMode as useDarkModeCore, usePreferredDark } from '@reactuses/core'
-import { createContext, PropsWithChildren, useContext } from 'react'
+import { createContext, PropsWithChildren, useContext, useEffect } from 'react'
+import { useLocalStorage } from 'react-use'
 
 type DarkModeProviderState = {
   isDarkMode: boolean
@@ -14,16 +14,23 @@ const initialState = {
 const DarkModeProviderContext = createContext<DarkModeProviderState>(initialState)
 
 export function DarkModeProvider({ children, ...props }: PropsWithChildren) {
-  const [isDarkMode, toggleDarkMode] = useDarkModeCore({
-    classNameDark: 'dark',
-    classNameLight: '',
-    defaultValue: usePreferredDark(false),
-  })
+  const [isDarkMode, setIsDarkMode] = useLocalStorage(
+    'dark-mode',
+    window.matchMedia('(prefers-color-scheme: dark)').matches
+  )
+
+  useEffect(() => {
+    const root = window.document.documentElement
+
+    root.classList.remove('dark')
+
+    if (isDarkMode) {
+      root.classList.add('dark')
+    }
+  }, [isDarkMode])
 
   function setDarkMode(darkMode: boolean) {
-    if (darkMode !== isDarkMode) {
-      toggleDarkMode()
-    }
+    setIsDarkMode(darkMode)
   }
 
   return (
