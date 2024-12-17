@@ -1,6 +1,5 @@
 import { IconFlagFR } from '@/Components/Icons/IconFlagFR'
 import { IconFlagGB } from '@/Components/Icons/IconFlagGB'
-import { useDarkMode } from '@/Components/Providers/DarkModeProvider'
 import { SettingsGrid } from '@/Components/SettingsGrid'
 import { Button } from '@/Components/UI/Button'
 import {
@@ -20,6 +19,7 @@ import {
   SelectValue,
 } from '@/Components/UI/Select'
 import { Switch } from '@/Components/UI/Switch'
+import { useDarkMode } from '@/Contexts/DarkModeContext'
 import { useFormValidation } from '@/Hooks/useFormValidation'
 import { useLocale } from '@/Hooks/useLocale'
 import { useToast } from '@/Hooks/useToast'
