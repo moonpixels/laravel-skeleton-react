@@ -64,7 +64,7 @@ final class UserFactory extends Factory
     public function withAvatar(): self
     {
         return $this->state(fn (array $attributes): array => [
-            'avatar_path' => UploadedFile::fake()->image('avatar.jpg')->storePublicly('avatars'),
+            'avatar_path' => UploadedFile::fake()->image('avatar.jpg')->storePublicly('avatars', 'public'),
         ]);
     }
 }
