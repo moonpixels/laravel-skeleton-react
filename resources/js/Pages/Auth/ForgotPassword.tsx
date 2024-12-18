@@ -40,7 +40,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
         variant: 'successful',
       })
     }
-  }, [status, t, toast])
+  }, [status])
 
   const form = useForm({
     resolver: zodResolver(formSchema),

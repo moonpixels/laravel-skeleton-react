@@ -30,7 +30,7 @@ import { router } from '@inertiajs/react'
 import { AxiosResponse } from 'axios'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { ClipboardCheckIcon, ClipboardIcon } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -160,16 +160,16 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
     },
   })
 
-  useEffect(() => {
-    if (open) {
-      fetchTwoFactorSettings()
-    }
+  async function handleOpenChange(open: boolean) {
+    setOpen(open)
 
-    return () => {
+    if (open) {
+      await fetchTwoFactorSettings()
+    } else {
       setTwoFactorSettings(null)
       form.reset()
     }
-  }, [open])
+  }
 
   async function onSubmit(values: z.infer<typeof enableFormSchema>) {
     await new Promise<void>((resolve) =>
@@ -221,7 +221,7 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button>{t('account.enable_two_factor')}</Button>
       </DialogTrigger>
@@ -296,7 +296,7 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
   )
 }
 
-export function TwoFactorRecoveryCodesDialog({ show }: { show?: boolean }) {
+export function TwoFactorRecoveryCodesDialog({ recentlyEnabled }: { recentlyEnabled?: boolean }) {
   const { t } = useLaravelReactI18n()
 
   const { toast } = useToast()
@@ -309,25 +309,19 @@ export function TwoFactorRecoveryCodesDialog({ show }: { show?: boolean }) {
 
   const CopyButtonIcon = copied ? ClipboardCheckIcon : ClipboardIcon
 
-  useEffect(() => {
-    if (open) {
-      fetchRecoveryCodes()
-    }
+  if (recentlyEnabled && !open) {
+    handleOpenChange(true)
+  }
 
-    return () => {
+  async function handleOpenChange(open: boolean) {
+    setOpen(open)
+
+    if (open) {
+      await fetchRecoveryCodes()
+    } else {
       setRecoveryCodes(null)
     }
-  }, [open])
-
-  useEffect(() => {
-    if (show) {
-      setOpen(true)
-    }
-
-    return () => {
-      setOpen(false)
-    }
-  }, [show])
+  }
 
   function handleCopyClick() {
     if (recoveryCodes) {
@@ -354,7 +348,7 @@ export function TwoFactorRecoveryCodesDialog({ show }: { show?: boolean }) {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="secondary">{t('account.view_recovery_codes')}</Button>
       </DialogTrigger>
@@ -406,10 +400,20 @@ export function TwoFactorForm() {
 
   const { twoFactorEnabled } = useUser()
 
-  const [showRecoveryCodes, setShowRecoveryCodes] = useState(false)
+  const [recentlyEnabled, setRecentlyEnabled] = useState(false)
+
+  const timeoutRef = useRef<number | null>(null)
 
   function handleEnable() {
-    setShowRecoveryCodes(true)
+    setRecentlyEnabled(true)
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+
+    timeoutRef.current = window.setTimeout(() => {
+      setRecentlyEnabled(false)
+    })
   }
 
   return (
@@ -420,7 +424,7 @@ export function TwoFactorForm() {
       <div className="flex h-full items-center">
         {twoFactorEnabled ? (
           <div className="flex flex-wrap gap-2">
-            <TwoFactorRecoveryCodesDialog show={showRecoveryCodes} />
+            <TwoFactorRecoveryCodesDialog recentlyEnabled={recentlyEnabled} />
             <TwoFactorDisableDialog />
           </div>
         ) : (
