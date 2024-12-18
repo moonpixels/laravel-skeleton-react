@@ -329,9 +329,9 @@ export function TwoFactorRecoveryCodesDialog({ show }: { show?: boolean }) {
     }
   }, [show])
 
-  async function handleCopyClick() {
+  function handleCopyClick() {
     if (recoveryCodes) {
-      await copyText(recoveryCodes.join('\n'))
+      copyText(recoveryCodes.join('\n'))
     }
   }
 
