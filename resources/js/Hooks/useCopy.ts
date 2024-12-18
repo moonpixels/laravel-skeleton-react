@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useCopyToClipboard } from 'react-use'
 
 export function useCopy() {
@@ -6,13 +6,21 @@ export function useCopy() {
 
   const [copied, setCopied] = useState(false)
 
+  const timeoutRef = useRef<number | null>(null)
+
   function copyText(text: string) {
+    setCopied(false)
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+
     copyToClipboard(text)
 
     if (state.value === text) {
       setCopied(true)
 
-      setTimeout(() => {
+      timeoutRef.current = window.setTimeout(() => {
         setCopied(false)
       }, 2000)
     }
