@@ -20,8 +20,8 @@ import {
 } from '@/Components/UI/Select'
 import { Switch } from '@/Components/UI/Switch'
 import { useDarkMode } from '@/Contexts/DarkModeContext'
+import { getCountryFromLocale, useLocale } from '@/Contexts/LocaleContext'
 import { useFormValidation } from '@/Hooks/useFormValidation'
-import { useLocale } from '@/Hooks/useLocale'
 import { useToast } from '@/Hooks/useToast'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'
@@ -88,7 +88,7 @@ export function PreferencesForm() {
 
   const { setFormServerErrors } = useFormValidation()
 
-  const { supportedLocales, currentLocale, getCountryFromLocale } = useLocale()
+  const { supportedLocales, currentLocale } = useLocale()
 
   const supportedLocaleOptions = Object.entries(supportedLocales).map(([locale, data]) => ({
     value: locale,

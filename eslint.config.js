@@ -1,6 +1,7 @@
 import eslint from '@eslint/js'
 import prettierRecommended from 'eslint-plugin-prettier/recommended'
 import reactPlugin from 'eslint-plugin-react'
+import reactHookPlugin from 'eslint-plugin-react-hooks'
 import tseslint from 'typescript-eslint'
 
 export default [
@@ -9,6 +10,9 @@ export default [
   reactPlugin.configs.flat.recommended,
   prettierRecommended,
   {
+    plugins: {
+      'react-hooks': reactHookPlugin,
+    },
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
@@ -19,6 +23,8 @@ export default [
     rules: {
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'error',
     },
     settings: {
       react: {
