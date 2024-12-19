@@ -1,15 +1,12 @@
 import { Toaster } from '@/Components/UI/Toaster'
-import { useLocale } from '@/Hooks/useLocale'
+import { LocaleProvider } from '@/Contexts/LocaleContext'
 import { PropsWithChildren } from 'react'
 
 export function DefaultLayout({ children }: PropsWithChildren) {
-  useLocale()
-
   return (
-    <>
+    <LocaleProvider>
       {children}
-
       <Toaster />
-    </>
+    </LocaleProvider>
   )
 }

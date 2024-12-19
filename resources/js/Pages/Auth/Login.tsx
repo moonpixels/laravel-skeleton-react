@@ -43,7 +43,7 @@ export default function Login({ status }: { status?: string }) {
         variant: 'successful',
       })
     }
-  }, [status])
+  }, [status, toast, t])
 
   const form = useForm({
     resolver: zodResolver(formSchema),

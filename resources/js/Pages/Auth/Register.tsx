@@ -11,8 +11,8 @@ import {
   FormMessage,
 } from '@/Components/UI/Form'
 import { Input } from '@/Components/UI/Input'
+import { getBrowserLocale } from '@/Contexts/LocaleContext'
 import { useFormValidation } from '@/Hooks/useFormValidation'
-import { useLocale } from '@/Hooks/useLocale'
 import { GuestLayout } from '@/Layouts/GuestLayout'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Head, router } from '@inertiajs/react'
@@ -31,8 +31,6 @@ export default function Register() {
   const { t } = useLaravelReactI18n()
 
   const { setFormServerErrors, passwordConfirmationMessage } = useFormValidation()
-
-  const { getBrowserLocale } = useLocale()
 
   formSchema.refine(
     (data) => data.password === data.password_confirmation,
