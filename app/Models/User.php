@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Support\TwoFactorAuthentication\Concerns\TwoFactorAuthenticatable;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -27,10 +27,10 @@ use Override;
  * @property ?list<string> $two_factor_recovery_codes
  * @property ?string $remember_token
  * @property ?string $avatar_path
- * @property ?Carbon $email_verified_at
- * @property ?Carbon $two_factor_confirmed_at
- * @property ?Carbon $created_at
- * @property ?Carbon $updated_at
+ * @property ?CarbonImmutable $email_verified_at
+ * @property ?CarbonImmutable $two_factor_confirmed_at
+ * @property ?CarbonImmutable $created_at
+ * @property ?CarbonImmutable $updated_at
  * @property-read ?string $avatar_url
  */
 final class User extends Authenticatable implements MustVerifyEmail
@@ -81,11 +81,11 @@ final class User extends Authenticatable implements MustVerifyEmail
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
+            'email_verified_at' => 'immutable_datetime',
             'password' => 'hashed',
             'two_factor_secret' => 'encrypted',
             'two_factor_recovery_codes' => 'encrypted:array',
-            'two_factor_confirmed_at' => 'datetime',
+            'two_factor_confirmed_at' => 'immutable_datetime',
         ];
     }
 }

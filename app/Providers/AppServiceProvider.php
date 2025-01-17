@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -30,21 +32,27 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureCommands();
         $this->configureModels();
         $this->configureVite();
+        $this->configureDates();
     }
 
-    public function configureCommands(): void
+    private function configureCommands(): void
     {
         DB::prohibitDestructiveCommands($this->app->isProduction());
     }
 
-    public function configureModels(): void
+    private function configureModels(): void
     {
         Model::unguard();
         Model::shouldBeStrict(! $this->app->isProduction());
     }
 
-    public function configureVite(): void
+    private function configureVite(): void
     {
         Vite::usePrefetchStrategy('aggressive');
+    }
+
+    private function configureDates(): void
+    {
+        Date::use(CarbonImmutable::class);
     }
 }
