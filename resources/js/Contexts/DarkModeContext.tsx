@@ -6,12 +6,7 @@ type DarkModeState = {
   setDarkMode: (darkMode: boolean) => void
 }
 
-const initialState = {
-  isDarkMode: false,
-  setDarkMode: () => null,
-}
-
-const DarkModeContext = createContext<DarkModeState>(initialState)
+const DarkModeContext = createContext<DarkModeState | undefined>(undefined)
 
 function updateRootClass(isDarkMode: boolean) {
   window.document.documentElement.classList.toggle('dark', isDarkMode)
