@@ -31,19 +31,7 @@ export function getCountryFromLocale(locale: string): string | null {
   return locale.split('-')[1] || null
 }
 
-const initialState = {
-  currentLocale: defaultLocale,
-  supportedLocales: {
-    en: {
-      name: 'English',
-      nativeName: 'English',
-      regional: 'en-GB',
-    },
-  },
-  setLocale: () => null,
-}
-
-const LocaleContext = createContext<LocaleState>(initialState)
+const LocaleContext = createContext<LocaleState | undefined>(undefined)
 
 export function LocaleProvider({ children, ...props }: PropsWithChildren) {
   const { setLocale: setI18nLocale, currentLocale } = useLaravelReactI18n()

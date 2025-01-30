@@ -9,9 +9,9 @@ import {
   FormMessage,
 } from '@/Components/UI/Form'
 import { Input } from '@/Components/UI/Input'
+import { useUser } from '@/Contexts/UserContext'
 import { useFormValidation } from '@/Hooks/useFormValidation'
 import { useToast } from '@/Hooks/useToast'
-import { useUser } from '@/Hooks/useUser'
 import { AvatarForm } from '@/Pages/Account/Partials/AvatarForm'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'

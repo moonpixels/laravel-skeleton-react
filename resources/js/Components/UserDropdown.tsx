@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/Components/UI/DropdownMenu'
 import { useSidebar } from '@/Components/UI/Sidebar'
-import { useUser } from '@/Hooks/useUser'
+import { useUser } from '@/Contexts/UserContext'
 import { initials } from '@/Utils/strings'
 import { Link } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'

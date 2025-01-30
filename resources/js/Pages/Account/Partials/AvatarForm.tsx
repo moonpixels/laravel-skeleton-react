@@ -10,9 +10,9 @@ import {
   FormMessage,
 } from '@/Components/UI/Form'
 import { Skeleton } from '@/Components/UI/Skeleton'
+import { useUser } from '@/Contexts/UserContext'
 import { useFormValidation } from '@/Hooks/useFormValidation'
 import { useToast } from '@/Hooks/useToast'
-import { useUser } from '@/Hooks/useUser'
 import { initials } from '@/Utils/strings'
 import { cn } from '@/Utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'

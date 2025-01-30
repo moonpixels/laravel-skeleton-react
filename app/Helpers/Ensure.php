@@ -22,7 +22,7 @@ final readonly class Ensure
      * @param  class-string<TEnsureOfType>  $type
      * @return (TVariable is TEnsureOfType ? TVariable : never)
      */
-    public function is(mixed $type): mixed
+    public function is(string $type): mixed
     {
         if (! $this->variable instanceof $type) {
             $this->throwTypeError($type);
