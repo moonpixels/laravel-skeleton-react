@@ -19,6 +19,7 @@
     "tightenco/ziggy": "^v2.0"
   },
   "require-dev": {
+    "barryvdh/laravel-debugbar": "^3.14",
     "driftingly/rector-laravel": "^2.0.0",
     "fakerphp/faker": "^v1.23",
     "larastan/larastan": "^v3.0.2",
