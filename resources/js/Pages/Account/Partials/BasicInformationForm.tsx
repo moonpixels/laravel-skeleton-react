@@ -11,12 +11,12 @@ import {
 import { Input } from '@/Components/UI/Input'
 import { useUser } from '@/Contexts/UserContext'
 import { useFormValidation } from '@/Hooks/useFormValidation'
-import { useToast } from '@/Hooks/useToast'
 import { AvatarForm } from '@/Pages/Account/Partials/AvatarForm'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 const formSchema = z.object({
@@ -26,8 +26,6 @@ const formSchema = z.object({
 
 export function BasicInformationForm() {
   const { t } = useLaravelReactI18n()
-
-  const { toast } = useToast()
 
   const { setFormServerErrors } = useFormValidation()
 
@@ -49,10 +47,8 @@ export function BasicInformationForm() {
           setFormServerErrors(form, errors)
         },
         onSuccess: () => {
-          toast({
+          toast.success(t('account.account_updated'), {
             description: t('account.account_has_been_updated'),
-            title: t('account.account_updated'),
-            variant: 'successful',
           })
         },
         onFinish: () => resolve(),

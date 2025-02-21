@@ -2,23 +2,19 @@ import { AuthForm, AuthFormFooter } from '@/Components/AuthForm'
 import { Text } from '@/Components/Text'
 import { Button } from '@/Components/UI/Button'
 import { useUser } from '@/Contexts/UserContext'
-import { useToast } from '@/Hooks/useToast'
 import { GuestLayout } from '@/Layouts/GuestLayout'
 import { Head, router } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
+import { toast } from 'sonner'
 
 export default function VerifyEmail() {
   const { t } = useLaravelReactI18n()
 
-  const { toast } = useToast()
-
   const { user } = useUser()
 
   function showEmailVerificationSentToast() {
-    toast({
+    toast.success(t('auth.email_verification_email_sent'), {
       description: t('auth.email_verification_email_sent_description'),
-      title: t('auth.email_verification_email_sent'),
-      variant: 'successful',
     })
   }
 

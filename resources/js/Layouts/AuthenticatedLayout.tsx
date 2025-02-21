@@ -24,7 +24,10 @@ export function AuthenticatedLayout({
         <main className="lg:pt-14">
           <header className="bg-muted lg:bg-background/80 top-0 z-10 flex h-14 w-full items-center gap-2 border-b px-4 backdrop-blur-xs sm:px-6 lg:fixed lg:px-8">
             <SidebarTrigger className="-ml-6 hidden lg:flex" />
-            <Separator orientation="vertical" className="mr-3 hidden h-4 lg:block" />
+            <Separator
+              orientation="vertical"
+              className="mr-3 hidden data-[orientation=vertical]:h-4 lg:block"
+            />
             <Breadcrumbs />
           </header>
 

@@ -12,7 +12,6 @@ import {
 import { Skeleton } from '@/Components/UI/Skeleton'
 import { useUser } from '@/Contexts/UserContext'
 import { useFormValidation } from '@/Hooks/useFormValidation'
-import { useToast } from '@/Hooks/useToast'
 import { initials } from '@/Utils/strings'
 import { cn } from '@/Utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -20,6 +19,7 @@ import { router } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { ChangeEvent, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 const formSchema = z.object({
@@ -32,8 +32,6 @@ export function AvatarForm() {
   const { user } = useUser()
 
   const { setFormServerErrors } = useFormValidation()
-
-  const { toast } = useToast()
 
   const [isRemovingAvatar, setIsRemovingAvatar] = useState(false)
 
@@ -59,10 +57,8 @@ export function AvatarForm() {
           onSuccess: () => {
             form.reset()
 
-            toast({
+            toast.success(t('account.account_updated'), {
               description: t('account.account_has_been_updated'),
-              title: t('account.account_updated'),
-              variant: 'successful',
             })
           },
           onFinish: () => resolve(),
@@ -77,10 +73,8 @@ export function AvatarForm() {
         preserveScroll: true,
         onStart: () => setIsRemovingAvatar(true),
         onSuccess: () => {
-          toast({
+          toast.success(t('account.account_updated'), {
             description: t('account.account_has_been_updated'),
-            title: t('account.account_updated'),
-            variant: 'successful',
           })
         },
         onFinish: () => {

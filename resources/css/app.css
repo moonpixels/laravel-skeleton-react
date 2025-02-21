@@ -38,6 +38,12 @@
   --successful: hsl(161 93.5% 30.4%);
   --successful-foreground: hsl(0 0% 98%);
 
+  --warning: hsl(32 94.6% 43.7%);
+  --warning-foreground: hsl(0 0% 98%);
+
+  --info: hsl(200 98% 39.4%);
+  --info-foreground: hsl(0 0% 98%);
+
   --ring: hsl(240 5.9% 10%);
 
   --radius: 0.75rem;
@@ -56,6 +62,7 @@
   --sidebar-accent-foreground: hsl(240 5.9% 10%);
   --sidebar-border: hsl(220 13% 91%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --sidebar: hsl(0 0% 98%);
 }
 
 .dark {
@@ -90,6 +97,12 @@
   --successful: hsl(163 93.5% 24.3%);
   --successful-foreground: hsl(0 0% 98%);
 
+  --warning: hsl(26 90.5% 37.1%);
+  --warning-foreground: hsl(0 0% 98%);
+
+  --info: hsl(201 96.3% 32.2%);
+  --info-foreground: hsl(0 0% 98%);
+
   --ring: hsl(240 3.8% 46.1%);
 
   --chart-1: hsl(220 70% 50%);
@@ -106,6 +119,7 @@
   --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
   --sidebar-border: hsl(240 3.7% 15.9%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --sidebar: hsl(240 4.9% 12%);
 }
 
 @theme inline {
@@ -220,9 +234,8 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border outline-ring/50;
   }
-
   body {
     @apply bg-background text-foreground;
   }

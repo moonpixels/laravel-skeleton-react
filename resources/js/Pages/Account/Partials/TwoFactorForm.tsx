@@ -24,7 +24,6 @@ import { Skeleton } from '@/Components/UI/Skeleton'
 import { useUser } from '@/Contexts/UserContext'
 import { useCopy } from '@/Hooks/useCopy'
 import { useFormValidation } from '@/Hooks/useFormValidation'
-import { useToast } from '@/Hooks/useToast'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'
 import { AxiosResponse } from 'axios'
@@ -32,6 +31,7 @@ import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { ClipboardCheckIcon, ClipboardIcon } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 const disableFormSchema = z.object({
@@ -40,8 +40,6 @@ const disableFormSchema = z.object({
 
 export function TwoFactorDisableDialog() {
   const { t } = useLaravelReactI18n()
-
-  const { toast } = useToast()
 
   const { setFormServerErrors } = useFormValidation()
 
@@ -65,10 +63,8 @@ export function TwoFactorDisableDialog() {
         onSuccess: () => {
           form.reset()
 
-          toast({
+          toast.success(t('account.two_factor_disabled'), {
             description: t('account.two_factor_disabled_description'),
-            title: t('account.two_factor_disabled'),
-            variant: 'successful',
           })
         },
         onFinish: () => {
@@ -145,8 +141,6 @@ type TwoFactorSettings = {
 export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
   const { t } = useLaravelReactI18n()
 
-  const { toast } = useToast()
-
   const { setFormServerErrors } = useFormValidation()
 
   const [open, setOpen] = useState(false)
@@ -181,10 +175,8 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
         onSuccess: () => {
           form.reset()
 
-          toast({
+          toast.success(t('account.two_factor_enabled'), {
             description: t('account.two_factor_enabled_description'),
-            title: t('account.two_factor_enabled'),
-            variant: 'successful',
           })
 
           if (onEnable) {
@@ -212,10 +204,8 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
     } catch {
       setOpen(false)
 
-      toast({
+      toast.error(t('errors.generic'), {
         description: t('errors.generic_description'),
-        title: t('errors.generic'),
-        variant: 'destructive',
       })
     }
   }
@@ -299,8 +289,6 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
 export function TwoFactorRecoveryCodesDialog({ recentlyEnabled }: { recentlyEnabled?: boolean }) {
   const { t } = useLaravelReactI18n()
 
-  const { toast } = useToast()
-
   const { copyText, copied } = useCopy()
 
   const [open, setOpen] = useState(false)
@@ -339,10 +327,8 @@ export function TwoFactorRecoveryCodesDialog({ recentlyEnabled }: { recentlyEnab
     } catch {
       setOpen(false)
 
-      toast({
+      toast.error(t('errors.generic'), {
         description: t('errors.generic_description'),
-        title: t('errors.generic'),
-        variant: 'destructive',
       })
     }
   }

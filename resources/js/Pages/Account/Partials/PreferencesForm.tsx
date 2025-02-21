@@ -22,13 +22,13 @@ import { Switch } from '@/Components/UI/Switch'
 import { useDarkMode } from '@/Contexts/DarkModeContext'
 import { getCountryFromLocale, useLocale } from '@/Contexts/LocaleContext'
 import { useFormValidation } from '@/Hooks/useFormValidation'
-import { useToast } from '@/Hooks/useToast'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { Globe } from 'lucide-react'
 import { ElementType } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 const formSchema = z.object({
@@ -57,7 +57,7 @@ export function DarkModeForm() {
           control={form.control}
           name="use_dark_mode"
           render={({ field }) => (
-            <FormItem className="flex justify-between space-x-4">
+            <FormItem className="flex justify-between">
               <div className="space-y-2">
                 <FormLabel>{t('account.use_dark_mode')}</FormLabel>
                 <FormDescription>{t('account.use_dark_mode_description')}</FormDescription>
@@ -84,8 +84,6 @@ export function DarkModeForm() {
 export function PreferencesForm() {
   const { t } = useLaravelReactI18n()
 
-  const { toast } = useToast()
-
   const { setFormServerErrors } = useFormValidation()
 
   const { supportedLocales, currentLocale } = useLocale()
@@ -111,10 +109,8 @@ export function PreferencesForm() {
           setFormServerErrors(form, errors)
         },
         onSuccess: () => {
-          toast({
+          toast.success(t('account.account_updated'), {
             description: t('account.account_has_been_updated'),
-            title: t('account.account_updated'),
-            variant: 'successful',
           })
         },
         onFinish: () => resolve(),

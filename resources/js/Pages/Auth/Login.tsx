@@ -13,13 +13,13 @@ import {
 } from '@/Components/UI/Form'
 import { Input } from '@/Components/UI/Input'
 import { useFormValidation } from '@/Hooks/useFormValidation'
-import { useToast } from '@/Hooks/useToast'
 import { GuestLayout } from '@/Layouts/GuestLayout'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Head, router } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 const formSchema = z.object({
@@ -31,19 +31,15 @@ const formSchema = z.object({
 export default function Login({ status }: { status?: string }) {
   const { t } = useLaravelReactI18n()
 
-  const { toast } = useToast()
-
   const { setFormServerErrors } = useFormValidation()
 
   useEffect(() => {
     if (status === 'password-updated') {
-      toast({
+      toast.success(t('auth.password_updated'), {
         description: t('auth.password_updated_description'),
-        title: t('auth.password_updated'),
-        variant: 'successful',
       })
     }
-  }, [status, toast, t])
+  }, [status, t])
 
   const form = useForm({
     resolver: zodResolver(formSchema),
