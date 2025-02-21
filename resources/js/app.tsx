@@ -12,7 +12,9 @@ import './bootstrap'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 
-type Page = ReactElement & { default: { layout: (page: ReactElement) => ReactElement } }
+type Page = ReactElement & {
+  default: { layout: (page: ReactElement) => ReactElement }
+}
 
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,

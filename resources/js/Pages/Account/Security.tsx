@@ -18,7 +18,7 @@ export default function Security() {
 
       <AccountNavigation />
 
-      <div className="divide-y divide-border">
+      <div className="divide-border divide-y">
         <PasswordForm />
         <TwoFactorForm />
       </div>

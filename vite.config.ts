@@ -1,7 +1,8 @@
-import { defineConfig } from 'vite'
-import laravel from 'laravel-vite-plugin'
+import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import i18n from 'laravel-react-i18n/vite'
+import laravel from 'laravel-vite-plugin'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
@@ -13,5 +14,7 @@ export default defineConfig({
     react(),
 
     i18n(),
+
+    tailwindcss(),
   ],
 })

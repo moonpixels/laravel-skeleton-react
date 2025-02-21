@@ -17,7 +17,7 @@ export default function Preferences() {
 
       <AccountNavigation />
 
-      <div className="divide-y divide-border">
+      <div className="divide-border divide-y">
         <PreferencesForm />
       </div>
     </AuthenticatedLayout>

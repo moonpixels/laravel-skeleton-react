@@ -28,7 +28,7 @@ export function PageNavigation({ items }: PageNavigationProps) {
               >
                 <Text
                   variant={item.current ? undefined : 'muted'}
-                  className="leading-none group-hover:text-foreground"
+                  className="group-hover:text-foreground leading-none"
                   size="sm"
                   weight="medium"
                 >

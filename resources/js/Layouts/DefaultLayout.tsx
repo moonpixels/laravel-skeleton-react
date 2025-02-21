@@ -1,4 +1,4 @@
-import { Toaster } from '@/Components/UI/Toaster'
+import { Toaster } from '@/Components/UI/Sonner'
 import { LocaleProvider } from '@/Contexts/LocaleContext'
 import { UserProvider } from '@/Contexts/UserContext'
 import { PropsWithChildren } from 'react'

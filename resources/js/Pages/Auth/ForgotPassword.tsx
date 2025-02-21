@@ -12,13 +12,13 @@ import {
 } from '@/Components/UI/Form'
 import { Input } from '@/Components/UI/Input'
 import { useFormValidation } from '@/Hooks/useFormValidation'
-import { useToast } from '@/Hooks/useToast'
 import { GuestLayout } from '@/Layouts/GuestLayout'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Head, router } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 const formSchema = z.object({
@@ -30,17 +30,13 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
   const { setFormServerErrors } = useFormValidation()
 
-  const { toast } = useToast()
-
   useEffect(() => {
     if (status === 'reset-link-sent') {
-      toast({
+      toast.success(t('auth.password_reset_email_sent'), {
         description: t('auth.password_reset_email_sent_description'),
-        title: t('auth.password_reset_email_sent'),
-        variant: 'successful',
       })
     }
-  }, [status, toast, t])
+  }, [status, t])
 
   const form = useForm({
     resolver: zodResolver(formSchema),

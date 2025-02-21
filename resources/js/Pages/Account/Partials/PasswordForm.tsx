@@ -10,11 +10,11 @@ import {
 } from '@/Components/UI/Form'
 import { Input } from '@/Components/UI/Input'
 import { useFormValidation } from '@/Hooks/useFormValidation'
-import { useToast } from '@/Hooks/useToast'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 const formSchema = z.object({
@@ -25,8 +25,6 @@ const formSchema = z.object({
 
 export function PasswordForm() {
   const { t } = useLaravelReactI18n()
-
-  const { toast } = useToast()
 
   const { setFormServerErrors, passwordConfirmationMessage } = useFormValidation()
 
@@ -54,10 +52,8 @@ export function PasswordForm() {
         onSuccess: () => {
           form.reset()
 
-          toast({
+          toast.success(t('account.account_updated'), {
             description: t('account.account_has_been_updated'),
-            title: t('account.account_updated'),
-            variant: 'successful',
           })
         },
         onFinish: () => resolve(),

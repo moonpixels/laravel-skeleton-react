@@ -6,7 +6,7 @@ export function TextLink({ className, ...props }: PropsWithChildren<InertiaLinkP
   return (
     <Link
       className={cn(
-        'text-foreground underline decoration-foreground/30 hover:decoration-foreground',
+        'text-foreground decoration-foreground/30 hover:decoration-foreground underline',
         className
       )}
       {...props}
