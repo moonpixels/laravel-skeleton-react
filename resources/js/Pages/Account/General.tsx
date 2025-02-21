@@ -18,7 +18,7 @@ export default function General() {
 
       <AccountNavigation />
 
-      <div className="divide-y divide-border">
+      <div className="divide-border divide-y">
         <BasicInformationForm />
         <DeleteAccountForm />
       </div>

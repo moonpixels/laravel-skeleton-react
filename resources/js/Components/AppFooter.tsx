@@ -32,7 +32,7 @@ export function AppFooter() {
             >
               <span className="sr-only">{t('general.follow_us', { name: social.name })}</span>
 
-              <social.icon className="size-5 text-muted-foreground transition group-hover:text-foreground" />
+              <social.icon className="text-muted-foreground group-hover:text-foreground size-5 transition" />
             </a>
           ))}
         </div>

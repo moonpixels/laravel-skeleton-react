@@ -243,7 +243,7 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
           {twoFactorSettings && (
             <>
               <div
-                className="flex items-center justify-center dark:[&_path[fill='#09090b']]:fill-foreground dark:[&_rect[fill='#ffffff']]:fill-background"
+                className="dark:[&_path[fill='#09090b']]:fill-foreground dark:[&_rect[fill='#ffffff']]:fill-background flex items-center justify-center"
                 dangerouslySetInnerHTML={twoFactorSettings.qrCode}
               />
 
@@ -369,7 +369,7 @@ export function TwoFactorRecoveryCodesDialog({ recentlyEnabled }: { recentlyEnab
 
           {recoveryCodes &&
             recoveryCodes.map((code) => (
-              <li key={code} className="font-mono text-xs/5 text-foreground">
+              <li key={code} className="text-foreground font-mono text-xs/5">
                 {code}
               </li>
             ))}

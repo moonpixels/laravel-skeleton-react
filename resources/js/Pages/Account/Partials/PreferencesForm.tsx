@@ -165,7 +165,7 @@ export function PreferencesForm() {
                       {supportedLocaleOptions.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           <span className="flex items-center gap-2 truncate">
-                            <option.icon className="h-3 w-auto shrink-0 text-muted-foreground" />
+                            <option.icon className="text-muted-foreground h-3 w-auto shrink-0" />
                             {option.label}
                           </span>
                         </SelectItem>
