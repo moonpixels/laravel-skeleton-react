@@ -65,7 +65,7 @@
       "@php artisan key:generate --ansi"
     ],
     "coverage": [
-      "./vendor/bin/pest --coverage"
+      "./vendor/bin/pest --coverage --compact"
     ],
     "type-coverage": [
       "./vendor/bin/pest --type-coverage"

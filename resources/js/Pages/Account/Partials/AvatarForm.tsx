@@ -111,11 +111,11 @@ export function AvatarForm() {
                       <Skeleton className="size-11 rounded-md" />
                     ) : (
                       <Avatar size="md">
-                        {user.avatar_url ? (
+                        {user.avatarUrl ? (
                           <>
                             <AvatarImage
                               alt={user.name}
-                              src={user.avatar_url}
+                              src={user.avatarUrl}
                               className={cn({
                                 'opacity-50': form.formState.isSubmitting || isRemovingAvatar,
                               })}
@@ -154,7 +154,7 @@ export function AvatarForm() {
                       </Button>
 
                       <Button
-                        disabled={!user.avatar_url}
+                        disabled={!user.avatarUrl}
                         loading={isRemovingAvatar}
                         type="button"
                         variant="destructive"
