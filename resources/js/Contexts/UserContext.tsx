@@ -19,7 +19,7 @@ export function UserProvider({ children, ...props }: PropsWithChildren) {
   if (user) {
     userState = {
       user,
-      twoFactorEnabled: !!user.two_factor_confirmed_at,
+      twoFactorEnabled: !!user.twoFactorConfirmedAt,
     }
   }
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\SetLocale;
+use App\Http\Middleware\TransformInertiaRequestKeysToSnakeCase;
+use App\Http\Middleware\TransformInertiaResponseKeysToCamelCase;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -21,7 +23,9 @@ return Application::configure(basePath: dirname(__DIR__))
             ->throttleWithRedis()
             ->web(append: [
                 SetLocale::class,
+                TransformInertiaRequestKeysToSnakeCase::class,
                 HandleInertiaRequests::class,
+                TransformInertiaResponseKeysToCamelCase::class,
                 AddLinkHeadersForPreloadedAssets::class,
             ]);
     })

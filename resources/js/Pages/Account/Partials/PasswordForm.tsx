@@ -18,9 +18,9 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 const formSchema = z.object({
-  current_password: z.string(),
+  currentPassword: z.string(),
   password: z.string().min(8),
-  password_confirmation: z.string().min(8),
+  passwordConfirmation: z.string().min(8),
 })
 
 export function PasswordForm() {
@@ -29,16 +29,16 @@ export function PasswordForm() {
   const { setFormServerErrors, passwordConfirmationMessage } = useFormValidation()
 
   formSchema.refine(
-    (data) => data.password === data.password_confirmation,
+    (data) => data.password === data.passwordConfirmation,
     () => passwordConfirmationMessage()
   )
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      current_password: '',
+      currentPassword: '',
       password: '',
-      password_confirmation: '',
+      passwordConfirmation: '',
     },
   })
 
@@ -70,7 +70,7 @@ export function PasswordForm() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-6">
           <FormField
             control={form.control}
-            name="current_password"
+            name="currentPassword"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t('account.current_password')}</FormLabel>
@@ -98,7 +98,7 @@ export function PasswordForm() {
 
           <FormField
             control={form.control}
-            name="password_confirmation"
+            name="passwordConfirmation"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t('account.confirm_new_password')}</FormLabel>
