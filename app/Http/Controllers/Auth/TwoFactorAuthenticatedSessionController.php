@@ -22,7 +22,7 @@ final class TwoFactorAuthenticatedSessionController extends Controller
             throw new HttpResponseException(redirect()->route('login'));
         }
 
-        return Inertia::render('Auth/TwoFactor');
+        return Inertia::render('auth/two-factor');
     }
 
     public function store(TwoFactorLoginRequest $request): RedirectResponse

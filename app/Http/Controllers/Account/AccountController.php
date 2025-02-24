@@ -19,7 +19,7 @@ final class AccountController extends Controller
 {
     public function edit(): Response
     {
-        return Inertia::render('Account/General');
+        return Inertia::render('account/general');
     }
 
     public function update(

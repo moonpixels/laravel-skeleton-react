@@ -1,7 +1,7 @@
-import { SidebarProvider } from '@/Components/UI/Sidebar'
-import { DarkModeProvider } from '@/Contexts/DarkModeContext'
-import { defaultLocale } from '@/Contexts/LocaleContext'
-import { DefaultLayout } from '@/Layouts/DefaultLayout'
+import { SidebarProvider } from '@/components/ui/sidebar'
+import { DarkModeProvider } from '@/contexts/dark-mode-context'
+import { defaultLocale } from '@/contexts/locale-context'
+import { DefaultLayout } from '@/layouts/default-layout'
 import { createInertiaApp } from '@inertiajs/react'
 import { LaravelReactI18nProvider } from 'laravel-react-i18n'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
@@ -21,8 +21,8 @@ createInertiaApp({
 
   resolve: async (name) => {
     const page = await resolvePageComponent(
-      `./Pages/${name}.tsx`,
-      import.meta.glob<Page>('./Pages/**/*.tsx')
+      `./pages/${name}.tsx`,
+      import.meta.glob<Page>('./pages/**/*.tsx')
     )
     page.default.layout = page.default.layout || ((page) => <DefaultLayout>{page}</DefaultLayout>)
     return page

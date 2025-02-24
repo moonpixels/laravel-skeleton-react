@@ -17,7 +17,7 @@ final class AccountPreferencesController extends Controller
 {
     public function edit(): Response
     {
-        return Inertia::render('Account/Preferences');
+        return Inertia::render('account/preferences');
     }
 
     public function update(
