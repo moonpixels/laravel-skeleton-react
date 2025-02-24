@@ -12,7 +12,7 @@ use Inertia\Inertia;
 Route::get('/', fn () => redirect()->route('login'));
 
 Route::middleware(['auth', 'verified'])->group(function (): void {
-    Route::get('home', fn () => Inertia::render('Home'))->name('home');
+    Route::get('home', fn () => Inertia::render('home'))->name('home');
 
     Route::controller(AccountAvatarController::class)->group(function (): void {
         Route::put('account/avatar', 'update')->name('account.avatar.update');

@@ -14,7 +14,7 @@ final class ConfirmedPasswordController extends Controller
 {
     public function create(): Response
     {
-        return Inertia::render('Auth/ConfirmPassword');
+        return Inertia::render('auth/confirm-password');
     }
 
     public function store(ConfirmPasswordRequest $request): RedirectResponse

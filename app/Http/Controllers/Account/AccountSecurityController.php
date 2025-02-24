@@ -12,6 +12,6 @@ final class AccountSecurityController extends Controller
 {
     public function edit(): Response
     {
-        return Inertia::render('Account/Security');
+        return Inertia::render('account/security');
     }
 }
