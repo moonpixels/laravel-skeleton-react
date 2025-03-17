@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useSidebar } from '@/components/ui/sidebar'
 import { useUser } from '@/contexts/user-context'
+import { useMobileNavigation } from '@/hooks/use-mobile-navigation'
 import { initials } from '@/utils/strings'
 import { Link } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
@@ -60,6 +61,8 @@ export function UserDropdown({ trigger }: { trigger: ReactNode }) {
 
   const { t } = useLaravelReactI18n()
 
+  const cleanup = useMobileNavigation()
+
   const items: UserDropdownItem[] = [
     {
       label: t('navigation.account_settings'),
@@ -90,7 +93,12 @@ export function UserDropdown({ trigger }: { trigger: ReactNode }) {
         <DropdownMenuGroup>
           {items.map((item) => (
             <DropdownMenuItem key={item.href} asChild>
-              <Link prefetch href={item.href} className="flex w-full items-center gap-2">
+              <Link
+                href={item.href}
+                className="flex w-full items-center gap-2"
+                onClick={cleanup}
+                prefetch
+              >
                 <item.icon className="size-4 shrink-0" />
                 {item.label}
               </Link>

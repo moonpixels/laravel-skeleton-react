@@ -11,12 +11,15 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import { UserAvatar, UserDetails, UserDropdown } from '@/components/user-dropdown'
+import { useMobileNavigation } from '@/hooks/use-mobile-navigation'
 import { Link } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { ChevronsUpDown, Home } from 'lucide-react'
 
 export function AppSidebar() {
   const { t } = useLaravelReactI18n()
+
+  const cleanup = useMobileNavigation()
 
   const primaryNavItems = [
     {
@@ -32,7 +35,7 @@ export function AppSidebar() {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link href={route('home')} className="block p-2" prefetch>
+            <Link href={route('home')} className="block p-2" onClick={cleanup} prefetch>
               <Logo className="h-6 w-auto" />
             </Link>
           </SidebarMenuItem>
@@ -46,7 +49,7 @@ export function AppSidebar() {
               {primaryNavItems.map((item) => (
                 <SidebarMenuItem key={item.label}>
                   <SidebarMenuButton asChild isActive={item.isActive}>
-                    <Link prefetch href={item.href}>
+                    <Link href={item.href} onClick={cleanup} prefetch>
                       <item.icon />
                       <span>{item.label}</span>
                     </Link>
