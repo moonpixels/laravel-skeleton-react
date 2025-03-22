@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 return [
     'account_settings' => 'Paramètres du compte',
+    'dashboard' => 'Tableau de bord',
     'general' => 'Général',
-    'home' => 'Accueil',
     'preferences' => 'Préférences',
     'security' => 'Sécurité',
 ];

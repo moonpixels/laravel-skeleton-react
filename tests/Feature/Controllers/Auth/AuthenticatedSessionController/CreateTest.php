@@ -13,8 +13,8 @@ test('login page can be rendered', function (): void {
         ->assertOk();
 });
 
-test('user is redirected to the home page if already authenticated', function (): void {
+test('user is redirected to the dashboard page if already authenticated', function (): void {
     $this->actingAs($this->user)
         ->get(route('login'))
-        ->assertRedirect(route('home'));
+        ->assertRedirect(route('dashboard'));
 });

@@ -10,7 +10,7 @@ beforeEach(function (): void {
 
 test('users can authenticate using the login page', function (): void {
     $this->post(route('login'), getLoginData($this->user))
-        ->assertRedirect(route('home'));
+        ->assertRedirect(route('dashboard'));
 
     $this->assertAuthenticated();
 });
@@ -57,7 +57,7 @@ test('users are not redirected to the two factor authentication page if 2FA is u
     $user = User::factory()->withUnconfirmedTwoFactorAuth()->create();
 
     $this->post(route('login'), getLoginData($user))
-        ->assertRedirect(route('home'));
+        ->assertRedirect(route('dashboard'));
 });
 
 function getLoginData(User $user, bool $remember = false): array

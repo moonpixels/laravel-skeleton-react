@@ -21,6 +21,6 @@ final class ConfirmedPasswordController extends Controller
     {
         $request->session()->passwordConfirmed();
 
-        return redirect()->intended('home');
+        return redirect()->intended('dashboard');
     }
 }

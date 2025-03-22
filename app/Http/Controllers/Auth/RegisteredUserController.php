@@ -28,6 +28,6 @@ final class RegisteredUserController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect('home');
+        return redirect('dashboard');
     }
 }

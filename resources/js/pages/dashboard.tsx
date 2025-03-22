@@ -4,14 +4,14 @@ import { AuthenticatedLayout } from '@/layouts/authenticated-layout'
 import { Head } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 
-export default function Home() {
+export default function Dashboard() {
   const { t } = useLaravelReactI18n()
 
   return (
     <AuthenticatedLayout>
-      <Head title={t('general.home')} />
+      <Head title={t('general.dashboard')} />
 
-      <PageHeader>{t('general.home')}</PageHeader>
+      <PageHeader>{t('general.dashboard')}</PageHeader>
 
       <div className="py-10">
         <Text size="sm" variant="muted">

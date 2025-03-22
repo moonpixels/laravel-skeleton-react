@@ -11,7 +11,7 @@ export function GuestLayout({ children }: PropsWithChildren) {
   return (
     <div className="flex min-h-dvh w-full flex-col">
       <header className="flex h-16 shrink-0 items-center justify-between px-4">
-        <Link href={route('home')}>
+        <Link href={route('dashboard')}>
           <Logo className="h-6 w-auto" />
         </Link>
       </header>

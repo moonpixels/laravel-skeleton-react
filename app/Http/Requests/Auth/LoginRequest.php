@@ -49,7 +49,7 @@ final class LoginRequest extends FormRequest
 
         $this->session()->regenerate();
 
-        return redirect()->intended('home');
+        return redirect()->intended('dashboard');
     }
 
     /**

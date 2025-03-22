@@ -26,11 +26,11 @@ export function PageBreadcrumbs({ items }: PageBreadcrumbsProps) {
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          {route().current('home') ? (
-            <BreadcrumbPage>{t('navigation.home')}</BreadcrumbPage>
+          {route().current('dashboard') ? (
+            <BreadcrumbPage>{t('navigation.dashboard')}</BreadcrumbPage>
           ) : (
             <BreadcrumbLink asChild>
-              <Link href={route('home')}>{t('navigation.home')}</Link>
+              <Link href={route('dashboard')}>{t('navigation.dashboard')}</Link>
             </BreadcrumbLink>
           )}
         </BreadcrumbItem>

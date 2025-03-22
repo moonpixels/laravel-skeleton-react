@@ -28,7 +28,7 @@ final class VerifiedEmailController extends Controller implements HasMiddleware
     public function show(#[CurrentUser] User $user): RedirectResponse|Response
     {
         return $user->hasVerifiedEmail()
-            ? redirect()->intended('home')
+            ? redirect()->intended('dashboard')
             : Inertia::render('auth/verify-email', ['status' => session('status')]);
     }
 
@@ -36,6 +36,6 @@ final class VerifiedEmailController extends Controller implements HasMiddleware
     {
         $request->fulfill();
 
-        return redirect()->intended('home');
+        return redirect()->intended('dashboard');
     }
 }
