@@ -60,7 +60,7 @@ final class TwoFactorLoginRequest extends FormRequest
 
         $this->session()->regenerate();
 
-        return redirect()->intended('home');
+        return redirect()->intended('dashboard');
     }
 
     private function getChallengedUser(): ?User

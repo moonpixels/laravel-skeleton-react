@@ -18,5 +18,5 @@ test('email verification page is not rendered when user is already verified', fu
     $this->user->markEmailAsVerified();
 
     $this->get(route('verification.notice'))
-        ->assertRedirect(route('home'));
+        ->assertRedirect(route('dashboard'));
 });

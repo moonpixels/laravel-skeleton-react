@@ -22,7 +22,7 @@ test('email can be verified', function (): void {
     );
 
     $this->get($verificationUrl)
-        ->assertRedirect(route('home'));
+        ->assertRedirect(route('dashboard'));
 
     expect($this->user->hasVerifiedEmail())->toBeTrue();
 
