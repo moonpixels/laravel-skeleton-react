@@ -27,7 +27,7 @@ final class TransformInertiaRequestKeysToSnakeCase
      */
     private function transformKeysToSnakeCase(array|Collection $data): array
     {
-        return collect($data)->mapWithKeys(fn ($value, $key) => [
+        return collect($data)->mapWithKeys(fn (mixed $value, string $key) => [
             Str::snake($key) => is_array($value) || $value instanceof Collection
                 ? $this->transformKeysToSnakeCase($value)
                 : $value,

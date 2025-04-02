@@ -41,7 +41,7 @@ final class TransformInertiaResponseKeysToCamelCase
      */
     private function transformKeysToCamelCase(array|Collection $data): array
     {
-        return collect($data)->mapWithKeys(fn ($value, $key) => [
+        return collect($data)->mapWithKeys(fn (mixed $value, string $key) => [
             Str::camel($key) => is_array($value) || $value instanceof Collection
                 ? $this->transformKeysToCamelCase($value)
                 : $value,
