@@ -65,10 +65,10 @@
       "@php artisan key:generate --ansi"
     ],
     "coverage": [
-      "./vendor/bin/pest --coverage --compact"
+      "./vendor/bin/pest --coverage --parallel --compact --min=90"
     ],
     "type-coverage": [
-      "./vendor/bin/pest --type-coverage"
+      "./vendor/bin/pest --type-coverage --parallel --compact --min=100 --memory-limit=512M"
     ],
     "dump": [
       "composer dump-autoload --optimize --classmap-authoritative --strict-psr"
@@ -89,6 +89,8 @@
       "@rector",
       "@pint",
       "@stan",
+      "@coverage",
+      "@type-coverage",
       "@test"
     ]
   },

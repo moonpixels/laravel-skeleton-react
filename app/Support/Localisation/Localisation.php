@@ -130,6 +130,6 @@ final readonly class Localisation
      */
     private function getSupportedLocale(array $locales): ?string
     {
-        return array_find($locales, fn ($locale): bool => $this->isSupportedLocale($locale));
+        return array_find($locales, fn (string $locale): bool => $this->isSupportedLocale($locale));
     }
 }
