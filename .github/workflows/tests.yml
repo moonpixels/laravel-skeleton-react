@@ -31,5 +31,8 @@ jobs:
           cp .env.example .env
           php artisan key:generate
 
+      - name: Run coverage checks
+        run: composer coverage && composer type-coverage
+
       - name: Run tests
         run: composer test
