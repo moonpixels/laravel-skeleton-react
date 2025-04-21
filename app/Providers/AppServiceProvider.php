@@ -44,6 +44,7 @@ final class AppServiceProvider extends ServiceProvider
     {
         Model::unguard();
         Model::shouldBeStrict(! $this->app->isProduction());
+        Model::automaticallyEagerLoadRelationships();
     }
 
     private function configureVite(): void
