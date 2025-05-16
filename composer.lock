@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "6a1b309f91b943e9bd73cb9f97256bbf",
+  "content-hash": "10401605fc269b1a311d12e8717aafd1",
   "packages": [
     {
       "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
     },
     {
       "name": "aws/aws-sdk-php",
-      "version": "3.343.12",
+      "version": "3.343.13",
       "source": {
         "type": "git",
         "url": "https://github.com/aws/aws-sdk-php.git",
-        "reference": "d4b21990410d023e9c5303487d3248e8d7c8c2b6"
+        "reference": "eb50d111a09ef39675358e74801260ac129ee346"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d4b21990410d023e9c5303487d3248e8d7c8c2b6",
-        "reference": "d4b21990410d023e9c5303487d3248e8d7c8c2b6",
+        "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/eb50d111a09ef39675358e74801260ac129ee346",
+        "reference": "eb50d111a09ef39675358e74801260ac129ee346",
         "shasum": ""
       },
       "require": {
@@ -153,9 +153,9 @@
       "support": {
         "forum": "https://github.com/aws/aws-sdk-php/discussions",
         "issues": "https://github.com/aws/aws-sdk-php/issues",
-        "source": "https://github.com/aws/aws-sdk-php/tree/3.343.12"
+        "source": "https://github.com/aws/aws-sdk-php/tree/3.343.13"
       },
-      "time": "2025-05-15T18:14:32+00:00"
+      "time": "2025-05-16T18:24:39+00:00"
     },
     {
       "name": "bacon/bacon-qr-code",
@@ -8409,69 +8409,6 @@
       "time": "2025-05-08T08:38:12+00:00"
     },
     {
-      "name": "laravel/sail",
-      "version": "v1.43.0",
-      "source": {
-        "type": "git",
-        "url": "https://github.com/laravel/sail.git",
-        "reference": "71a509b14b2621ce58574274a74290f933c687f7"
-      },
-      "dist": {
-        "type": "zip",
-        "url": "https://api.github.com/repos/laravel/sail/zipball/71a509b14b2621ce58574274a74290f933c687f7",
-        "reference": "71a509b14b2621ce58574274a74290f933c687f7",
-        "shasum": ""
-      },
-      "require": {
-        "illuminate/console": "^9.52.16|^10.0|^11.0|^12.0",
-        "illuminate/contracts": "^9.52.16|^10.0|^11.0|^12.0",
-        "illuminate/support": "^9.52.16|^10.0|^11.0|^12.0",
-        "php": "^8.0",
-        "symfony/console": "^6.0|^7.0",
-        "symfony/yaml": "^6.0|^7.0"
-      },
-      "require-dev": {
-        "orchestra/testbench": "^7.0|^8.0|^9.0|^10.0",
-        "phpstan/phpstan": "^1.10"
-      },
-      "bin": [
-        "bin/sail"
-      ],
-      "type": "library",
-      "extra": {
-        "laravel": {
-          "providers": [
-            "Laravel\\Sail\\SailServiceProvider"
-          ]
-        }
-      },
-      "autoload": {
-        "psr-4": {
-          "Laravel\\Sail\\": "src/"
-        }
-      },
-      "notification-url": "https://packagist.org/downloads/",
-      "license": [
-        "MIT"
-      ],
-      "authors": [
-        {
-          "name": "Taylor Otwell",
-          "email": "taylor@laravel.com"
-        }
-      ],
-      "description": "Docker files for running a basic Laravel application.",
-      "keywords": [
-        "docker",
-        "laravel"
-      ],
-      "support": {
-        "issues": "https://github.com/laravel/sail/issues",
-        "source": "https://github.com/laravel/sail"
-      },
-      "time": "2025-05-13T13:34:34+00:00"
-    },
-    {
       "name": "laravel/telescope",
       "version": "v5.7.0",
       "source": {
@@ -11556,78 +11493,6 @@
         }
       ],
       "time": "2024-10-20T05:08:20+00:00"
-    },
-    {
-      "name": "symfony/yaml",
-      "version": "v7.2.6",
-      "source": {
-        "type": "git",
-        "url": "https://github.com/symfony/yaml.git",
-        "reference": "0feafffb843860624ddfd13478f481f4c3cd8b23"
-      },
-      "dist": {
-        "type": "zip",
-        "url": "https://api.github.com/repos/symfony/yaml/zipball/0feafffb843860624ddfd13478f481f4c3cd8b23",
-        "reference": "0feafffb843860624ddfd13478f481f4c3cd8b23",
-        "shasum": ""
-      },
-      "require": {
-        "php": ">=8.2",
-        "symfony/deprecation-contracts": "^2.5|^3.0",
-        "symfony/polyfill-ctype": "^1.8"
-      },
-      "conflict": {
-        "symfony/console": "<6.4"
-      },
-      "require-dev": {
-        "symfony/console": "^6.4|^7.0"
-      },
-      "bin": [
-        "Resources/bin/yaml-lint"
-      ],
-      "type": "library",
-      "autoload": {
-        "psr-4": {
-          "Symfony\\Component\\Yaml\\": ""
-        },
-        "exclude-from-classmap": [
-          "/Tests/"
-        ]
-      },
-      "notification-url": "https://packagist.org/downloads/",
-      "license": [
-        "MIT"
-      ],
-      "authors": [
-        {
-          "name": "Fabien Potencier",
-          "email": "fabien@symfony.com"
-        },
-        {
-          "name": "Symfony Community",
-          "homepage": "https://symfony.com/contributors"
-        }
-      ],
-      "description": "Loads and dumps YAML files",
-      "homepage": "https://symfony.com",
-      "support": {
-        "source": "https://github.com/symfony/yaml/tree/v7.2.6"
-      },
-      "funding": [
-        {
-          "url": "https://symfony.com/sponsor",
-          "type": "custom"
-        },
-        {
-          "url": "https://github.com/fabpot",
-          "type": "github"
-        },
-        {
-          "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-          "type": "tidelift"
-        }
-      ],
-      "time": "2025-04-04T10:10:11+00:00"
     },
     {
       "name": "ta-tikoma/phpunit-architecture-test",

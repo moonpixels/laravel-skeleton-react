@@ -1,0 +1,20 @@
+name: laravel-skeleton
+php: '8.4'
+secured: false
+aliases:
+  - skeleton
+services:
+  postgresql:
+    version: '17'
+    port: '${DB_PORT}'
+  reverb:
+    version: 1.x
+    port: '${REVERB_PORT}'
+  minio:
+    version: RELEASE.2024-06-29
+    port: '${AWS_ENDPOINT}'
+  redis:
+    version: 7.0.0
+    port: '${REDIS_PORT}'
+integrations:
+  forge: {}
