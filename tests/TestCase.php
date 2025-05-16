@@ -23,5 +23,7 @@ abstract class TestCase extends BaseTestCase
             ThrottleRequestsWithRedis::class,
             ThrottleRequests::class
         );
+
+        $this->freezeTime();
     }
 }
