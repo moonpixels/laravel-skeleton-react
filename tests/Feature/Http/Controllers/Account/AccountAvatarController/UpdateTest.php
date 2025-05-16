@@ -27,7 +27,7 @@ test('avatar can be set', function (): void {
 
     expect($this->user)
         ->avatar_path->not->toBeNull()
-        ->avatar_path->toExistInStorage('public');
+        ->avatar_path->toExistInStorage();
 });
 
 test('avatar can be replaced', function (): void {
@@ -39,7 +39,7 @@ test('avatar can be replaced', function (): void {
 
     expect($this->user)
         ->avatar_path->not->toBe($this->previousAvatarPath)
-        ->avatar_path->toExistInStorage('public')
+        ->avatar_path->toExistInStorage()
         ->and($this->previousAvatarPath)->not->toExistInStorage();
 });
 
@@ -71,7 +71,7 @@ test('avatar is resized and optimised', function (): void {
     $avatarPath = $this->user->avatar_path;
 
     $image = new Imagick;
-    $image->readImageBlob(Storage::disk('public')->get($avatarPath));
+    $image->readImageBlob(Storage::get($avatarPath));
 
     expect($image->getImageWidth())->toBe(128)
         ->and($image->getImageHeight())->toBe(128)
