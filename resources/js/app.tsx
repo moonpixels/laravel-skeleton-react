@@ -3,6 +3,7 @@ import { DarkModeProvider } from '@/contexts/dark-mode-context'
 import { defaultLocale } from '@/contexts/locale-context'
 import { DefaultLayout } from '@/layouts/default-layout'
 import { createInertiaApp } from '@inertiajs/react'
+import { configureEcho } from '@laravel/echo-react'
 import { LaravelReactI18nProvider } from 'laravel-react-i18n'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { ReactElement } from 'react'
@@ -11,6 +12,10 @@ import '../css/app.css'
 import './bootstrap'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
+
+configureEcho({
+  broadcaster: 'reverb',
+})
 
 type Page = ReactElement & {
   default: { layout: (page: ReactElement) => ReactElement }
