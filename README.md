@@ -1,17 +1,54 @@
 # Laravel Skeleton (React)
 
-This is the Moon Pixels skeleton for building Laravel applications with Inertia and React.
+This is the Moon Pixels skeleton for building Laravel applications with Inertia and React. This project serves as a
+starting point for new Laravel applications with a modern frontend setup and enhanced development tools.
 
-## Local installation
+## Features
 
-The project is using Docker for local development via Laravel Sail. Therefore, you need to have Docker installed and
-running on your machine.
+This skeleton provides several enhancements over a standard Laravel application:
 
-You should also have the `sail` command available on your system. If you don't have it, you can alias it by running:
+### Backend Features
 
-```shell
-alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
-```
+- **Laravel 12.0** with PHP 8.4 support
+- **PostgreSQL** database integration
+- **Redis** for caching, session management, and queue processing
+- **Laravel Horizon** for queue monitoring and management
+- **Laravel Reverb** for WebSockets support
+- **MinIO** integration for S3-compatible object storage
+- **Two-factor authentication** support via Google2FA
+- **Advanced image processing** with Intervention Image and Imagick
+
+### Frontend Features
+
+- **React 19** with TypeScript for the frontend
+- **Inertia.js** for connecting Laravel with React without building an API
+- **Tailwind CSS 4** for styling
+- **Radix UI** components for accessible UI elements
+- **React Hook Form** for form handling with Zod validation
+- **Laravel Echo** for real-time features
+
+### Development Tools
+
+- **PHPStan** for static analysis of PHP code
+- **Laravel Pint** for PHP code styling
+- **Rector** for automatic PHP code refactoring
+- **Pest** for PHP testing with coverage reports
+- **ESLint** for JavaScript/TypeScript linting
+- **Prettier** for JavaScript/TypeScript code formatting
+- **Vite** for fast frontend builds
+- **Laravel Debugbar** and **Laravel Telescope** for debugging
+
+## Local Installation
+
+The project uses Laravel Herd for local development. Laravel Herd provides a lightweight, native development environment
+for macOS.
+
+### Prerequisites
+
+1. Install [Laravel Herd](https://herd.laravel.com/) on your Mac
+2. Make sure Herd is running
+
+### Installation Steps
 
 1. Clone the repository and cd into the project directory
 
@@ -19,15 +56,10 @@ alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
    git clone git@github.com:moonpixels/laravel-skeleton-react.git && cd laravel-skeleton-react
    ```
 
-2. Install the dependencies
+2. Install the PHP dependencies
 
    ```shell
-   docker run --rm \
-    -u "$(id -u):$(id -g)" \
-    -v "$(pwd):/var/www/html" \
-    -w /var/www/html \
-    laravelsail/php84-composer:latest \
-    composer install --ignore-platform-reqs
+   composer install
    ```
 
 3. Copy the `.env.example` file to `.env` and update the environment variables
@@ -36,47 +68,41 @@ alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
    cp .env.example .env
    ```
 
-4. Start sail
+4. Generate the application key
 
    ```shell
-   sail up -d
+   php artisan key:generate
    ```
 
-5. Generate the application key
+5. Initialize Herd for the project
 
    ```shell
-   sail artisan key:generate
+   herd init
    ```
 
-6. Create the database
+6. Run the migrations and seed the database
 
    ```shell
-   touch database/database.sqlite
+   php artisan migrate:fresh --seed
    ```
 
-7. Run the migrations and seed the database
+7. Install the NPM dependencies
 
    ```shell
-   sail artisan migrate:fresh --seed
+   npm install
    ```
 
-8. Install the NPM dependencies
+8. Build the assets
 
    ```shell
-   sail npm install
+   npm run build
    ```
 
-9. Build the assets
+9. Run the tests to ensure everything is working
 
    ```shell
-   sail npm run build
+   composer test
    ```
-
-10. Run the tests
-
-    ```shell
-    sail composer test
-    ```
 
 If the tests pass, you should be good to go.
 
@@ -86,101 +112,116 @@ Once you have the project set up, you may also want to perform the following pos
 
 #### Starting the development server
 
-You can now start the development server by running:
+You can start the development server by running:
 
 ```shell
-sail npm run dev
+npm run dev
 ```
 
-The application should now be available at [http://localhost](http://localhost).
+The application should now be available at [http://skeleton.test](http://skeleton.test) (or the URL you configured in
+your `.env` file).
 
-#### Creating public storage symlink
+#### Setting up MinIO storage
 
-To store files in the `public` directory, you need to create a symlink to the `storage/app/public` directory. You can do
-this by running:
+This project uses MinIO for S3-compatible object storage. You need to create a bucket in MinIO that matches the bucket
+name in your `.env` file:
 
-```shell
-sail artisan storage:link
-```
+1. Access the MinIO dashboard at [https://minio.herd.test](https://minio.herd.test) using the credentials from your
+   `.env` file (default: username `herd`, password `secretkey`)
+2. Create a new bucket with the name specified in your `.env` file (default: `skeleton`)
+3. Set the bucket's access policy to "public" if you want files to be publicly accessible
 
-#### Running backend code checks via composer
+## Development Workflow
 
-There are a few composer scripts available for running code checks. You can run the following commands to check the
-code:
+### Backend Code Quality Tools
+
+There are several composer scripts available for maintaining code quality:
 
 ```shell
 # Run Rector automatic refactoring
-sail composer rector
+composer rector
 
 # Run Pint code styling
-sail composer pint
+composer pint
 
 # Run PHPStan static analysis
-sail composer stan
+composer stan
 
 # Run Pest tests
-sail composer test
+composer test
 
-# Run all checks
-sail composer checks
+# Run tests with coverage reports
+composer coverage
+
+# Check type coverage
+composer type-coverage
+
+# Optimize class autoloading
+composer dump
+
+# Run all checks (including code coverage)
+composer checks
 ```
 
-> You should always run `sail composer checks` before pushing your code. This will ensure that your code is clean and
-> passes all checks that are enforced by the project CI/CD pipeline.
+> You should always run `composer checks` before pushing your code. This will ensure that your code is clean and passes
+> all checks that are enforced by the project CI/CD pipeline.
 
-#### Running frontend code checks via npm
+### Frontend Code Quality Tools
 
-There are also a few npm scripts available for running code checks. You can run the following commands to check the
-code:
+There are also npm scripts available for maintaining frontend code quality:
 
 ```shell
 # Run ESLint static analysis
-sail npm run lint
+npm run lint
 
 # Run Prettier code styling
-sail npm run format
+npm run format
 
 # Run all checks
-sail npm run checks
+npm run checks
 ```
 
-> You should always run `sail npm run checks` before pushing your code. This will ensure that your code is clean and
-> passes all checks that are enforced by the project CI/CD pipeline.
+> You should always run `npm run checks` before pushing your code. This will ensure that your code is clean and passes
+> all checks that are enforced by the project CI/CD pipeline.
 
-## Additional services
+## Coding Practices
 
-The project comes with a few additional services which are enabled by default. These services are detailed below.
+This project follows a set of coding practices and conventions to ensure code quality, maintainability, and consistency.
 
-### Redis
+### Backend (PHP)
 
-Redis is used for caching and session management by default in the environment file. The Redis service is available on
-port `6379`. You can adjust this port in the environment file by updating the `FORWARD_REDIS_PORT` variable.
+- **Strict Types**: All PHP files use `declare(strict_types=1);` to enforce strict type checking
+- **Final Classes**: Classes are marked as `final` by default to prevent inheritance unless specifically designed for
+  extension
+- **Action Pattern**: Business logic is encapsulated in single-purpose Action classes
+- **Data Transfer Objects (DTOs)**: Used for passing structured data between components
+- **Type Declarations**: All method parameters and return types are explicitly typed
+- **Private Over Protected**: Class members are private by default to enforce encapsulation
+- **Imports Over Namespaces**: Classes are imported with `use` statements rather than using fully qualified namespaces
+- **PHPDoc Blocks**: Used for documenting exceptions, and complex parameters / return types that use generics
+- **Dependency Injection**: Constructor injection is used for dependencies
+- **Value Objects**: Used for encapsulating domain concepts
+- **Enums**: Used for representing a fixed set of related values
 
-You may also use Redis for the queue service. To do this, update the `QUEUE_CONNECTION` variable in the environment file
-to `redis`. Laravel Horizon is used to manage the queues. You can access the Horizon dashboard
-at [http://localhost/horizon](http://localhost/horizon). Remember, if you make a change to the queue configuration or
-any jobs while using the Redis queue driver, you will need to restart the queue worker for the changes to take effect.
-You can do this by running:
+### Frontend (TypeScript/React)
 
-```shell
-sail artisan horizon:terminate
-```
+- **TypeScript**: Used throughout with strict type checking
+- **Functional Components**: React components are written as functional components with hooks
+- **Zod Validation**: Form validation is handled with Zod schemas
+- **React Hook Form**: Used for form state management
+- **Component Composition**: UI is built from small, reusable components
+- **Internationalization**: All user-facing strings are internationalized
+- **Import Aliases**: Used for better organization and shorter import paths
+- **Explicit Typing**: Function parameters and returns are explicitly typed
+- **Async/Await**: Used for handling asynchronous operations
+- **Toast Notifications**: Used for user feedback
+- **Context API**: Used for global state management
 
-> For the most part, you should use the `sync` queue driver for local development.
+## Deployment
 
-### MinIO
+The project includes a basic GitHub Actions workflow for CI/CD in the `.github/workflows` directory. You may need to
+customize this for your specific deployment needs.
 
-MinIO is an S3-compatible object storage service. The MinIO service is available on port `9000`. You can access the
-MinIO dashboard at [http://localhost:8900](http://localhost:8900). The default username and password for the console are
-`sail` and `password`, respectively. By default, the environment file is set to use the `local` disk for file storage.
-However, you can update it to use MinIO by updating the `FILESYSTEM_DISK` variable in the environment file to `s3`.
+## License
 
-You can update the ports used by MinIO by updating the `FORWARD_MINIO_PORT` and `FORWARD_MINIO_DASHBOARD_PORT` variables
-in the environment file.
-
-### Mailpit
-
-Mailpit is a simple mail testing service. The Mailpit service is available on port `1025` and you can access the Mailpit
-dashboard at [http://localhost:8025](http://localhost:8025). By default, the environment file is set to use the Mailpit
-service for emails. If you need to change the ports, you can update the `FORWARD_MAILPIT_PORT` and
-`FORWARD_MAILPIT_DASHBOARD_PORT` variables in the environment file.
+This project is proprietary software. See the LICENSE file for more information.
