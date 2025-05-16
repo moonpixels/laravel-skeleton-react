@@ -24,7 +24,6 @@
     "fakerphp/faker": "^v1.23",
     "larastan/larastan": "^v3.0.2",
     "laravel/pint": "^v1.14",
-    "laravel/sail": "^v1.28",
     "laravel/telescope": "^5.0",
     "mockery/mockery": "^1.6",
     "nunomaduro/collision": "^v8.1",

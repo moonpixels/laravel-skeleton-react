@@ -30,7 +30,7 @@ final class UpdateUserAvatarAction
 
         tap($user->avatar_path, function (?string $previousAvatarPath) use ($user, $data): void {
             $user->update([
-                'avatar_path' => $data->avatar?->storePublicly('avatars', 'public'),
+                'avatar_path' => $data->avatar?->storePublicly('avatars'),
             ]);
 
             if (is_string($previousAvatarPath)) {
