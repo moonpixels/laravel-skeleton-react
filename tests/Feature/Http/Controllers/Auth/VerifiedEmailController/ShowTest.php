@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\User;
+use Inertia\Testing\AssertableInertia;
 
 beforeEach(function (): void {
     $this->user = User::factory()->unverified()->create();
@@ -11,7 +12,10 @@ beforeEach(function (): void {
 
 test('email verification page can be rendered', function (): void {
     $this->get(route('verification.notice'))
-        ->assertOk();
+        ->assertOk()
+        ->assertInertia(fn (AssertableInertia $page): AssertableInertia => $page
+            ->component('auth/verify-email')
+        );
 });
 
 test('email verification page is not rendered when user is already verified', function (): void {
