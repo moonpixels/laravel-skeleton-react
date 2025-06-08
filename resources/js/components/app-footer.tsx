@@ -1,6 +1,6 @@
 import { IconGithub } from '@/components/icons/icon-github'
 import { Text } from '@/components/text'
-import dayjs from 'dayjs'
+import { format } from 'date-fns'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 
 export function AppFooter() {
@@ -18,7 +18,7 @@ export function AppFooter() {
     <footer className="px-4 py-10 sm:px-6 lg:px-8">
       <div className="flex flex-col items-center justify-between gap-6 border-t pt-10 sm:flex-row">
         <Text size="xs" variant="muted">
-          {t('general.copyright_notice', { year: dayjs().year().toString() })}
+          {t('general.copyright_notice', { year: format(new Date(), 'y') })}
         </Text>
 
         <div className="flex gap-4">

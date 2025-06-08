@@ -20,14 +20,14 @@ function Toaster({ ...props }: ToasterProps) {
       toastOptions={{
         classNames: {
           toast:
-            'group toast font-sans group-[.toaster]:!bg-background group-[.toaster]:!text-foreground group-[.toaster]:!border-border group-[.toaster]:!shadow-lg',
-          title: 'group-[.toast]:!font-semibold',
-          description: 'group-[.toast]:!text-muted-foreground',
+            'group toast font-sans group-[.toaster]:bg-background! group-[.toaster]:text-foreground! group-[.toaster]:border-border! group-[.toaster]:shadow-lg!',
+          title: 'group-[.toast]:font-semibold!',
+          description: 'group-[.toast]:text-muted-foreground!',
           actionButton:
-            'group-[.toast]:!bg-primary group-[.toast]:!text-primary-foreground !font-medium',
+            'group-[.toast]:bg-primary! group-[.toast]:text-primary-foreground! font-medium!',
           cancelButton:
-            'group-[.toast]:!bg-muted group-[.toast]:!text-muted-foreground !font-medium',
-          icon: 'group-[.toast]:!self-start mt-px',
+            'group-[.toast]:bg-muted! group-[.toast]:text-muted-foreground! font-medium!',
+          icon: 'group-[.toast]:self-start! mt-px',
         },
       }}
       {...props}
