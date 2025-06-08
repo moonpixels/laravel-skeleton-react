@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "upgrade-tailwind": "npx @tailwindcss/upgrade@latest",
     "lint": "eslint --fix 'resources/js/**/*.{js,jsx,ts,tsx}'",
     "format": "prettier --write 'resources/js/**/*.{js,jsx,ts,tsx}'",
     "checks": "npm run lint && npm run format"
