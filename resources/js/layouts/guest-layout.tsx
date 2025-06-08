@@ -1,7 +1,7 @@
 import { Logo } from '@/components/logo'
 import { Text } from '@/components/text'
 import { Link } from '@inertiajs/react'
-import dayjs from 'dayjs'
+import { format } from 'date-fns'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { PropsWithChildren } from 'react'
 
@@ -20,7 +20,7 @@ export function GuestLayout({ children }: PropsWithChildren) {
 
       <footer className="m-auto flex h-16 w-full max-w-lg shrink-0 items-center justify-center px-4">
         <Text className="opacity-75" size="xs" variant="muted">
-          {t('general.copyright_notice', { year: dayjs().year().toString() })}
+          {t('general.copyright_notice', { year: format(new Date(), 'y') })}
         </Text>
       </footer>
     </div>
