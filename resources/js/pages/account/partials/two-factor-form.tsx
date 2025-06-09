@@ -133,7 +133,7 @@ const enableFormSchema = z.object({
   code: z.string(),
 })
 
-type TwoFactorSettings = {
+interface TwoFactorSettings {
   qrCode: { __html: string }
   secret: string
 }
@@ -353,12 +353,11 @@ export function TwoFactorRecoveryCodesDialog({ recentlyEnabled }: { recentlyEnab
               </li>
             ))}
 
-          {recoveryCodes &&
-            recoveryCodes.map((code) => (
-              <li key={code} className="text-foreground font-mono text-xs/5">
-                {code}
-              </li>
-            ))}
+          {recoveryCodes?.map((code) => (
+            <li key={code} className="text-foreground font-mono text-xs/5">
+              {code}
+            </li>
+          ))}
         </ul>
 
         <DialogFooter>

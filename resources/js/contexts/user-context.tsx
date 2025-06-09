@@ -2,7 +2,7 @@ import { User } from '@/types'
 import { usePage } from '@inertiajs/react'
 import { createContext, PropsWithChildren, useContext } from 'react'
 
-type UserState = {
+interface UserState {
   user: User
   twoFactorEnabled: boolean
 }

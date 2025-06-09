@@ -11,7 +11,7 @@ import { createRoot } from 'react-dom/client'
 import '../css/app.css'
 import './bootstrap'
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
+const appName = import.meta.env.VITE_APP_NAME ?? 'Laravel'
 
 configureEcho({
   broadcaster: 'reverb',

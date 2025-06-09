@@ -18,7 +18,7 @@ import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { CircleUserIcon, LogOut } from 'lucide-react'
 import { ElementType, ReactNode } from 'react'
 
-type UserDropdownItem = {
+interface UserDropdownItem {
   label: string
   icon: ElementType
   href: string

@@ -3,17 +3,15 @@ import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect } from 'react'
 import { useLocalStorage } from 'react-use'
 
-export type SupportedLocale = {
+export interface SupportedLocale {
   name: string
   nativeName: string
   regional: string
 }
 
-export type SupportedLocales = {
-  [locale: string]: SupportedLocale
-}
+export type SupportedLocales = Record<string, SupportedLocale>
 
-type LocaleState = {
+interface LocaleState {
   currentLocale: string
   supportedLocales: SupportedLocales
   setLocale: (locale: string) => void

@@ -7,6 +7,7 @@ import tseslint from 'typescript-eslint'
 export default [
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
+  ...tseslint.configs.stylisticTypeChecked,
   reactPlugin.configs.flat.recommended,
   prettierRecommended,
   {
@@ -18,6 +19,7 @@ export default [
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
+        project: './tsconfig.json',
       },
     },
     rules: {
