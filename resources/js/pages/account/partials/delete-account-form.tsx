@@ -59,14 +59,23 @@ export function DeleteAccountForm() {
               <FormItem>
                 <FormLabel>{t('general.password')}</FormLabel>
                 <FormControl>
-                  <Input autoComplete="current-password" required type="password" {...field} />
+                  <Input
+                    autoComplete="current-password"
+                    required
+                    type="password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <Button loading={form.formState.isSubmitting} variant="destructive" type="submit">
+          <Button
+            loading={form.formState.isSubmitting}
+            variant="destructive"
+            type="submit"
+          >
             {t('account.delete_account')}
           </Button>
         </form>

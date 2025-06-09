@@ -83,7 +83,9 @@ export function TwoFactorDisableDialog() {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{t('account.disable_two_factor')}</DialogTitle>
-          <DialogDescription>{t('account.disable_two_factor_warning')}</DialogDescription>
+          <DialogDescription>
+            {t('account.disable_two_factor_warning')}
+          </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -133,7 +135,7 @@ const enableFormSchema = z.object({
   code: z.string(),
 })
 
-type TwoFactorSettings = {
+interface TwoFactorSettings {
   qrCode: { __html: string }
   secret: string
 }
@@ -145,7 +147,8 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
 
   const [open, setOpen] = useState(false)
 
-  const [twoFactorSettings, setTwoFactorSettings] = useState<TwoFactorSettings | null>(null)
+  const [twoFactorSettings, setTwoFactorSettings] =
+    useState<TwoFactorSettings | null>(null)
 
   const form = useForm({
     resolver: zodResolver(enableFormSchema),
@@ -219,7 +222,9 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{t('account.enable_two_factor')}</DialogTitle>
-          <DialogDescription>{t('account.enable_two_factor_description')}</DialogDescription>
+          <DialogDescription>
+            {t('account.enable_two_factor_description')}
+          </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col items-center gap-2">
@@ -286,7 +291,11 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
   )
 }
 
-export function TwoFactorRecoveryCodesDialog({ recentlyEnabled }: { recentlyEnabled?: boolean }) {
+export function TwoFactorRecoveryCodesDialog({
+  recentlyEnabled,
+}: {
+  recentlyEnabled?: boolean
+}) {
   const { t } = useLaravelReactI18n()
 
   const { copyText, copied } = useCopy()
@@ -342,7 +351,9 @@ export function TwoFactorRecoveryCodesDialog({ recentlyEnabled }: { recentlyEnab
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{t('account.recovery_codes')}</DialogTitle>
-          <DialogDescription>{t('account.recovery_codes_description')}</DialogDescription>
+          <DialogDescription>
+            {t('account.recovery_codes_description')}
+          </DialogDescription>
         </DialogHeader>
 
         <ul className="mx-auto grid list-none grid-cols-2 gap-x-6">
@@ -353,12 +364,11 @@ export function TwoFactorRecoveryCodesDialog({ recentlyEnabled }: { recentlyEnab
               </li>
             ))}
 
-          {recoveryCodes &&
-            recoveryCodes.map((code) => (
-              <li key={code} className="text-foreground font-mono text-xs/5">
-                {code}
-              </li>
-            ))}
+          {recoveryCodes?.map((code) => (
+            <li key={code} className="text-foreground font-mono text-xs/5">
+              {code}
+            </li>
+          ))}
         </ul>
 
         <DialogFooter>

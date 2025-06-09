@@ -1,7 +1,7 @@
 import { createContext, PropsWithChildren, useContext } from 'react'
 import { useLocalStorage } from 'react-use'
 
-type DarkModeState = {
+interface DarkModeState {
   isDarkMode: boolean
   setDarkMode: (darkMode: boolean) => void
 }
@@ -25,7 +25,10 @@ export function DarkModeProvider({ children, ...props }: PropsWithChildren) {
   }
 
   return (
-    <DarkModeContext.Provider {...props} value={{ isDarkMode: !!isDarkMode, setDarkMode }}>
+    <DarkModeContext.Provider
+      {...props}
+      value={{ isDarkMode: !!isDarkMode, setDarkMode }}
+    >
       {children}
     </DarkModeContext.Provider>
   )

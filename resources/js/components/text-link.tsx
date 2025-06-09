@@ -2,7 +2,10 @@ import { cn } from '@/utils/utils'
 import { type InertiaLinkProps, Link } from '@inertiajs/react'
 import { PropsWithChildren } from 'react'
 
-export function TextLink({ className, ...props }: PropsWithChildren<InertiaLinkProps>) {
+export function TextLink({
+  className,
+  ...props
+}: PropsWithChildren<InertiaLinkProps>) {
   return (
     <Link
       className={cn(

@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input'
 import { useFormValidation } from '@/hooks/use-form-validation'
 import { GuestLayout } from '@/layouts/guest-layout'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Head, router } from '@inertiajs/react'
+import { router } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -45,9 +45,7 @@ export default function ConfirmPassword() {
   }
 
   return (
-    <GuestLayout>
-      <Head title={t('auth.confirm_your_password')} />
-
+    <GuestLayout title={t('auth.confirm_your_password')}>
       <AuthForm
         description={t('auth.confirm_your_password_description')}
         title={t('auth.confirm_your_password')}
@@ -61,14 +59,23 @@ export default function ConfirmPassword() {
                 <FormItem>
                   <FormLabel>{t('general.password')}</FormLabel>
                   <FormControl>
-                    <Input autoComplete="current-password" required type="password" {...field} />
+                    <Input
+                      autoComplete="current-password"
+                      required
+                      type="password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <Button loading={form.formState.isSubmitting} className="w-full" type="submit">
+            <Button
+              loading={form.formState.isSubmitting}
+              className="w-full"
+              type="submit"
+            >
               {t('general.confirm')}
             </Button>
           </form>

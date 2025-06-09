@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input'
 import { useFormValidation } from '@/hooks/use-form-validation'
 import { GuestLayout } from '@/layouts/guest-layout'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Head, router } from '@inertiajs/react'
+import { router } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -24,10 +24,17 @@ const formSchema = z.object({
   password_confirmation: z.string().min(8),
 })
 
-export default function ResetPassword({ email, token }: { email: string; token: string }) {
+export default function ResetPassword({
+  email,
+  token,
+}: {
+  email: string
+  token: string
+}) {
   const { t } = useLaravelReactI18n()
 
-  const { setFormServerErrors, passwordConfirmationMessage } = useFormValidation()
+  const { setFormServerErrors, passwordConfirmationMessage } =
+    useFormValidation()
 
   formSchema.refine(
     (data) => data.password === data.password_confirmation,
@@ -56,9 +63,7 @@ export default function ResetPassword({ email, token }: { email: string; token: 
   }
 
   return (
-    <GuestLayout>
-      <Head title={t('auth.reset_your_password')} />
-
+    <GuestLayout title={t('auth.reset_your_password')}>
       <AuthForm
         description={t('auth.reset_your_password_description')}
         title={t('auth.reset_your_password')}
@@ -92,7 +97,12 @@ export default function ResetPassword({ email, token }: { email: string; token: 
                 <FormItem>
                   <FormLabel>{t('general.password')}</FormLabel>
                   <FormControl>
-                    <Input autoComplete="new-password" required type="password" {...field} />
+                    <Input
+                      autoComplete="new-password"
+                      required
+                      type="password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -106,14 +116,23 @@ export default function ResetPassword({ email, token }: { email: string; token: 
                 <FormItem>
                   <FormLabel>{t('general.confirm_password')}</FormLabel>
                   <FormControl>
-                    <Input autoComplete="new-password" required type="password" {...field} />
+                    <Input
+                      autoComplete="new-password"
+                      required
+                      type="password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <Button loading={form.formState.isSubmitting} className="w-full" type="submit">
+            <Button
+              loading={form.formState.isSubmitting}
+              className="w-full"
+              type="submit"
+            >
               {t('auth.reset_password')}
             </Button>
           </form>

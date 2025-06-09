@@ -26,7 +26,8 @@ const formSchema = z.object({
 export function PasswordForm() {
   const { t } = useLaravelReactI18n()
 
-  const { setFormServerErrors, passwordConfirmationMessage } = useFormValidation()
+  const { setFormServerErrors, passwordConfirmationMessage } =
+    useFormValidation()
 
   formSchema.refine(
     (data) => data.password === data.passwordConfirmation,
@@ -75,7 +76,12 @@ export function PasswordForm() {
               <FormItem>
                 <FormLabel>{t('account.current_password')}</FormLabel>
                 <FormControl>
-                  <Input autoComplete="current-password" required type="password" {...field} />
+                  <Input
+                    autoComplete="current-password"
+                    required
+                    type="password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -89,7 +95,12 @@ export function PasswordForm() {
               <FormItem>
                 <FormLabel>{t('account.new_password')}</FormLabel>
                 <FormControl>
-                  <Input autoComplete="new-password" required type="password" {...field} />
+                  <Input
+                    autoComplete="new-password"
+                    required
+                    type="password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -103,7 +114,12 @@ export function PasswordForm() {
               <FormItem>
                 <FormLabel>{t('account.confirm_new_password')}</FormLabel>
                 <FormControl>
-                  <Input autoComplete="new-password" required type="password" {...field} />
+                  <Input
+                    autoComplete="new-password"
+                    required
+                    type="password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

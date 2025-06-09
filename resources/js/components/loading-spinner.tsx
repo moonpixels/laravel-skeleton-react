@@ -14,11 +14,16 @@ const loadingSpinnerVariants = cva('animate-spin text-inherit', {
   },
 })
 
-interface LoadingSpinnerProps extends VariantProps<typeof loadingSpinnerVariants> {
+interface LoadingSpinnerProps
+  extends VariantProps<typeof loadingSpinnerVariants> {
   className?: string
 }
 
-export function LoadingSpinner({ size, className, ...props }: LoadingSpinnerProps) {
+export function LoadingSpinner({
+  size,
+  className,
+  ...props
+}: LoadingSpinnerProps) {
   return (
     <svg
       className={cn(loadingSpinnerVariants({ size }), className)}

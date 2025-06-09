@@ -3,7 +3,7 @@ import { Text } from '@/components/text'
 import { Button } from '@/components/ui/button'
 import { useUser } from '@/contexts/user-context'
 import { GuestLayout } from '@/layouts/guest-layout'
-import { Head, router } from '@inertiajs/react'
+import { router } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { toast } from 'sonner'
 
@@ -31,16 +31,21 @@ export default function VerifyEmail() {
   }
 
   return (
-    <GuestLayout>
-      <Head title={t('auth.verify_email')} />
-
-      <AuthForm description={t('auth.verify_email_description')} title={t('auth.verify_email')}>
+    <GuestLayout title={t('auth.verify_email')}>
+      <AuthForm
+        description={t('auth.verify_email_description')}
+        title={t('auth.verify_email')}
+      >
         <div className="flex flex-col items-center gap-4 sm:flex-row-reverse">
           <Button className="w-full" onClick={handleResendEmailClick}>
             {t('auth.resend_email')}
           </Button>
 
-          <Button className="w-full" variant="secondary" onClick={handleLogoutClick}>
+          <Button
+            className="w-full"
+            variant="secondary"
+            onClick={handleLogoutClick}
+          >
             {t('auth.log_out')}
           </Button>
         </div>

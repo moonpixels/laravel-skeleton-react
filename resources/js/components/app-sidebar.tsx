@@ -10,7 +10,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
-import { UserAvatar, UserDetails, UserDropdown } from '@/components/user-dropdown'
+import {
+  UserAvatar,
+  UserDetails,
+  UserDropdown,
+} from '@/components/user-dropdown'
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation'
 import { Link } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
@@ -35,7 +39,12 @@ export function AppSidebar() {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link href={route('dashboard')} className="block p-2" onClick={cleanup} prefetch>
+            <Link
+              href={route('dashboard')}
+              className="block p-2"
+              onClick={cleanup}
+              prefetch
+            >
               <Logo className="h-6 w-auto" />
             </Link>
           </SidebarMenuItem>

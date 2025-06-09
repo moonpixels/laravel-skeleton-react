@@ -15,7 +15,7 @@ import { getBrowserLocale } from '@/contexts/locale-context'
 import { useFormValidation } from '@/hooks/use-form-validation'
 import { GuestLayout } from '@/layouts/guest-layout'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Head, router } from '@inertiajs/react'
+import { router } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -30,7 +30,8 @@ const formSchema = z.object({
 export default function Register() {
   const { t } = useLaravelReactI18n()
 
-  const { setFormServerErrors, passwordConfirmationMessage } = useFormValidation()
+  const { setFormServerErrors, passwordConfirmationMessage } =
+    useFormValidation()
 
   formSchema.refine(
     (data) => data.password === data.password_confirmation,
@@ -66,9 +67,7 @@ export default function Register() {
   }
 
   return (
-    <GuestLayout>
-      <Head title={t('auth.register_new_account')} />
-
+    <GuestLayout title={t('auth.register_new_account')}>
       <AuthForm
         description={t('auth.register_new_account_description')}
         title={t('auth.register_new_account')}
@@ -116,7 +115,12 @@ export default function Register() {
                 <FormItem>
                   <FormLabel>{t('general.password')}</FormLabel>
                   <FormControl>
-                    <Input autoComplete="new-password" required type="password" {...field} />
+                    <Input
+                      autoComplete="new-password"
+                      required
+                      type="password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -130,14 +134,23 @@ export default function Register() {
                 <FormItem>
                   <FormLabel>{t('general.confirm_password')}</FormLabel>
                   <FormControl>
-                    <Input autoComplete="new-password" required type="password" {...field} />
+                    <Input
+                      autoComplete="new-password"
+                      required
+                      type="password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <Button loading={form.formState.isSubmitting} className="w-full" type="submit">
+            <Button
+              loading={form.formState.isSubmitting}
+              className="w-full"
+              type="submit"
+            >
               {t('auth.register')}
             </Button>
           </form>

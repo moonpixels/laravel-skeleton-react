@@ -2,7 +2,7 @@ import { User } from '@/types'
 import { usePage } from '@inertiajs/react'
 import { createContext, PropsWithChildren, useContext } from 'react'
 
-type UserState = {
+interface UserState {
   user: User
   twoFactorEnabled: boolean
 }
@@ -34,7 +34,9 @@ export function useUser() {
   const context = useContext(UserContext)
 
   if (context === undefined) {
-    throw new Error('useUser must be used within a UserProvider with an authenticated user')
+    throw new Error(
+      'useUser must be used within a UserProvider with an authenticated user'
+    )
   }
 
   return context

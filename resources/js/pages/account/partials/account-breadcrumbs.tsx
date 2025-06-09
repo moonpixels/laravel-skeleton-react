@@ -1,4 +1,7 @@
-import { type BreadcrumbItemType, PageBreadcrumbs } from '@/components/page-breadcrumbs'
+import {
+  type BreadcrumbItemType,
+  PageBreadcrumbs,
+} from '@/components/page-breadcrumbs'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 
 export function AccountBreadcrumbs() {
