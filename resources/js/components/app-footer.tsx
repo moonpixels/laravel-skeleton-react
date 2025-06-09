@@ -30,7 +30,9 @@ export function AppFooter() {
               rel="noopener noreferrer"
               target="_blank"
             >
-              <span className="sr-only">{t('general.follow_us', { name: social.name })}</span>
+              <span className="sr-only">
+                {t('general.follow_us', { name: social.name })}
+              </span>
 
               <social.icon className="text-muted-foreground group-hover:text-foreground size-5 transition" />
             </a>

@@ -60,7 +60,9 @@ export function DarkModeForm() {
             <FormItem className="flex justify-between">
               <div className="space-y-2">
                 <FormLabel>{t('account.use_dark_mode')}</FormLabel>
-                <FormDescription>{t('account.use_dark_mode_description')}</FormDescription>
+                <FormDescription>
+                  {t('account.use_dark_mode_description')}
+                </FormDescription>
               </div>
 
               <FormControl>
@@ -88,11 +90,13 @@ export function PreferencesForm() {
 
   const { supportedLocales, currentLocale } = useLocale()
 
-  const supportedLocaleOptions = Object.entries(supportedLocales).map(([locale, data]) => ({
-    value: locale,
-    label: data.nativeName,
-    icon: getCountryFlag(data.regional),
-  }))
+  const supportedLocaleOptions = Object.entries(supportedLocales).map(
+    ([locale, data]) => ({
+      value: locale,
+      label: data.nativeName,
+      icon: getCountryFlag(data.regional),
+    })
+  )
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -151,7 +155,10 @@ export function PreferencesForm() {
               <FormItem>
                 <FormLabel>{t('general.language')}</FormLabel>
                 <FormControl>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue />
@@ -169,7 +176,9 @@ export function PreferencesForm() {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormDescription>{t('account.select_your_language')}</FormDescription>
+                <FormDescription>
+                  {t('account.select_your_language')}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

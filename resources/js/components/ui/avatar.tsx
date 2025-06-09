@@ -30,7 +30,8 @@ function Avatar({
   shape,
   className,
   ...props
-}: React.ComponentProps<typeof AvatarPrimitive.Root> & VariantProps<typeof avatarVariants>) {
+}: React.ComponentProps<typeof AvatarPrimitive.Root> &
+  VariantProps<typeof avatarVariants>) {
   return (
     <AvatarPrimitive.Root
       data-slot="avatar"
@@ -40,7 +41,10 @@ function Avatar({
   )
 }
 
-function AvatarImage({ className, ...props }: React.ComponentProps<typeof AvatarPrimitive.Image>) {
+function AvatarImage({
+  className,
+  ...props
+}: React.ComponentProps<typeof AvatarPrimitive.Image>) {
   return (
     <AvatarPrimitive.Image
       data-slot="avatar-image"
@@ -57,7 +61,10 @@ function AvatarFallback({
   return (
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
-      className={cn('bg-muted flex size-full items-center justify-center rounded-full', className)}
+      className={cn(
+        'bg-muted flex size-full items-center justify-center rounded-full',
+        className
+      )}
       {...props}
     />
   )

@@ -10,7 +10,9 @@ export interface User {
   avatarUrl: string | null
 }
 
-export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
+export type PageProps<
+  T extends Record<string, unknown> = Record<string, unknown>,
+> = T & {
   user: User | null
   supportedLocales: SupportedLocales
 }

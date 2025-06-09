@@ -30,7 +30,8 @@ const textVariants = cva('', {
   },
 })
 
-interface TextProps extends PropsWithChildren<VariantProps<typeof textVariants>> {
+interface TextProps
+  extends PropsWithChildren<VariantProps<typeof textVariants>> {
   as?: ElementType
   asChild?: boolean
   className?: string
@@ -47,5 +48,10 @@ export function Text({
 }: TextProps) {
   const Component = asChild ? Slot : as
 
-  return <Component className={cn(textVariants({ variant, size, weight }), className)} {...props} />
+  return (
+    <Component
+      className={cn(textVariants({ variant, size, weight }), className)}
+      {...props}
+    />
+  )
 }

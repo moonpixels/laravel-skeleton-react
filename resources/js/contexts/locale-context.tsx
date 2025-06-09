@@ -1,6 +1,12 @@
 import { usePage } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
-import { createContext, PropsWithChildren, useCallback, useContext, useEffect } from 'react'
+import {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useEffect,
+} from 'react'
 import { useLocalStorage } from 'react-use'
 
 export interface SupportedLocale {
@@ -42,7 +48,8 @@ export function LocaleProvider({ children, ...props }: PropsWithChildren) {
 
   const [storedLocale, setStoredLocale] = useLocalStorage<string>('locale')
 
-  const preferredLocale = userLocale ?? storedLocale ?? getBrowserLocale() ?? defaultLocale
+  const preferredLocale =
+    userLocale ?? storedLocale ?? getBrowserLocale() ?? defaultLocale
 
   const setLocale = useCallback(
     function setLocale(locale: string) {

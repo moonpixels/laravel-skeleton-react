@@ -1,6 +1,11 @@
 export function IconFlagGb({ className }: { className?: string }) {
   return (
-    <svg fill="none" viewBox="0 0 20 15" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <svg
+      fill="none"
+      viewBox="0 0 20 15"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
       <mask
         id="a"
         height="15"
@@ -13,7 +18,12 @@ export function IconFlagGb({ className }: { className?: string }) {
         <path d="M0 0h20v15H0z" fill="#fff" />
       </mask>
       <g mask="url(#a)">
-        <path clipRule="evenodd" d="M0 0v15h20V0H0Z" fill="#2E42A5" fillRule="evenodd" />
+        <path
+          clipRule="evenodd"
+          d="M0 0v15h20V0H0Z"
+          fill="#2E42A5"
+          fillRule="evenodd"
+        />
         <mask
           id="b"
           height="15"
@@ -23,7 +33,12 @@ export function IconFlagGb({ className }: { className?: string }) {
           x="0"
           y="0"
         >
-          <path clipRule="evenodd" d="M0 0v15h20V0H0Z" fill="#fff" fillRule="evenodd" />
+          <path
+            clipRule="evenodd"
+            d="M0 0v15h20V0H0Z"
+            fill="#fff"
+            fillRule="evenodd"
+          />
         </mask>
         <g mask="url(#b)">
           <mask
@@ -42,7 +57,10 @@ export function IconFlagGb({ className }: { className?: string }) {
               d="m-2.227 13.928 4.401 1.862L20.1 2.024 22.42-.742l-4.706-.622-7.312 5.932-5.885 3.997-6.745 5.363Z"
               fill="#fff"
             />
-            <path d="m-1.624 15.232 2.242 1.08L21.588-.998h-3.149L-1.623 15.232Z" fill="#F50100" />
+            <path
+              d="m-1.624 15.232 2.242 1.08L21.588-.998h-3.149L-1.623 15.232Z"
+              fill="#F50100"
+            />
             <path
               d="m22.227 13.928-4.401 1.862L-.1 2.024-2.42-.742l4.706-.622 7.311 5.932 5.885 3.997 6.746 5.363Z"
               fill="#fff"

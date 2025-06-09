@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input'
 import { useFormValidation } from '@/hooks/use-form-validation'
 import { GuestLayout } from '@/layouts/guest-layout'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Head, router } from '@inertiajs/react'
+import { router } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -63,9 +63,7 @@ export default function Login({ status }: { status?: string }) {
   }
 
   return (
-    <GuestLayout>
-      <Head title={t('auth.login_to_account')} />
-
+    <GuestLayout title={t('auth.login_to_account')}>
       <AuthForm
         description={t('auth.login_to_account_description')}
         title={t('auth.login_to_account')}
@@ -99,7 +97,12 @@ export default function Login({ status }: { status?: string }) {
                 <FormItem>
                   <FormLabel>{t('general.password')}</FormLabel>
                   <FormControl>
-                    <Input autoComplete="current-password" required type="password" {...field} />
+                    <Input
+                      autoComplete="current-password"
+                      required
+                      type="password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -114,7 +117,10 @@ export default function Login({ status }: { status?: string }) {
                   <FormItem>
                     <div className="flex items-center gap-2">
                       <FormControl>
-                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
                       </FormControl>
                       <FormLabel>{t('auth.remember_label')}</FormLabel>
                     </div>
@@ -124,11 +130,17 @@ export default function Login({ status }: { status?: string }) {
               />
 
               <Text asChild size="sm">
-                <TextLink href={route('password.request')}>{t('auth.forgot_password')}</TextLink>
+                <TextLink href={route('password.request')}>
+                  {t('auth.forgot_password')}
+                </TextLink>
               </Text>
             </div>
 
-            <Button loading={form.formState.isSubmitting} className="w-full" type="submit">
+            <Button
+              loading={form.formState.isSubmitting}
+              className="w-full"
+              type="submit"
+            >
               {t('auth.log_in')}
             </Button>
           </form>
@@ -138,7 +150,9 @@ export default function Login({ status }: { status?: string }) {
           <Text as="p" size="sm" variant="muted">
             {t('auth.no_account') + ' '}
 
-            <TextLink href={route('register')}>{t('auth.create_account')}</TextLink>
+            <TextLink href={route('register')}>
+              {t('auth.create_account')}
+            </TextLink>
           </Text>
         </AuthFormFooter>
       </AuthForm>

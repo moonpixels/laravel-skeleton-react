@@ -34,7 +34,9 @@ export function useUser() {
   const context = useContext(UserContext)
 
   if (context === undefined) {
-    throw new Error('useUser must be used within a UserProvider with an authenticated user')
+    throw new Error(
+      'useUser must be used within a UserProvider with an authenticated user'
+    )
   }
 
   return context

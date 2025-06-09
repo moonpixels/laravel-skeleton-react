@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input'
 import { useFormValidation } from '@/hooks/use-form-validation'
 import { GuestLayout } from '@/layouts/guest-layout'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Head, router } from '@inertiajs/react'
+import { router } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -57,9 +57,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
   }
 
   return (
-    <GuestLayout>
-      <Head title={t('auth.forgot_your_password')} />
-
+    <GuestLayout title={t('auth.forgot_your_password')}>
       <AuthForm
         description={t('auth.forgot_your_password_description')}
         title={t('auth.forgot_your_password')}
@@ -86,7 +84,11 @@ export default function ForgotPassword({ status }: { status?: string }) {
               )}
             />
 
-            <Button loading={form.formState.isSubmitting} className="w-full" type="submit">
+            <Button
+              loading={form.formState.isSubmitting}
+              className="w-full"
+              type="submit"
+            >
               {t('auth.send_password_reset_email')}
             </Button>
           </form>

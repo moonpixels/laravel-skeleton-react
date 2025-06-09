@@ -3,7 +3,6 @@
     "prettier-plugin-organize-imports",
     "prettier-plugin-tailwindcss"
   ],
-  "printWidth": 100,
   "semi": false,
   "singleQuote": true,
   "trailingComma": "es5"

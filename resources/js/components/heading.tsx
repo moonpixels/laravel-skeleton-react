@@ -31,7 +31,8 @@ const headingVariants = cva('leading-none tracking-tight', {
   },
 })
 
-interface HeadingProps extends PropsWithChildren<VariantProps<typeof headingVariants>> {
+interface HeadingProps
+  extends PropsWithChildren<VariantProps<typeof headingVariants>> {
   as?: ElementType
   asChild?: boolean
   className?: string
@@ -47,5 +48,10 @@ export function Heading({
 }: HeadingProps) {
   const Component = asChild ? Slot : as
 
-  return <Component className={cn(headingVariants({ size, weight }), className)} {...props} />
+  return (
+    <Component
+      className={cn(headingVariants({ size, weight }), className)}
+      {...props}
+    />
+  )
 }

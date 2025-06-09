@@ -103,7 +103,9 @@ export function AvatarForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t('general.avatar')}</FormLabel>
-              <FormDescription>{t('account.avatar_description')}</FormDescription>
+              <FormDescription>
+                {t('account.avatar_description')}
+              </FormDescription>
               <FormControl>
                 <div className="flex items-center space-x-4">
                   <div className="size-11 shrink-0">
@@ -117,10 +119,14 @@ export function AvatarForm() {
                               alt={user.name}
                               src={user.avatarUrl}
                               className={cn({
-                                'opacity-50': form.formState.isSubmitting || isRemovingAvatar,
+                                'opacity-50':
+                                  form.formState.isSubmitting ||
+                                  isRemovingAvatar,
                               })}
                             />
-                            <AvatarFallback delayMs={500}>{initials(user.name)}</AvatarFallback>
+                            <AvatarFallback delayMs={500}>
+                              {initials(user.name)}
+                            </AvatarFallback>
                           </>
                         ) : (
                           <span>{initials(user.name)}</span>

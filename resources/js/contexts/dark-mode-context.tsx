@@ -25,7 +25,10 @@ export function DarkModeProvider({ children, ...props }: PropsWithChildren) {
   }
 
   return (
-    <DarkModeContext.Provider {...props} value={{ isDarkMode: !!isDarkMode, setDarkMode }}>
+    <DarkModeContext.Provider
+      {...props}
+      value={{ isDarkMode: !!isDarkMode, setDarkMode }}
+    >
       {children}
     </DarkModeContext.Provider>
   )

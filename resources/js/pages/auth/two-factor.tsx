@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input'
 import { useFormValidation } from '@/hooks/use-form-validation'
 import { GuestLayout } from '@/layouts/guest-layout'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Head, router } from '@inertiajs/react'
+import { router } from '@inertiajs/react'
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -52,9 +52,7 @@ export default function TwoFactor() {
   }
 
   return (
-    <GuestLayout>
-      <Head title={t('auth.two_factor_authentication')} />
-
+    <GuestLayout title={t('auth.two_factor_authentication')}>
       <AuthForm
         description={
           form.getValues('is_recovery')
@@ -83,8 +81,14 @@ export default function TwoFactor() {
               )}
             />
 
-            <Button loading={form.formState.isSubmitting} className="w-full" type="submit">
-              {form.getValues('is_recovery') ? t('auth.recovery_code') : t('auth.confirm_code')}
+            <Button
+              loading={form.formState.isSubmitting}
+              className="w-full"
+              type="submit"
+            >
+              {form.getValues('is_recovery')
+                ? t('auth.recovery_code')
+                : t('auth.confirm_code')}
             </Button>
           </form>
         </Form>
@@ -94,7 +98,9 @@ export default function TwoFactor() {
             {t('auth.having_trouble') + ' '}
 
             <Button variant="link" onClick={handleModeClick}>
-              {form.getValues('is_recovery') ? t('auth.use_code') : t('auth.use_recovery_code')}
+              {form.getValues('is_recovery')
+                ? t('auth.use_code')
+                : t('auth.use_recovery_code')}
             </Button>
           </Text>
         </AuthFormFooter>

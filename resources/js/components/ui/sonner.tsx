@@ -6,10 +6,19 @@ function Toaster({ ...props }: ToasterProps) {
   const { isDarkMode } = useDarkMode()
 
   const icons = {
-    success: <CheckCircle className="text-successful size-4 shrink-0" strokeWidth={2.5} />,
+    success: (
+      <CheckCircle
+        className="text-successful size-4 shrink-0"
+        strokeWidth={2.5}
+      />
+    ),
     info: <Info className="text-info size-4 shrink-0" strokeWidth={2.5} />,
-    warning: <AlertCircle className="text-warning size-4 shrink-0" strokeWidth={2.5} />,
-    error: <XCircle className="text-destructive size-4 shrink-0" strokeWidth={2.5} />,
+    warning: (
+      <AlertCircle className="text-warning size-4 shrink-0" strokeWidth={2.5} />
+    ),
+    error: (
+      <XCircle className="text-destructive size-4 shrink-0" strokeWidth={2.5} />
+    ),
   }
 
   return (
