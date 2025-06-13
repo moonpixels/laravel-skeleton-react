@@ -4,17 +4,17 @@ import { Button } from '@/components/ui/button'
 import { useUser } from '@/contexts/user-context'
 import { GuestLayout } from '@/layouts/guest-layout'
 import { router } from '@inertiajs/react'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 export default function VerifyEmail() {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const { user } = useUser()
 
   function showEmailVerificationSentToast() {
-    toast.success(t('auth.email_verification_email_sent'), {
-      description: t('auth.email_verification_email_sent_description'),
+    toast.success(t('email_verification_email_sent'), {
+      description: t('email_verification_email_sent_description'),
     })
   }
 
@@ -31,14 +31,14 @@ export default function VerifyEmail() {
   }
 
   return (
-    <GuestLayout title={t('auth.verify_email')}>
+    <GuestLayout title={t('verify_email')}>
       <AuthForm
-        description={t('auth.verify_email_description')}
-        title={t('auth.verify_email')}
+        description={t('verify_email_description')}
+        title={t('verify_email')}
       >
         <div className="flex flex-col items-center gap-4 sm:flex-row-reverse">
           <Button className="w-full" onClick={handleResendEmailClick}>
-            {t('auth.resend_email')}
+            {t('resend_email')}
           </Button>
 
           <Button
@@ -46,13 +46,13 @@ export default function VerifyEmail() {
             variant="secondary"
             onClick={handleLogoutClick}
           >
-            {t('auth.log_out')}
+            {t('log_out')}
           </Button>
         </div>
 
         <AuthFormFooter>
           <Text as="p" size="sm" variant="muted">
-            {t('auth.email_delivered_to', { email: user.email })}
+            {t('email_delivered_to', { email: user.email })}
           </Text>
         </AuthFormFooter>
       </AuthForm>

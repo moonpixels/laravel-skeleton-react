@@ -1,4 +1,8 @@
-import type { SupportedLocales } from '@/contexts/locale-context'
+export interface SupportedLocale {
+  name: string
+  nativeName: string
+  regional: string
+}
 
 export interface User {
   id: number
@@ -14,5 +18,5 @@ export type PageProps<
   T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
   user: User | null
-  supportedLocales: SupportedLocales
+  supportedLocales: Record<string, SupportedLocale>
 }

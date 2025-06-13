@@ -17,7 +17,7 @@ test('new users can register', function (): void {
     expect($user)
         ->name->toBe('Test User')
         ->email->toBe('test@example.com')
-        ->language->toBe('en')
+        ->language->toBe(config('app.locale'))
         ->email_verified_at->toBeNull()
         ->and(Hash::check('password', $user->password))->toBeTrue();
 });
@@ -29,7 +29,7 @@ test('users are registered with the default locale when no locale is provided', 
 
     $user = User::sole();
 
-    expect($user->language)->toBe('en');
+    expect($user->language)->toBe(config('app.locale'));
 });
 
 test('users are registered with the default locale when an invalid locale is provided', function (): void {
@@ -39,7 +39,7 @@ test('users are registered with the default locale when an invalid locale is pro
 
     $user = User::sole();
 
-    expect($user->language)->toBe('en');
+    expect($user->language)->toBe(config('app.locale'));
 });
 
 function getRegistrationData(array $overrides = []): array

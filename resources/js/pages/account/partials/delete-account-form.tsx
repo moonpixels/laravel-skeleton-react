@@ -12,8 +12,8 @@ import { Input } from '@/components/ui/input'
 import { useFormValidation } from '@/hooks/use-form-validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 
 const formSchema = z.object({
@@ -21,7 +21,7 @@ const formSchema = z.object({
 })
 
 export function DeleteAccountForm() {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const { setFormServerErrors } = useFormValidation()
 
@@ -47,8 +47,8 @@ export function DeleteAccountForm() {
 
   return (
     <SettingsGrid
-      description={t('account.delete_account_description')}
-      title={t('account.delete_account')}
+      description={t('delete_account_description')}
+      title={t('delete_account')}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -57,7 +57,7 @@ export function DeleteAccountForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('general.password')}</FormLabel>
+                <FormLabel>{t('common:password')}</FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="current-password"
@@ -76,7 +76,7 @@ export function DeleteAccountForm() {
             variant="destructive"
             type="submit"
           >
-            {t('account.delete_account')}
+            {t('delete_account')}
           </Button>
         </form>
       </Form>

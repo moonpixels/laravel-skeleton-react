@@ -14,8 +14,8 @@ import { useFormValidation } from '@/hooks/use-form-validation'
 import { GuestLayout } from '@/layouts/guest-layout'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 
 const formSchema = z.object({
@@ -24,7 +24,7 @@ const formSchema = z.object({
 })
 
 export default function TwoFactor() {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const { setFormServerErrors } = useFormValidation()
 
@@ -52,14 +52,14 @@ export default function TwoFactor() {
   }
 
   return (
-    <GuestLayout title={t('auth.two_factor_authentication')}>
+    <GuestLayout title={t('two_factor_authentication')}>
       <AuthForm
         description={
           form.getValues('is_recovery')
-            ? t('auth.two_factor_recovery_code_description')
-            : t('auth.two_factor_code_description')
+            ? t('two_factor_recovery_code_description')
+            : t('two_factor_code_description')
         }
-        title={t('auth.two_factor_authentication')}
+        title={t('two_factor_authentication')}
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -70,8 +70,8 @@ export default function TwoFactor() {
                 <FormItem>
                   <FormLabel>
                     {form.getValues('is_recovery')
-                      ? t('auth.recovery_code_label')
-                      : t('auth.2fa_code_label')}
+                      ? t('recovery_code_label')
+                      : t('2fa_code_label')}
                   </FormLabel>
                   <FormControl>
                     <Input autoComplete="one-time-code" required {...field} />
@@ -87,20 +87,20 @@ export default function TwoFactor() {
               type="submit"
             >
               {form.getValues('is_recovery')
-                ? t('auth.recovery_code')
-                : t('auth.confirm_code')}
+                ? t('recovery_code')
+                : t('confirm_code')}
             </Button>
           </form>
         </Form>
 
         <AuthFormFooter>
           <Text as="p" size="sm" variant="muted">
-            {t('auth.having_trouble') + ' '}
+            {t('having_trouble') + ' '}
 
             <Button variant="link" onClick={handleModeClick}>
               {form.getValues('is_recovery')
-                ? t('auth.use_code')
-                : t('auth.use_recovery_code')}
+                ? t('use_code')
+                : t('use_recovery_code')}
             </Button>
           </Text>
         </AuthFormFooter>

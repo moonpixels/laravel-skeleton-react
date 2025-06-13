@@ -7,8 +7,8 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { Link } from '@inertiajs/react'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { Fragment } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export interface BreadcrumbItemType {
   label: string
@@ -20,17 +20,17 @@ interface PageBreadcrumbsProps {
 }
 
 export function PageBreadcrumbs({ items }: PageBreadcrumbsProps) {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   return (
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
           {route().current('dashboard') ? (
-            <BreadcrumbPage>{t('navigation.dashboard')}</BreadcrumbPage>
+            <BreadcrumbPage>{t('dashboard')}</BreadcrumbPage>
           ) : (
             <BreadcrumbLink asChild>
-              <Link href={route('dashboard')}>{t('navigation.dashboard')}</Link>
+              <Link href={route('dashboard')}>{t('dashboard')}</Link>
             </BreadcrumbLink>
           )}
         </BreadcrumbItem>

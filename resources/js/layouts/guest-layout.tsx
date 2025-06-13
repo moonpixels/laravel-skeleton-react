@@ -3,14 +3,14 @@ import { Text } from '@/components/text'
 import { DefaultLayout } from '@/layouts/default-layout'
 import { Link } from '@inertiajs/react'
 import { format } from 'date-fns'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { PropsWithChildren } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export function GuestLayout({
   title,
   children,
 }: PropsWithChildren<{ title?: string }>) {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   return (
     <DefaultLayout title={title}>
@@ -27,7 +27,7 @@ export function GuestLayout({
 
         <footer className="m-auto flex h-16 w-full max-w-lg shrink-0 items-center justify-center px-4">
           <Text className="opacity-75" size="xs" variant="muted">
-            {t('general.copyright_notice', { year: format(new Date(), 'y') })}
+            {t('common:copyright_notice', { year: format(new Date(), 'y') })}
           </Text>
         </footer>
       </div>

@@ -13,8 +13,8 @@ import { useFormValidation } from '@/hooks/use-form-validation'
 import { GuestLayout } from '@/layouts/guest-layout'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 
 const formSchema = z.object({
@@ -31,7 +31,7 @@ export default function ResetPassword({
   email: string
   token: string
 }) {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const { setFormServerErrors, passwordConfirmationMessage } =
     useFormValidation()
@@ -63,10 +63,10 @@ export default function ResetPassword({
   }
 
   return (
-    <GuestLayout title={t('auth.reset_your_password')}>
+    <GuestLayout title={t('reset_your_password')}>
       <AuthForm
-        description={t('auth.reset_your_password_description')}
-        title={t('auth.reset_your_password')}
+        description={t('reset_your_password_description')}
+        title={t('reset_your_password')}
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -75,7 +75,7 @@ export default function ResetPassword({
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('general.email')}</FormLabel>
+                  <FormLabel>{t('common:email')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="username"
@@ -95,7 +95,7 @@ export default function ResetPassword({
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('general.password')}</FormLabel>
+                  <FormLabel>{t('common:password')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="new-password"
@@ -114,7 +114,7 @@ export default function ResetPassword({
               name="password_confirmation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('general.confirm_password')}</FormLabel>
+                  <FormLabel>{t('common:confirm_password')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="new-password"
@@ -133,7 +133,7 @@ export default function ResetPassword({
               className="w-full"
               type="submit"
             >
-              {t('auth.reset_password')}
+              {t('reset_password')}
             </Button>
           </form>
         </Form>

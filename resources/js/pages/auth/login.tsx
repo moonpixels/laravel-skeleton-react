@@ -16,9 +16,9 @@ import { useFormValidation } from '@/hooks/use-form-validation'
 import { GuestLayout } from '@/layouts/guest-layout'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -29,14 +29,14 @@ const formSchema = z.object({
 })
 
 export default function Login({ status }: { status?: string }) {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const { setFormServerErrors } = useFormValidation()
 
   useEffect(() => {
     if (status === 'password-updated') {
-      toast.success(t('auth.password_updated'), {
-        description: t('auth.password_updated_description'),
+      toast.success(t('password_updated'), {
+        description: t('password_updated_description'),
       })
     }
   }, [status, t])
@@ -63,10 +63,10 @@ export default function Login({ status }: { status?: string }) {
   }
 
   return (
-    <GuestLayout title={t('auth.login_to_account')}>
+    <GuestLayout title={t('login_to_account')}>
       <AuthForm
-        description={t('auth.login_to_account_description')}
-        title={t('auth.login_to_account')}
+        description={t('login_to_account_description')}
+        title={t('login_to_account')}
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -75,7 +75,7 @@ export default function Login({ status }: { status?: string }) {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('general.email')}</FormLabel>
+                  <FormLabel>{t('common:email')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="username"
@@ -95,7 +95,7 @@ export default function Login({ status }: { status?: string }) {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('general.password')}</FormLabel>
+                  <FormLabel>{t('common:password')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="current-password"
@@ -122,7 +122,7 @@ export default function Login({ status }: { status?: string }) {
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
-                      <FormLabel>{t('auth.remember_label')}</FormLabel>
+                      <FormLabel>{t('remember_label')}</FormLabel>
                     </div>
                     <FormMessage />
                   </FormItem>
@@ -131,7 +131,7 @@ export default function Login({ status }: { status?: string }) {
 
               <Text asChild size="sm">
                 <TextLink href={route('password.request')}>
-                  {t('auth.forgot_password')}
+                  {t('forgot_password')}
                 </TextLink>
               </Text>
             </div>
@@ -141,18 +141,16 @@ export default function Login({ status }: { status?: string }) {
               className="w-full"
               type="submit"
             >
-              {t('auth.log_in')}
+              {t('log_in')}
             </Button>
           </form>
         </Form>
 
         <AuthFormFooter>
           <Text as="p" size="sm" variant="muted">
-            {t('auth.no_account') + ' '}
+            {t('no_account') + ' '}
 
-            <TextLink href={route('register')}>
-              {t('auth.create_account')}
-            </TextLink>
+            <TextLink href={route('register')}>{t('create_account')}</TextLink>
           </Text>
         </AuthFormFooter>
       </AuthForm>

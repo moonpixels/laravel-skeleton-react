@@ -11,13 +11,12 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { getBrowserLocale } from '@/contexts/locale-context'
 import { useFormValidation } from '@/hooks/use-form-validation'
 import { GuestLayout } from '@/layouts/guest-layout'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 
 const formSchema = z.object({
@@ -28,7 +27,7 @@ const formSchema = z.object({
 })
 
 export default function Register() {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const { setFormServerErrors, passwordConfirmationMessage } =
     useFormValidation()
@@ -54,7 +53,7 @@ export default function Register() {
         route('register'),
         {
           ...values,
-          language: getBrowserLocale(),
+          language: navigator.language,
         },
         {
           onError: (errors) => {
@@ -67,10 +66,10 @@ export default function Register() {
   }
 
   return (
-    <GuestLayout title={t('auth.register_new_account')}>
+    <GuestLayout title={t('register_new_account')}>
       <AuthForm
-        description={t('auth.register_new_account_description')}
-        title={t('auth.register_new_account')}
+        description={t('register_new_account_description')}
+        title={t('register_new_account')}
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -79,7 +78,7 @@ export default function Register() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('general.name')}</FormLabel>
+                  <FormLabel>{t('common:name')}</FormLabel>
                   <FormControl>
                     <Input autoComplete="name" required {...field} />
                   </FormControl>
@@ -93,7 +92,7 @@ export default function Register() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('general.email')}</FormLabel>
+                  <FormLabel>{t('common:email')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="username"
@@ -113,7 +112,7 @@ export default function Register() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('general.password')}</FormLabel>
+                  <FormLabel>{t('common:password')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="new-password"
@@ -132,7 +131,7 @@ export default function Register() {
               name="password_confirmation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('general.confirm_password')}</FormLabel>
+                  <FormLabel>{t('common:confirm_password')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="new-password"
@@ -151,16 +150,16 @@ export default function Register() {
               className="w-full"
               type="submit"
             >
-              {t('auth.register')}
+              {t('register')}
             </Button>
           </form>
         </Form>
 
         <AuthFormFooter>
           <Text as="p" size="sm" variant="muted">
-            {t('auth.already_have_account') + ' '}
+            {t('already_have_account') + ' '}
 
-            <TextLink href={route('login')}>{t('auth.log_in')}</TextLink>
+            <TextLink href={route('login')}>{t('log_in')}</TextLink>
           </Text>
         </AuthFormFooter>
       </AuthForm>
