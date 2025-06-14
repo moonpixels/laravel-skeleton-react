@@ -58,10 +58,8 @@ export function DarkModeForm() {
           render={({ field }) => (
             <FormItem className="flex justify-between">
               <div className="space-y-2">
-                <FormLabel>{t('use_dark_mode')}</FormLabel>
-                <FormDescription>
-                  {t('use_dark_mode_description')}
-                </FormDescription>
+                <FormLabel>{t('useDarkMode')}</FormLabel>
+                <FormDescription>{t('useDarkModeDescription')}</FormDescription>
               </div>
 
               <FormControl>
@@ -116,8 +114,8 @@ export function PreferencesForm() {
         onSuccess: () => {
           i18n.changeLanguage(values.language)
 
-          toast.success(t('account_updated'), {
-            description: t('account_has_been_updated'),
+          toast.success(t('accountUpdated'), {
+            description: t('accountHasBeenUpdated'),
           })
         },
         onFinish: () => resolve(),
@@ -138,7 +136,7 @@ export function PreferencesForm() {
 
   return (
     <SettingsGrid
-      description={t('preferences_description')}
+      description={t('preferencesDescription')}
       title={t('preferences')}
     >
       <DarkModeForm />
@@ -173,14 +171,14 @@ export function PreferencesForm() {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormDescription>{t('select_your_language')}</FormDescription>
+                <FormDescription>{t('selectYourLanguage')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
 
           <Button loading={form.formState.isSubmitting} type="submit">
-            {t('update_preferences')}
+            {t('updatePreferences')}
           </Button>
         </form>
       </Form>

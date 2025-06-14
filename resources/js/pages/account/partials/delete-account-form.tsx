@@ -47,8 +47,8 @@ export function DeleteAccountForm() {
 
   return (
     <SettingsGrid
-      description={t('delete_account_description')}
-      title={t('delete_account')}
+      description={t('deleteAccountDescription')}
+      title={t('deleteAccount')}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -76,7 +76,7 @@ export function DeleteAccountForm() {
             variant="destructive"
             type="submit"
           >
-            {t('delete_account')}
+            {t('deleteAccount')}
           </Button>
         </form>
       </Form>

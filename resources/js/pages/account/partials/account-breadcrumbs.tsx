@@ -9,7 +9,7 @@ export function AccountBreadcrumbs() {
 
   const items: BreadcrumbItemType[] = [
     {
-      label: t('account_settings'),
+      label: t('accountSettings'),
       href: route('account.edit'),
     },
   ]

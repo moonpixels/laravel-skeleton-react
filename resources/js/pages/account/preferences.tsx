@@ -11,9 +11,9 @@ export default function Preferences() {
   return (
     <AuthenticatedLayout
       breadcrumbs={AccountBreadcrumbs}
-      title={t('account_preferences')}
+      title={t('accountPreferences')}
     >
-      <PageHeader>{t('account_settings')}</PageHeader>
+      <PageHeader>{t('accountSettings')}</PageHeader>
 
       <AccountNavigation />
 

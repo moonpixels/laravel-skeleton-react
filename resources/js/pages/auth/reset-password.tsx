@@ -63,10 +63,10 @@ export default function ResetPassword({
   }
 
   return (
-    <GuestLayout title={t('reset_your_password')}>
+    <GuestLayout title={t('resetYourPassword')}>
       <AuthForm
-        description={t('reset_your_password_description')}
-        title={t('reset_your_password')}
+        description={t('resetYourPasswordDescription')}
+        title={t('resetYourPassword')}
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -114,7 +114,7 @@ export default function ResetPassword({
               name="password_confirmation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('common:confirm_password')}</FormLabel>
+                  <FormLabel>{t('common:confirmPassword')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="new-password"
@@ -133,7 +133,7 @@ export default function ResetPassword({
               className="w-full"
               type="submit"
             >
-              {t('reset_password')}
+              {t('resetPassword')}
             </Button>
           </form>
         </Form>

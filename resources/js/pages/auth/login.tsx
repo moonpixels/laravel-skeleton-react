@@ -35,8 +35,8 @@ export default function Login({ status }: { status?: string }) {
 
   useEffect(() => {
     if (status === 'password-updated') {
-      toast.success(t('password_updated'), {
-        description: t('password_updated_description'),
+      toast.success(t('passwordUpdated'), {
+        description: t('passwordUpdatedDescription'),
       })
     }
   }, [status, t])
@@ -63,10 +63,10 @@ export default function Login({ status }: { status?: string }) {
   }
 
   return (
-    <GuestLayout title={t('login_to_account')}>
+    <GuestLayout title={t('loginToAccount')}>
       <AuthForm
-        description={t('login_to_account_description')}
-        title={t('login_to_account')}
+        description={t('loginToAccountDescription')}
+        title={t('loginToAccount')}
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -122,7 +122,7 @@ export default function Login({ status }: { status?: string }) {
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
-                      <FormLabel>{t('remember_label')}</FormLabel>
+                      <FormLabel>{t('rememberLabel')}</FormLabel>
                     </div>
                     <FormMessage />
                   </FormItem>
@@ -131,7 +131,7 @@ export default function Login({ status }: { status?: string }) {
 
               <Text asChild size="sm">
                 <TextLink href={route('password.request')}>
-                  {t('forgot_password')}
+                  {t('forgotPassword')}
                 </TextLink>
               </Text>
             </div>
@@ -141,16 +141,16 @@ export default function Login({ status }: { status?: string }) {
               className="w-full"
               type="submit"
             >
-              {t('log_in')}
+              {t('logIn')}
             </Button>
           </form>
         </Form>
 
         <AuthFormFooter>
           <Text as="p" size="sm" variant="muted">
-            {t('no_account') + ' '}
+            {t('noAccount') + ' '}
 
-            <TextLink href={route('register')}>{t('create_account')}</TextLink>
+            <TextLink href={route('register')}>{t('createAccount')}</TextLink>
           </Text>
         </AuthFormFooter>
       </AuthForm>

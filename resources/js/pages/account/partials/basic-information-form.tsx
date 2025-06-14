@@ -47,8 +47,8 @@ export function BasicInformationForm() {
           setFormServerErrors(form, errors)
         },
         onSuccess: () => {
-          toast.success(t('account_updated'), {
-            description: t('account_has_been_updated'),
+          toast.success(t('accountUpdated'), {
+            description: t('accountHasBeenUpdated'),
           })
         },
         onFinish: () => resolve(),
@@ -58,8 +58,8 @@ export function BasicInformationForm() {
 
   return (
     <SettingsGrid
-      description={t('basic_information_description')}
-      title={t('basic_information')}
+      description={t('basicInformationDescription')}
+      title={t('basicInformation')}
     >
       <AvatarForm />
 

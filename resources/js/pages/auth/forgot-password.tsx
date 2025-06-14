@@ -32,8 +32,8 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
   useEffect(() => {
     if (status === 'reset-link-sent') {
-      toast.success(t('password_reset_email_sent'), {
-        description: t('password_reset_email_sent_description'),
+      toast.success(t('passwordResetEmailSent'), {
+        description: t('passwordResetEmailSentDescription'),
       })
     }
   }, [status, t])
@@ -57,10 +57,10 @@ export default function ForgotPassword({ status }: { status?: string }) {
   }
 
   return (
-    <GuestLayout title={t('forgot_your_password')}>
+    <GuestLayout title={t('forgotYourPassword')}>
       <AuthForm
-        description={t('forgot_your_password_description')}
-        title={t('forgot_your_password')}
+        description={t('forgotYourPasswordDescription')}
+        title={t('forgotYourPassword')}
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -89,16 +89,16 @@ export default function ForgotPassword({ status }: { status?: string }) {
               className="w-full"
               type="submit"
             >
-              {t('send_password_reset_email')}
+              {t('sendPasswordResetEmail')}
             </Button>
           </form>
         </Form>
 
         <AuthFormFooter>
           <Text as="p" size="sm" variant="muted">
-            {t('remembered_password') + ' '}
+            {t('rememberedPassword') + ' '}
 
-            <TextLink href={route('login')}>{t('log_in')}</TextLink>
+            <TextLink href={route('login')}>{t('logIn')}</TextLink>
           </Text>
         </AuthFormFooter>
       </AuthForm>

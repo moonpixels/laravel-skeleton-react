@@ -12,9 +12,9 @@ export default function Security() {
   return (
     <AuthenticatedLayout
       breadcrumbs={AccountBreadcrumbs}
-      title={t('account_security')}
+      title={t('accountSecurity')}
     >
-      <PageHeader>{t('account_settings')}</PageHeader>
+      <PageHeader>{t('accountSettings')}</PageHeader>
 
       <AccountNavigation />
 

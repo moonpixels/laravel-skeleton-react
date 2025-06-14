@@ -13,8 +13,8 @@ export default function VerifyEmail() {
   const { user } = useUser()
 
   function showEmailVerificationSentToast() {
-    toast.success(t('email_verification_email_sent'), {
-      description: t('email_verification_email_sent_description'),
+    toast.success(t('emailVerificationEmailSent'), {
+      description: t('emailVerificationEmailSentDescription'),
     })
   }
 
@@ -31,14 +31,14 @@ export default function VerifyEmail() {
   }
 
   return (
-    <GuestLayout title={t('verify_email')}>
+    <GuestLayout title={t('verifyEmail')}>
       <AuthForm
-        description={t('verify_email_description')}
-        title={t('verify_email')}
+        description={t('verifyEmailDescription')}
+        title={t('verifyEmail')}
       >
         <div className="flex flex-col items-center gap-4 sm:flex-row-reverse">
           <Button className="w-full" onClick={handleResendEmailClick}>
-            {t('resend_email')}
+            {t('resendEmail')}
           </Button>
 
           <Button
@@ -46,13 +46,13 @@ export default function VerifyEmail() {
             variant="secondary"
             onClick={handleLogoutClick}
           >
-            {t('log_out')}
+            {t('logOut')}
           </Button>
         </div>
 
         <AuthFormFooter>
           <Text as="p" size="sm" variant="muted">
-            {t('email_delivered_to', { email: user.email })}
+            {t('emailDeliveredTo', { email: user.email })}
           </Text>
         </AuthFormFooter>
       </AuthForm>

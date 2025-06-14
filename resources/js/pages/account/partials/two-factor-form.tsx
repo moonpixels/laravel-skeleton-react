@@ -63,8 +63,8 @@ export function TwoFactorDisableDialog() {
         onSuccess: () => {
           form.reset()
 
-          toast.success(t('two_factor_disabled'), {
-            description: t('two_factor_disabled_description'),
+          toast.success(t('twoFactorDisabled'), {
+            description: t('twoFactorDisabledDescription'),
           })
         },
         onFinish: () => {
@@ -77,15 +77,13 @@ export function TwoFactorDisableDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>{t('disable_two_factor')}</Button>
+        <Button>{t('disableTwoFactor')}</Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{t('disable_two_factor')}</DialogTitle>
-          <DialogDescription>
-            {t('disable_two_factor_warning')}
-          </DialogDescription>
+          <DialogTitle>{t('disableTwoFactor')}</DialogTitle>
+          <DialogDescription>{t('disableTwoFactorWarning')}</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -99,7 +97,7 @@ export function TwoFactorDisableDialog() {
               name="code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('2fa_code_label')}</FormLabel>
+                  <FormLabel>{t('2faCodeLabel')}</FormLabel>
                   <FormControl>
                     <Input autoComplete="one-time-code" required {...field} />
                   </FormControl>
@@ -178,8 +176,8 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
         onSuccess: () => {
           form.reset()
 
-          toast.success(t('two_factor_enabled'), {
-            description: t('two_factor_enabled_description'),
+          toast.success(t('twoFactorEnabled'), {
+            description: t('twoFactorEnabledDescription'),
           })
 
           if (onEnable) {
@@ -216,14 +214,14 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button>{t('enable_two_factor')}</Button>
+        <Button>{t('enableTwoFactor')}</Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{t('enable_two_factor')}</DialogTitle>
+          <DialogTitle>{t('enableTwoFactor')}</DialogTitle>
           <DialogDescription>
-            {t('enable_two_factor_description')}
+            {t('enableTwoFactorDescription')}
           </DialogDescription>
         </DialogHeader>
 
@@ -260,7 +258,7 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
               name="code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('2fa_code_label')}</FormLabel>
+                  <FormLabel>{t('2faCodeLabel')}</FormLabel>
                   <FormControl>
                     <Input autoComplete="one-time-code" required {...field} />
                   </FormControl>
@@ -345,15 +343,13 @@ export function TwoFactorRecoveryCodesDialog({
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="secondary">{t('view_recovery_codes')}</Button>
+        <Button variant="secondary">{t('viewRecoveryCodes')}</Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{t('recovery_codes')}</DialogTitle>
-          <DialogDescription>
-            {t('recovery_codes_description')}
-          </DialogDescription>
+          <DialogTitle>{t('recoveryCodes')}</DialogTitle>
+          <DialogDescription>{t('recoveryCodesDescription')}</DialogDescription>
         </DialogHeader>
 
         <ul className="mx-auto grid list-none grid-cols-2 gap-x-6">
@@ -414,8 +410,8 @@ export function TwoFactorForm() {
 
   return (
     <SettingsGrid
-      description={t('two_factor_authentication_description')}
-      title={t('two_factor_authentication')}
+      description={t('twoFactorAuthenticationDescription')}
+      title={t('twoFactorAuthentication')}
     >
       <div className="flex h-full items-center">
         {twoFactorEnabled ? (

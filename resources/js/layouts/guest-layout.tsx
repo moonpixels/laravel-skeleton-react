@@ -27,7 +27,7 @@ export function GuestLayout({
 
         <footer className="m-auto flex h-16 w-full max-w-lg shrink-0 items-center justify-center px-4">
           <Text className="opacity-75" size="xs" variant="muted">
-            {t('common:copyright_notice', { year: format(new Date(), 'y') })}
+            {t('common:copyrightNotice', { year: format(new Date(), 'y') })}
           </Text>
         </footer>
       </div>

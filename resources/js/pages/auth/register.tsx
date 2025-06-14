@@ -66,10 +66,10 @@ export default function Register() {
   }
 
   return (
-    <GuestLayout title={t('register_new_account')}>
+    <GuestLayout title={t('registerNewAccount')}>
       <AuthForm
-        description={t('register_new_account_description')}
-        title={t('register_new_account')}
+        description={t('registerNewAccountDescription')}
+        title={t('registerNewAccount')}
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -131,7 +131,7 @@ export default function Register() {
               name="password_confirmation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('common:confirm_password')}</FormLabel>
+                  <FormLabel>{t('common:confirmPassword')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="new-password"
@@ -157,9 +157,9 @@ export default function Register() {
 
         <AuthFormFooter>
           <Text as="p" size="sm" variant="muted">
-            {t('already_have_account') + ' '}
+            {t('alreadyHaveAccount') + ' '}
 
-            <TextLink href={route('login')}>{t('log_in')}</TextLink>
+            <TextLink href={route('login')}>{t('logIn')}</TextLink>
           </Text>
         </AuthFormFooter>
       </AuthForm>

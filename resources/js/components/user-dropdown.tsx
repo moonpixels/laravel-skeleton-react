@@ -65,7 +65,7 @@ export function UserDropdown({ trigger }: { trigger: ReactNode }) {
 
   const items: UserDropdownItem[] = [
     {
-      label: t('account_settings'),
+      label: t('accountSettings'),
       icon: CircleUserIcon,
       href: route('account.edit'),
     },
@@ -116,7 +116,7 @@ export function UserDropdown({ trigger }: { trigger: ReactNode }) {
             className="flex w-full items-center gap-2"
           >
             <LogOut className="size-4 shrink-0" />
-            {t('log_out')}
+            {t('logOut')}
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>

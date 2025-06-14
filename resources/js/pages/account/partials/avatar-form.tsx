@@ -57,8 +57,8 @@ export function AvatarForm() {
           onSuccess: () => {
             form.reset()
 
-            toast.success(t('account_updated'), {
-              description: t('account_has_been_updated'),
+            toast.success(t('accountUpdated'), {
+              description: t('accountHasBeenUpdated'),
             })
           },
           onFinish: () => resolve(),
@@ -73,8 +73,8 @@ export function AvatarForm() {
         preserveScroll: true,
         onStart: () => setIsRemovingAvatar(true),
         onSuccess: () => {
-          toast.success(t('account_updated'), {
-            description: t('account_has_been_updated'),
+          toast.success(t('accountUpdated'), {
+            description: t('accountHasBeenUpdated'),
           })
         },
         onFinish: () => {
@@ -103,7 +103,7 @@ export function AvatarForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t('common:avatar')}</FormLabel>
-              <FormDescription>{t('avatar_description')}</FormDescription>
+              <FormDescription>{t('avatarDescription')}</FormDescription>
               <FormControl>
                 <div className="flex items-center space-x-4">
                   <div className="size-11 shrink-0">

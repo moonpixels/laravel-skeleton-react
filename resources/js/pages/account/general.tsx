@@ -12,9 +12,9 @@ export default function General() {
   return (
     <AuthenticatedLayout
       breadcrumbs={AccountBreadcrumbs}
-      title={t('account_settings')}
+      title={t('accountSettings')}
     >
-      <PageHeader>{t('account_settings')}</PageHeader>
+      <PageHeader>{t('accountSettings')}</PageHeader>
 
       <AccountNavigation />
 

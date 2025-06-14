@@ -45,10 +45,10 @@ export default function ConfirmPassword() {
   }
 
   return (
-    <GuestLayout title={t('confirm_your_password')}>
+    <GuestLayout title={t('confirmYourPassword')}>
       <AuthForm
-        description={t('confirm_your_password_description')}
-        title={t('confirm_your_password')}
+        description={t('confirmYourPasswordDescription')}
+        title={t('confirmYourPassword')}
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

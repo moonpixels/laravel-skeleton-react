@@ -52,14 +52,14 @@ export default function TwoFactor() {
   }
 
   return (
-    <GuestLayout title={t('two_factor_authentication')}>
+    <GuestLayout title={t('twoFactorAuthentication')}>
       <AuthForm
         description={
           form.getValues('is_recovery')
-            ? t('two_factor_recovery_code_description')
-            : t('two_factor_code_description')
+            ? t('twoFactorRecoveryCodeDescription')
+            : t('twoFactorCodeDescription')
         }
-        title={t('two_factor_authentication')}
+        title={t('twoFactorAuthentication')}
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -70,8 +70,8 @@ export default function TwoFactor() {
                 <FormItem>
                   <FormLabel>
                     {form.getValues('is_recovery')
-                      ? t('recovery_code_label')
-                      : t('2fa_code_label')}
+                      ? t('recoveryCodeLabel')
+                      : t('2faCodeLabel')}
                   </FormLabel>
                   <FormControl>
                     <Input autoComplete="one-time-code" required {...field} />
@@ -88,19 +88,19 @@ export default function TwoFactor() {
             >
               {form.getValues('is_recovery')
                 ? t('recovery_code')
-                : t('confirm_code')}
+                : t('confirmCode')}
             </Button>
           </form>
         </Form>
 
         <AuthFormFooter>
           <Text as="p" size="sm" variant="muted">
-            {t('having_trouble') + ' '}
+            {t('havingTrouble') + ' '}
 
             <Button variant="link" onClick={handleModeClick}>
               {form.getValues('is_recovery')
-                ? t('use_code')
-                : t('use_recovery_code')}
+                ? t('useCode')
+                : t('useRecoveryCode')}
             </Button>
           </Text>
         </AuthFormFooter>

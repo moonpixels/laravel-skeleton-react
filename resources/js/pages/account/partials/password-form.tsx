@@ -53,8 +53,8 @@ export function PasswordForm() {
         onSuccess: () => {
           form.reset()
 
-          toast.success(t('account_updated'), {
-            description: t('account_has_been_updated'),
+          toast.success(t('accountUpdated'), {
+            description: t('accountHasBeenUpdated'),
           })
         },
         onFinish: () => resolve(),
@@ -64,7 +64,7 @@ export function PasswordForm() {
 
   return (
     <SettingsGrid
-      description={t('change_password_description')}
+      description={t('changePasswordDescription')}
       title={t('change_password')}
     >
       <Form {...form}>
@@ -74,7 +74,7 @@ export function PasswordForm() {
             name="currentPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('current_password')}</FormLabel>
+                <FormLabel>{t('currentPassword')}</FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="current-password"
@@ -93,7 +93,7 @@ export function PasswordForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('new_password')}</FormLabel>
+                <FormLabel>{t('newPassword')}</FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="new-password"
@@ -112,7 +112,7 @@ export function PasswordForm() {
             name="passwordConfirmation"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('confirm_new_password')}</FormLabel>
+                <FormLabel>{t('confirmNewPassword')}</FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="new-password"
@@ -127,7 +127,7 @@ export function PasswordForm() {
           />
 
           <Button loading={form.formState.isSubmitting} type="submit">
-            {t('update_password')}
+            {t('updatePassword')}
           </Button>
         </form>
       </Form>
