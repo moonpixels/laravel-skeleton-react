@@ -95,8 +95,6 @@ export function PreferencesForm() {
     })
   )
 
-  console.log(i18n.language, supportedLocaleOptions)
-
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {

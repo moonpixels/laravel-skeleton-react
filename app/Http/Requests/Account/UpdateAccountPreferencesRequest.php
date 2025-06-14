@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Account;
 
 use App\DTOs\User\UpdateUserPreferencesData;
+use App\Support\Localisation\Facades\Localisation;
 use App\Support\Localisation\Rules\SupportedLocale;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\ValidatorAwareRule;
@@ -27,5 +28,15 @@ final class UpdateAccountPreferencesRequest extends FormRequest
         return new UpdateUserPreferencesData(
             language: $this->validated('language'),
         );
+    }
+
+    protected function prepareForValidation(): void
+    {
+        // Convert the language string to ISO 15897 format
+        if ($this->has('language')) {
+            $this->merge([
+                'language' => Localisation::getIso15897Locale($this->input('language')),
+            ]);
+        }
     }
 }
