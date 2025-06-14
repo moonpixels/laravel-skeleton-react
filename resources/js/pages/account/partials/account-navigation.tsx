@@ -1,22 +1,22 @@
 import { PageNavigation } from '@/components/page-navigation'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
+import { useTranslation } from 'react-i18next'
 
 export function AccountNavigation() {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const navItems = [
     {
-      label: t('navigation.general'),
+      label: t('general'),
       href: route('account.edit'),
       current: route().current('account.edit'),
     },
     {
-      label: t('navigation.security'),
+      label: t('security'),
       href: route('account.security.edit'),
       current: route().current('account.security.edit'),
     },
     {
-      label: t('navigation.preferences'),
+      label: t('preferences'),
       href: route('account.preferences.edit'),
       current: route().current('account.preferences.edit'),
     },

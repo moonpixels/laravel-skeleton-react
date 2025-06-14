@@ -20,14 +20,13 @@ import {
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { useDarkMode } from '@/contexts/dark-mode-context'
-import { getCountryFromLocale, useLocale } from '@/contexts/locale-context'
 import { useFormValidation } from '@/hooks/use-form-validation'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { router } from '@inertiajs/react'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
+import { router, usePage } from '@inertiajs/react'
 import { Globe } from 'lucide-react'
 import { ElementType } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -36,7 +35,7 @@ const formSchema = z.object({
 })
 
 export function DarkModeForm() {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const { isDarkMode, setDarkMode } = useDarkMode()
 
@@ -59,10 +58,8 @@ export function DarkModeForm() {
           render={({ field }) => (
             <FormItem className="flex justify-between">
               <div className="space-y-2">
-                <FormLabel>{t('account.use_dark_mode')}</FormLabel>
-                <FormDescription>
-                  {t('account.use_dark_mode_description')}
-                </FormDescription>
+                <FormLabel>{t('useDarkMode')}</FormLabel>
+                <FormDescription>{t('useDarkModeDescription')}</FormDescription>
               </div>
 
               <FormControl>
@@ -84,15 +81,15 @@ export function DarkModeForm() {
 }
 
 export function PreferencesForm() {
-  const { t } = useLaravelReactI18n()
+  const { t, i18n } = useTranslation()
+
+  const page = usePage()
 
   const { setFormServerErrors } = useFormValidation()
 
-  const { supportedLocales, currentLocale } = useLocale()
-
-  const supportedLocaleOptions = Object.entries(supportedLocales).map(
-    ([locale, data]) => ({
-      value: locale,
+  const supportedLocaleOptions = Object.values(page.props.supportedLocales).map(
+    (data) => ({
+      value: data.regional,
       label: data.nativeName,
       icon: getCountryFlag(data.regional),
     })
@@ -101,7 +98,7 @@ export function PreferencesForm() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      language: currentLocale,
+      language: i18n.language,
     },
   })
 
@@ -113,8 +110,10 @@ export function PreferencesForm() {
           setFormServerErrors(form, errors)
         },
         onSuccess: () => {
-          toast.success(t('account.account_updated'), {
-            description: t('account.account_has_been_updated'),
+          i18n.changeLanguage(values.language)
+
+          toast.success(t('accountUpdated'), {
+            description: t('accountHasBeenUpdated'),
           })
         },
         onFinish: () => resolve(),
@@ -123,16 +122,10 @@ export function PreferencesForm() {
   }
 
   function getCountryFlag(locale: string): ElementType {
-    const country = getCountryFromLocale(locale)
-
-    if (!country) {
-      return Globe
-    }
-
-    switch (country) {
-      case 'GB':
+    switch (locale) {
+      case 'en-GB':
         return IconFlagGb
-      case 'FR':
+      case 'fr-FR':
         return IconFlagFr
       default:
         return Globe
@@ -141,8 +134,8 @@ export function PreferencesForm() {
 
   return (
     <SettingsGrid
-      description={t('account.preferences_description')}
-      title={t('account.preferences')}
+      description={t('preferencesDescription')}
+      title={t('preferences')}
     >
       <DarkModeForm />
 
@@ -153,7 +146,7 @@ export function PreferencesForm() {
             name="language"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('general.language')}</FormLabel>
+                <FormLabel>{t('common:language')}</FormLabel>
                 <FormControl>
                   <Select
                     onValueChange={field.onChange}
@@ -176,16 +169,14 @@ export function PreferencesForm() {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormDescription>
-                  {t('account.select_your_language')}
-                </FormDescription>
+                <FormDescription>{t('selectYourLanguage')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
 
           <Button loading={form.formState.isSubmitting} type="submit">
-            {t('account.update_preferences')}
+            {t('updatePreferences')}
           </Button>
         </form>
       </Form>

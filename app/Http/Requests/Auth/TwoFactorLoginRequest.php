@@ -87,7 +87,7 @@ final class TwoFactorLoginRequest extends FormRequest
             $seconds = RateLimiter::availableIn($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'code' => trans('auth.throttle', [
+                'code' => __('auth.throttle', [
                     'seconds' => $seconds,
                     'minutes' => ceil($seconds / 60),
                 ]),
@@ -111,7 +111,7 @@ final class TwoFactorLoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'code' => trans('auth.invalid_recovery_code'),
+                'code' => __('validation.invalid_recovery_code'),
             ]);
         }
 
@@ -127,7 +127,7 @@ final class TwoFactorLoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'code' => trans('auth.invalid_code'),
+                'code' => __('validation.invalid_code'),
             ]);
         }
     }

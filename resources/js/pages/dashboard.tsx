@@ -1,14 +1,14 @@
 import { PageHeader } from '@/components/page-header'
 import { Text } from '@/components/text'
 import { AuthenticatedLayout } from '@/layouts/authenticated-layout'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
+import { useTranslation } from 'react-i18next'
 
 export default function Dashboard() {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   return (
-    <AuthenticatedLayout title={t('general.dashboard')}>
-      <PageHeader>{t('general.dashboard')}</PageHeader>
+    <AuthenticatedLayout title={t('common:dashboard')}>
+      <PageHeader>{t('common:dashboard')}</PageHeader>
 
       <div className="py-10">
         <Text size="sm" variant="muted">

@@ -14,9 +14,9 @@ import { useUser } from '@/contexts/user-context'
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation'
 import { initials } from '@/utils/strings'
 import { Link } from '@inertiajs/react'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { CircleUserIcon, LogOut } from 'lucide-react'
 import { ElementType, ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface UserDropdownItem {
   label: string
@@ -59,13 +59,13 @@ export function UserDetails() {
 export function UserDropdown({ trigger }: { trigger: ReactNode }) {
   const { isMobile } = useSidebar()
 
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const cleanup = useMobileNavigation()
 
   const items: UserDropdownItem[] = [
     {
-      label: t('navigation.account_settings'),
+      label: t('accountSettings'),
       icon: CircleUserIcon,
       href: route('account.edit'),
     },
@@ -116,7 +116,7 @@ export function UserDropdown({ trigger }: { trigger: ReactNode }) {
             className="flex w-full items-center gap-2"
           >
             <LogOut className="size-4 shrink-0" />
-            {t('auth.log_out')}
+            {t('logOut')}
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>

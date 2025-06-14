@@ -27,10 +27,10 @@ import { useFormValidation } from '@/hooks/use-form-validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'
 import { AxiosResponse } from 'axios'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { ClipboardCheckIcon, ClipboardIcon } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -39,7 +39,7 @@ const disableFormSchema = z.object({
 })
 
 export function TwoFactorDisableDialog() {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const { setFormServerErrors } = useFormValidation()
 
@@ -63,8 +63,8 @@ export function TwoFactorDisableDialog() {
         onSuccess: () => {
           form.reset()
 
-          toast.success(t('account.two_factor_disabled'), {
-            description: t('account.two_factor_disabled_description'),
+          toast.success(t('twoFactorDisabled'), {
+            description: t('twoFactorDisabledDescription'),
           })
         },
         onFinish: () => {
@@ -77,15 +77,13 @@ export function TwoFactorDisableDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>{t('account.disable_two_factor')}</Button>
+        <Button>{t('disableTwoFactor')}</Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{t('account.disable_two_factor')}</DialogTitle>
-          <DialogDescription>
-            {t('account.disable_two_factor_warning')}
-          </DialogDescription>
+          <DialogTitle>{t('disableTwoFactor')}</DialogTitle>
+          <DialogDescription>{t('disableTwoFactorWarning')}</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -99,7 +97,7 @@ export function TwoFactorDisableDialog() {
               name="code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('auth.2fa_code_label')}</FormLabel>
+                  <FormLabel>{t('2faCodeLabel')}</FormLabel>
                   <FormControl>
                     <Input autoComplete="one-time-code" required {...field} />
                   </FormControl>
@@ -113,7 +111,7 @@ export function TwoFactorDisableDialog() {
         <DialogFooter>
           <DialogClose asChild>
             <Button type="button" variant="secondary">
-              {t('general.cancel')}
+              {t('common:cancel')}
             </Button>
           </DialogClose>
 
@@ -123,7 +121,7 @@ export function TwoFactorDisableDialog() {
             form="disable-two-factor-form"
             variant="destructive"
           >
-            {t('general.disable')}
+            {t('common:disable')}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -141,7 +139,7 @@ interface TwoFactorSettings {
 }
 
 export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const { setFormServerErrors } = useFormValidation()
 
@@ -178,8 +176,8 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
         onSuccess: () => {
           form.reset()
 
-          toast.success(t('account.two_factor_enabled'), {
-            description: t('account.two_factor_enabled_description'),
+          toast.success(t('twoFactorEnabled'), {
+            description: t('twoFactorEnabledDescription'),
           })
 
           if (onEnable) {
@@ -207,8 +205,8 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
     } catch {
       setOpen(false)
 
-      toast.error(t('errors.generic'), {
-        description: t('errors.generic_description'),
+      toast.error(t('genericError'), {
+        description: t('genericErrorDescription'),
       })
     }
   }
@@ -216,14 +214,14 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button>{t('account.enable_two_factor')}</Button>
+        <Button>{t('enableTwoFactor')}</Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{t('account.enable_two_factor')}</DialogTitle>
+          <DialogTitle>{t('enableTwoFactor')}</DialogTitle>
           <DialogDescription>
-            {t('account.enable_two_factor_description')}
+            {t('enableTwoFactorDescription')}
           </DialogDescription>
         </DialogHeader>
 
@@ -260,7 +258,7 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
               name="code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('auth.2fa_code_label')}</FormLabel>
+                  <FormLabel>{t('2faCodeLabel')}</FormLabel>
                   <FormControl>
                     <Input autoComplete="one-time-code" required {...field} />
                   </FormControl>
@@ -274,7 +272,7 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
         <DialogFooter>
           <DialogClose asChild>
             <Button type="button" variant="secondary">
-              {t('general.cancel')}
+              {t('common:cancel')}
             </Button>
           </DialogClose>
 
@@ -283,7 +281,7 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
             type="submit"
             form="confirm-two-factor-form"
           >
-            {t('general.enable')}
+            {t('common:enable')}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -296,7 +294,7 @@ export function TwoFactorRecoveryCodesDialog({
 }: {
   recentlyEnabled?: boolean
 }) {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const { copyText, copied } = useCopy()
 
@@ -336,8 +334,8 @@ export function TwoFactorRecoveryCodesDialog({
     } catch {
       setOpen(false)
 
-      toast.error(t('errors.generic'), {
-        description: t('errors.generic_description'),
+      toast.error(t('genericError'), {
+        description: t('genericErrorDescription'),
       })
     }
   }
@@ -345,15 +343,13 @@ export function TwoFactorRecoveryCodesDialog({
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="secondary">{t('account.view_recovery_codes')}</Button>
+        <Button variant="secondary">{t('viewRecoveryCodes')}</Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{t('account.recovery_codes')}</DialogTitle>
-          <DialogDescription>
-            {t('account.recovery_codes_description')}
-          </DialogDescription>
+          <DialogTitle>{t('recoveryCodes')}</DialogTitle>
+          <DialogDescription>{t('recoveryCodesDescription')}</DialogDescription>
         </DialogHeader>
 
         <ul className="mx-auto grid list-none grid-cols-2 gap-x-6">
@@ -374,7 +370,7 @@ export function TwoFactorRecoveryCodesDialog({
         <DialogFooter>
           <DialogClose asChild>
             <Button type="button" variant="secondary">
-              {t('general.close')}
+              {t('common:close')}
             </Button>
           </DialogClose>
 
@@ -382,7 +378,7 @@ export function TwoFactorRecoveryCodesDialog({
             <span className="flex items-center gap-1">
               <CopyButtonIcon className="size-4" />
 
-              {copied ? t('general.copied') : t('general.copy')}
+              {copied ? t('common:copied') : t('common:copy')}
             </span>
           </Button>
         </DialogFooter>
@@ -392,7 +388,7 @@ export function TwoFactorRecoveryCodesDialog({
 }
 
 export function TwoFactorForm() {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const { twoFactorEnabled } = useUser()
 
@@ -414,8 +410,8 @@ export function TwoFactorForm() {
 
   return (
     <SettingsGrid
-      description={t('account.two_factor_authentication_description')}
-      title={t('account.two_factor_authentication')}
+      description={t('twoFactorAuthenticationDescription')}
+      title={t('twoFactorAuthentication')}
     >
       <div className="flex h-full items-center">
         {twoFactorEnabled ? (

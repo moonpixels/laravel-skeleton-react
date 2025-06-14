@@ -12,8 +12,8 @@ import { Input } from '@/components/ui/input'
 import { useFormValidation } from '@/hooks/use-form-validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -24,7 +24,7 @@ const formSchema = z.object({
 })
 
 export function PasswordForm() {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const { setFormServerErrors, passwordConfirmationMessage } =
     useFormValidation()
@@ -53,8 +53,8 @@ export function PasswordForm() {
         onSuccess: () => {
           form.reset()
 
-          toast.success(t('account.account_updated'), {
-            description: t('account.account_has_been_updated'),
+          toast.success(t('accountUpdated'), {
+            description: t('accountHasBeenUpdated'),
           })
         },
         onFinish: () => resolve(),
@@ -64,8 +64,8 @@ export function PasswordForm() {
 
   return (
     <SettingsGrid
-      description={t('account.change_password_description')}
-      title={t('account.change_password')}
+      description={t('changePasswordDescription')}
+      title={t('change_password')}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-6">
@@ -74,7 +74,7 @@ export function PasswordForm() {
             name="currentPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('account.current_password')}</FormLabel>
+                <FormLabel>{t('currentPassword')}</FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="current-password"
@@ -93,7 +93,7 @@ export function PasswordForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('account.new_password')}</FormLabel>
+                <FormLabel>{t('newPassword')}</FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="new-password"
@@ -112,7 +112,7 @@ export function PasswordForm() {
             name="passwordConfirmation"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('account.confirm_new_password')}</FormLabel>
+                <FormLabel>{t('confirmNewPassword')}</FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="new-password"
@@ -127,7 +127,7 @@ export function PasswordForm() {
           />
 
           <Button loading={form.formState.isSubmitting} type="submit">
-            {t('account.update_password')}
+            {t('updatePassword')}
           </Button>
         </form>
       </Form>

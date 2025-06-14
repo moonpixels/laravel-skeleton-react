@@ -10,12 +10,12 @@ beforeEach(function (): void {
 });
 
 test('preferences can be updated', function (): void {
-    $this->put(route('account.preferences.update'), ['language' => 'en'])
+    $this->put(route('account.preferences.update'), ['language' => 'en_GB'])
         ->assertValid()
         ->assertRedirect();
 
-    expect($this->user->language)->toBe('en')
-        ->and(app()->getLocale())->toBe('en');
+    expect($this->user->language)->toBe('en_GB')
+        ->and(app()->getLocale())->toBe('en_GB');
 });
 
 test('language cannot be updated to an unsupported locale', function (): void {

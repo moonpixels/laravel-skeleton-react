@@ -5,6 +5,7 @@ declare(strict_types=1);
 return [
     'accepted' => 'The :attribute field must be accepted.',
     'accepted_if' => 'The :attribute field must be accepted when :other is :value.',
+    'account_avatar' => 'There was a problem updating your avatar. We have been notified of the issue.',
     'active_url' => 'The :attribute field must be a valid URL.',
     'after' => 'The :attribute field must be a date after :date.',
     'after_or_equal' => 'The :attribute field must be a date after or equal to :date.',
@@ -62,6 +63,8 @@ return [
     'in' => 'The selected :attribute is invalid.',
     'in_array' => 'The :attribute field must exist in :other.',
     'integer' => 'The :attribute field must be an integer.',
+    'invalid_code' => 'The provided two factor authentication code was invalid.',
+    'invalid_recovery_code' => 'The provided two factor recovery code was invalid.',
     'ip' => 'The :attribute field must be a valid IP address.',
     'ipv4' => 'The :attribute field must be a valid IPv4 address.',
     'ipv6' => 'The :attribute field must be a valid IPv6 address.',

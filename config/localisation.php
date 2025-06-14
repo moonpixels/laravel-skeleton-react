@@ -14,7 +14,6 @@ return [
     |
     */
     'supported_locales' => [
-        'en' => ['name' => 'English', 'nativeName' => 'English', 'regional' => 'en_GB'],
-        'fr' => ['name' => 'French', 'nativeName' => 'Français', 'regional' => 'fr_FR'],
+        'en_GB' => ['name' => 'English', 'nativeName' => 'English', 'regional' => 'en-GB'],
     ],
 ];

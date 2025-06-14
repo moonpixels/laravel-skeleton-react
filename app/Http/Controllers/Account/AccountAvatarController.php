@@ -30,7 +30,7 @@ final class AccountAvatarController extends Controller
             report($imageProcessorException);
 
             throw ValidationException::withMessages([
-                'avatar' => __('errors.account_avatar'),
+                'avatar' => __('validation.account_avatar'),
             ]);
         }
 

@@ -31,7 +31,7 @@
     {{-- Footer --}}
     <x-slot:footer>
         <x-mail::footer>
-            {{ __('general.copyright_notice', ['year' => date('Y'), 'company' => config('app.name')]) }}
+            {{ __('common.copyright_notice', ['year' => date('Y')]) }}
         </x-mail::footer>
     </x-slot:footer>
 </x-mail::layout>

@@ -1,0 +1,23 @@
+{
+  "avatar": "Avatar",
+  "cancel": "Cancel",
+  "change": "Change",
+  "close": "Close",
+  "confirm": "Confirm",
+  "confirmPassword": "Confirm password",
+  "copied": "Copied",
+  "copy": "Copy",
+  "copyrightNotice": "Copyright © {{year}} Moon Pixels Ltd. All rights reserved.",
+  "dashboard": "Dashboard",
+  "delete": "Delete",
+  "disable": "Disable",
+  "email": "Email",
+  "enable": "Enable",
+  "followUs": "Follow us on {{name}}",
+  "github": "GitHub",
+  "language": "Language",
+  "name": "Name",
+  "password": "Password",
+  "remove": "Remove",
+  "submit": "Submit"
+}

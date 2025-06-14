@@ -2,7 +2,6 @@ import { AppHead } from '@/components/app-head'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { Toaster } from '@/components/ui/sonner'
 import { DarkModeProvider } from '@/contexts/dark-mode-context'
-import { LocaleProvider } from '@/contexts/locale-context'
 import { UserProvider } from '@/contexts/user-context'
 import { PropsWithChildren } from 'react'
 
@@ -13,13 +12,11 @@ export function DefaultLayout({
   return (
     <DarkModeProvider>
       <SidebarProvider>
-        <LocaleProvider>
-          <UserProvider>
-            <AppHead title={title} />
-            {children}
-            <Toaster />
-          </UserProvider>
-        </LocaleProvider>
+        <UserProvider>
+          <AppHead title={title} />
+          {children}
+          <Toaster />
+        </UserProvider>
       </SidebarProvider>
     </DarkModeProvider>
   )

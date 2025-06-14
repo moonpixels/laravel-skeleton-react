@@ -17,17 +17,17 @@ import {
 } from '@/components/user-dropdown'
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation'
 import { Link } from '@inertiajs/react'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { ChevronsUpDown, LayoutDashboard } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 export function AppSidebar() {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const cleanup = useMobileNavigation()
 
   const primaryNavItems = [
     {
-      label: t('navigation.dashboard'),
+      label: t('dashboard'),
       href: route('dashboard'),
       isActive: route().current('dashboard*'),
       icon: LayoutDashboard,

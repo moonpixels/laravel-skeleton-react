@@ -1,9 +1,9 @@
-import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 
 export function useFormValidation() {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   function setFormServerErrors<T extends FieldValues>(
     form: UseFormReturn<T>,
@@ -19,8 +19,8 @@ export function useFormValidation() {
 
   function passwordConfirmationMessage(): z.CustomErrorParams {
     return {
-      message: t('validation.confirmed', {
-        attribute: t('general.password').toLowerCase(),
+      message: t('validation:confirmed', {
+        attribute: t('common:password').toLowerCase(),
       }),
       path: ['password'],
     }
@@ -29,7 +29,7 @@ export function useFormValidation() {
   const customErrorMap: z.ZodErrorMap = (error, ctx) => {
     if (ctx.data === undefined) {
       return {
-        message: t('validation.required', {
+        message: t('validation:required', {
           attribute: pathToAttribute(error.path),
         }),
       }
@@ -40,7 +40,7 @@ export function useFormValidation() {
         switch (error.expected) {
           case 'boolean':
             return {
-              message: t('validation.boolean', {
+              message: t('validation:boolean', {
                 attribute: pathToAttribute(error.path),
               }),
             }
@@ -51,7 +51,7 @@ export function useFormValidation() {
         switch (error.validation) {
           case 'email':
             return {
-              message: t('validation.email', {
+              message: t('validation:email', {
                 attribute: pathToAttribute(error.path),
               }),
             }
@@ -62,7 +62,7 @@ export function useFormValidation() {
         switch (error.type) {
           case 'string':
             return {
-              message: t('validation.min.string', {
+              message: t('validation:min.string', {
                 attribute: pathToAttribute(error.path),
                 min: error.minimum.toString(),
               }),

@@ -16,9 +16,9 @@ import { initials } from '@/utils/strings'
 import { cn } from '@/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { ChangeEvent, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -27,7 +27,7 @@ const formSchema = z.object({
 })
 
 export function AvatarForm() {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const { user } = useUser()
 
@@ -57,8 +57,8 @@ export function AvatarForm() {
           onSuccess: () => {
             form.reset()
 
-            toast.success(t('account.account_updated'), {
-              description: t('account.account_has_been_updated'),
+            toast.success(t('accountUpdated'), {
+              description: t('accountHasBeenUpdated'),
             })
           },
           onFinish: () => resolve(),
@@ -73,8 +73,8 @@ export function AvatarForm() {
         preserveScroll: true,
         onStart: () => setIsRemovingAvatar(true),
         onSuccess: () => {
-          toast.success(t('account.account_updated'), {
-            description: t('account.account_has_been_updated'),
+          toast.success(t('accountUpdated'), {
+            description: t('accountHasBeenUpdated'),
           })
         },
         onFinish: () => {
@@ -102,10 +102,8 @@ export function AvatarForm() {
           name="avatar"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('general.avatar')}</FormLabel>
-              <FormDescription>
-                {t('account.avatar_description')}
-              </FormDescription>
+              <FormLabel>{t('common:avatar')}</FormLabel>
+              <FormDescription>{t('avatarDescription')}</FormDescription>
               <FormControl>
                 <div className="flex items-center space-x-4">
                   <div className="size-11 shrink-0">
@@ -156,7 +154,7 @@ export function AvatarForm() {
                         variant="secondary"
                         onClick={() => inputRef.current?.click()}
                       >
-                        {t('general.change')}
+                        {t('common:change')}
                       </Button>
 
                       <Button
@@ -166,7 +164,7 @@ export function AvatarForm() {
                         variant="destructive"
                         onClick={handleRemoveAvatarClick}
                       >
-                        {t('general.remove')}
+                        {t('common:remove')}
                       </Button>
                     </div>
                   </div>

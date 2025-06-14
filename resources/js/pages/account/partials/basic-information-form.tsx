@@ -14,8 +14,8 @@ import { useFormValidation } from '@/hooks/use-form-validation'
 import { AvatarForm } from '@/pages/account/partials/avatar-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -25,7 +25,7 @@ const formSchema = z.object({
 })
 
 export function BasicInformationForm() {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const { setFormServerErrors } = useFormValidation()
 
@@ -47,8 +47,8 @@ export function BasicInformationForm() {
           setFormServerErrors(form, errors)
         },
         onSuccess: () => {
-          toast.success(t('account.account_updated'), {
-            description: t('account.account_has_been_updated'),
+          toast.success(t('accountUpdated'), {
+            description: t('accountHasBeenUpdated'),
           })
         },
         onFinish: () => resolve(),
@@ -58,8 +58,8 @@ export function BasicInformationForm() {
 
   return (
     <SettingsGrid
-      description={t('account.basic_information_description')}
-      title={t('account.basic_information')}
+      description={t('basicInformationDescription')}
+      title={t('basicInformation')}
     >
       <AvatarForm />
 
@@ -70,7 +70,7 @@ export function BasicInformationForm() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('general.name')}</FormLabel>
+                <FormLabel>{t('common:name')}</FormLabel>
                 <FormControl>
                   <Input autoComplete="name" required {...field} />
                 </FormControl>
@@ -84,7 +84,7 @@ export function BasicInformationForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('general.email')}</FormLabel>
+                <FormLabel>{t('common:email')}</FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="username"
@@ -100,7 +100,7 @@ export function BasicInformationForm() {
           />
 
           <Button loading={form.formState.isSubmitting} type="submit">
-            {t('general.submit')}
+            {t('common:submit')}
           </Button>
         </form>
       </Form>

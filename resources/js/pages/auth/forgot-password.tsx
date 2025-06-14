@@ -15,9 +15,9 @@ import { useFormValidation } from '@/hooks/use-form-validation'
 import { GuestLayout } from '@/layouts/guest-layout'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -26,14 +26,14 @@ const formSchema = z.object({
 })
 
 export default function ForgotPassword({ status }: { status?: string }) {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   const { setFormServerErrors } = useFormValidation()
 
   useEffect(() => {
     if (status === 'reset-link-sent') {
-      toast.success(t('auth.password_reset_email_sent'), {
-        description: t('auth.password_reset_email_sent_description'),
+      toast.success(t('passwordResetEmailSent'), {
+        description: t('passwordResetEmailSentDescription'),
       })
     }
   }, [status, t])
@@ -57,10 +57,10 @@ export default function ForgotPassword({ status }: { status?: string }) {
   }
 
   return (
-    <GuestLayout title={t('auth.forgot_your_password')}>
+    <GuestLayout title={t('forgotYourPassword')}>
       <AuthForm
-        description={t('auth.forgot_your_password_description')}
-        title={t('auth.forgot_your_password')}
+        description={t('forgotYourPasswordDescription')}
+        title={t('forgotYourPassword')}
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -69,7 +69,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('general.email')}</FormLabel>
+                  <FormLabel>{t('common:email')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="username"
@@ -89,16 +89,16 @@ export default function ForgotPassword({ status }: { status?: string }) {
               className="w-full"
               type="submit"
             >
-              {t('auth.send_password_reset_email')}
+              {t('sendPasswordResetEmail')}
             </Button>
           </form>
         </Form>
 
         <AuthFormFooter>
           <Text as="p" size="sm" variant="muted">
-            {t('auth.remembered_password') + ' '}
+            {t('rememberedPassword') + ' '}
 
-            <TextLink href={route('login')}>{t('auth.log_in')}</TextLink>
+            <TextLink href={route('login')}>{t('logIn')}</TextLink>
           </Text>
         </AuthFormFooter>
       </AuthForm>

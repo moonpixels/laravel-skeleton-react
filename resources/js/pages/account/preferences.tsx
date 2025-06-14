@@ -3,17 +3,17 @@ import { AuthenticatedLayout } from '@/layouts/authenticated-layout'
 import { AccountBreadcrumbs } from '@/pages/account/partials/account-breadcrumbs'
 import { AccountNavigation } from '@/pages/account/partials/account-navigation'
 import { PreferencesForm } from '@/pages/account/partials/preferences-form'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
+import { useTranslation } from 'react-i18next'
 
 export default function Preferences() {
-  const { t } = useLaravelReactI18n()
+  const { t } = useTranslation()
 
   return (
     <AuthenticatedLayout
       breadcrumbs={AccountBreadcrumbs}
-      title={t('account.account_preferences')}
+      title={t('accountPreferences')}
     >
-      <PageHeader>{t('account.account_settings')}</PageHeader>
+      <PageHeader>{t('accountSettings')}</PageHeader>
 
       <AccountNavigation />
 
