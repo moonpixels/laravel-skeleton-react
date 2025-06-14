@@ -9,6 +9,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import {
   UserAvatar,
@@ -25,6 +26,8 @@ export function AppSidebar() {
 
   const cleanup = useMobileNavigation()
 
+  const { state, isMobile } = useSidebar()
+
   const primaryNavItems = [
     {
       label: t('dashboard'),
@@ -35,17 +38,20 @@ export function AppSidebar() {
   ]
 
   return (
-    <Sidebar>
+    <Sidebar variant="inset" collapsible="icon">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <Link
               href={route('dashboard')}
-              className="block p-2"
+              className="flex p-2 group-data-[collapsible=icon]:px-1"
               onClick={cleanup}
               prefetch
             >
-              <Logo className="h-6 w-auto" />
+              <Logo
+                iconOnly={state === 'collapsed'}
+                className="h-6 w-auto shrink-0"
+              />
             </Link>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -58,8 +64,13 @@ export function AppSidebar() {
               {primaryNavItems.map((item) => (
                 <SidebarMenuItem key={item.label}>
                   <SidebarMenuButton asChild isActive={item.isActive}>
-                    <Link href={item.href} onClick={cleanup} prefetch>
-                      <item.icon />
+                    <Link
+                      href={item.href}
+                      onClick={cleanup}
+                      className="group"
+                      prefetch
+                    >
+                      <item.icon className="text-muted-foreground group-hover/menu-item:text-sidebar-foreground group-data-[active=true]:text-sidebar-foreground" />
                       <span>{item.label}</span>
                     </Link>
                   </SidebarMenuButton>

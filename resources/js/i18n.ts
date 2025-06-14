@@ -6,19 +6,21 @@ import enGBCommon from './locales/en-GB/common.json'
 import enGBTranslation from './locales/en-GB/translation.json'
 import enGBValidation from './locales/en-GB/validation.json'
 
+const resources = {
+  'en-GB': {
+    common: enGBCommon,
+    translation: enGBTranslation,
+    validation: enGBValidation,
+  },
+}
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     ns: ['common', 'translation', 'validation'],
     defaultNS: 'translation',
-    resources: {
-      'en-GB': {
-        common: enGBCommon,
-        translation: enGBTranslation,
-        validation: enGBValidation,
-      },
-    },
+    resources,
     fallbackLng: 'en-GB',
     debug: import.meta.env.DEV,
     interpolation: {

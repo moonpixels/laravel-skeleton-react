@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="{{ app(App\Support\Localisation\Localisation::class)->getIso639Locale(app()->getLocale()) }}">
+<html
+    lang="{{ app(App\Support\Localisation\Localisation::class)->getIso639Locale(app()->getLocale()) }}"
+    class="antialiased bg-background lg:bg-sidebar"
+>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +14,7 @@
     @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
     @inertiaHead
 </head>
-<body class="font-sans antialiased h-full">
+<body>
 @inertia
 </body>
 </html>

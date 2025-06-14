@@ -29,14 +29,8 @@ export function UserAvatar() {
 
   return (
     <Avatar>
-      {user.avatarUrl ? (
-        <>
-          <AvatarImage alt={user.name} src={user.avatarUrl} />
-          <AvatarFallback delayMs={500}>{initials(user.name)}</AvatarFallback>
-        </>
-      ) : (
-        <span>{initials(user.name)}</span>
-      )}
+      <AvatarImage alt={user.name} src={user.avatarUrl ?? undefined} />
+      <AvatarFallback delayMs={500}>{initials(user.name)}</AvatarFallback>
     </Avatar>
   )
 }
