@@ -1,6 +1,6 @@
 export interface SupportedLocale {
   name: string
-  nativeName: string
+  native_name: string
   regional: string
 }
 
@@ -8,10 +8,10 @@ export interface User {
   id: number
   name: string
   email: string
-  emailVerifiedAt: string | null
-  twoFactorConfirmedAt: string | null
+  email_verified_at: string | null
+  two_factor_confirmed_at: string | null
   language: string
-  avatarUrl: string | null
+  avatar_url: string | null
 }
 
 export type PageProps<

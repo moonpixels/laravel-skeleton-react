@@ -26,7 +26,7 @@ const headingVariants = cva('leading-none tracking-tight', {
     },
   },
   defaultVariants: {
-    size: '2xl',
+    size: 'xl',
     weight: 'semibold',
   },
 })

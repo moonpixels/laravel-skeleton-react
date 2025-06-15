@@ -14,6 +14,7 @@ import { useFormValidation } from '@/hooks/use-form-validation'
 import { GuestLayout } from '@/layouts/guest-layout'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from '@inertiajs/react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
@@ -36,6 +37,10 @@ export default function TwoFactor() {
     },
   })
 
+  const [isRecoveryMode, setIsRecoveryMode] = useState(
+    form.getValues('is_recovery')
+  )
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     await new Promise<void>((resolve) =>
       router.post(route('two-factor.login'), values, {
@@ -48,14 +53,16 @@ export default function TwoFactor() {
   }
 
   function handleModeClick() {
-    form.setValue('is_recovery', !form.getValues('is_recovery'))
+    const isRecovery = !form.getValues('is_recovery')
+    form.setValue('is_recovery', isRecovery)
+    setIsRecoveryMode(isRecovery)
   }
 
   return (
     <GuestLayout title={t('twoFactorAuthentication')}>
       <AuthForm
         description={
-          form.getValues('is_recovery')
+          isRecoveryMode
             ? t('twoFactorRecoveryCodeDescription')
             : t('twoFactorCodeDescription')
         }
@@ -69,7 +76,7 @@ export default function TwoFactor() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    {form.getValues('is_recovery')
+                    {isRecoveryMode
                       ? t('recoveryCodeLabel')
                       : t('2faCodeLabel')}
                   </FormLabel>
@@ -86,21 +93,17 @@ export default function TwoFactor() {
               className="w-full"
               type="submit"
             >
-              {form.getValues('is_recovery')
-                ? t('recovery_code')
-                : t('confirmCode')}
+              {t('confirmCode')}
             </Button>
           </form>
         </Form>
 
         <AuthFormFooter>
-          <Text as="p" size="sm" variant="muted">
+          <Text size="sm" variant="muted">
             {t('havingTrouble') + ' '}
 
             <Button variant="link" onClick={handleModeClick}>
-              {form.getValues('is_recovery')
-                ? t('useCode')
-                : t('useRecoveryCode')}
+              {isRecoveryMode ? t('useCode') : t('useRecoveryCode')}
             </Button>
           </Text>
         </AuthFormFooter>

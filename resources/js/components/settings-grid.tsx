@@ -18,7 +18,7 @@ export function SettingsGrid({
         </Heading>
 
         {description && (
-          <Text as="p" size="sm" variant="muted">
+          <Text size="sm" variant="muted">
             {description}
           </Text>
         )}

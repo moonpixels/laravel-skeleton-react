@@ -12,14 +12,12 @@ const UserContext = createContext<UserState | undefined>(undefined)
 export function UserProvider({ children, ...props }: PropsWithChildren) {
   let userState = undefined
 
-  const page = usePage()
-
-  const user = page.props.user
+  const { user } = usePage().props
 
   if (user) {
     userState = {
       user,
-      twoFactorEnabled: !!user.twoFactorConfirmedAt,
+      twoFactorEnabled: !!user.two_factor_confirmed_at,
     }
   }
 

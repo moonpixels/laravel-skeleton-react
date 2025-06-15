@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html
     lang="{{ app(App\Support\Localisation\Localisation::class)->getIso639Locale(app()->getLocale()) }}"
-    class="antialiased bg-background lg:bg-sidebar"
 >
 <head>
     <meta charset="utf-8">

@@ -1,10 +1,13 @@
 import { PageHeader } from '@/components/page-header'
 import { Text } from '@/components/text'
+import { useUser } from '@/contexts/user-context'
 import { AuthenticatedLayout } from '@/layouts/authenticated-layout'
 import { useTranslation } from 'react-i18next'
 
 export default function Dashboard() {
   const { t } = useTranslation()
+
+  const { user } = useUser()
 
   return (
     <AuthenticatedLayout title={t('common:dashboard')}>
@@ -12,8 +15,7 @@ export default function Dashboard() {
 
       <div className="py-10">
         <Text size="sm" variant="muted">
-          Ipsum ipsa aliquam deserunt molestias incidunt optio. Labore aperiam
-          consequuntur natus sit repudiandae accusantium illum doloribus omnis.
+          Welcome back, {user.name}!
         </Text>
       </div>
     </AuthenticatedLayout>

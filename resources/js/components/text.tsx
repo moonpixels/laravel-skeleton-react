@@ -38,7 +38,7 @@ interface TextProps
 }
 
 export function Text({
-  as = 'span',
+  as = 'p',
   asChild = false,
   variant,
   size,

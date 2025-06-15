@@ -26,7 +26,7 @@ export function AppSidebar() {
 
   const cleanup = useMobileNavigation()
 
-  const { state, isMobile } = useSidebar()
+  const { state } = useSidebar()
 
   const primaryNavItems = [
     {

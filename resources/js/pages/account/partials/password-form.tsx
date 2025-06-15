@@ -30,7 +30,7 @@ export function PasswordForm() {
     useFormValidation()
 
   formSchema.refine(
-    (data) => data.password === data.passwordConfirmation,
+    (data) => data.password === data.password_confirmation,
     () => passwordConfirmationMessage()
   )
 

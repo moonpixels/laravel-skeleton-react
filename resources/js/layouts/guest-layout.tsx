@@ -1,36 +1,27 @@
+import { AppHead } from '@/components/app-head'
 import { Logo } from '@/components/logo'
-import { Text } from '@/components/text'
-import { DefaultLayout } from '@/layouts/default-layout'
 import { Link } from '@inertiajs/react'
-import { format } from 'date-fns'
 import { PropsWithChildren } from 'react'
-import { useTranslation } from 'react-i18next'
 
 export function GuestLayout({
   title,
   children,
 }: PropsWithChildren<{ title?: string }>) {
-  const { t } = useTranslation()
-
   return (
-    <DefaultLayout title={title}>
-      <div className="flex min-h-dvh w-full flex-col">
-        <header className="flex h-16 shrink-0 items-center justify-between px-4">
-          <Link href={route('dashboard')}>
-            <Logo className="h-6 w-auto" />
-          </Link>
-        </header>
+    <>
+      <AppHead title={title} />
 
-        <main className="flex grow justify-center px-4 py-16 sm:items-center">
-          {children}
+      <div className="flex min-h-dvh flex-col p-2">
+        <main className="lg:ring-foreground/5 dark:lg:ring-foreground/10 bg-background flex grow flex-col items-center justify-center px-4 py-6 lg:rounded-lg lg:p-10 lg:shadow-xs lg:ring-1">
+          <div className="flex w-full max-w-sm flex-col gap-10">
+            <Link href={route('dashboard')}>
+              <Logo className="h-6 w-auto" />
+            </Link>
+
+            {children}
+          </div>
         </main>
-
-        <footer className="m-auto flex h-16 w-full max-w-lg shrink-0 items-center justify-center px-4">
-          <Text className="opacity-75" size="xs" variant="muted">
-            {t('common:copyrightNotice', { year: format(new Date(), 'y') })}
-          </Text>
-        </footer>
       </div>
-    </DefaultLayout>
+    </>
   )
 }

@@ -27,9 +27,13 @@ interface UserDropdownItem {
 export function UserAvatar() {
   const { user } = useUser()
 
+  console.log('user', user)
+
+  console.log('UserAvatar', user.name, user.avatar_url)
+
   return (
     <Avatar>
-      <AvatarImage alt={user.name} src={user.avatarUrl ?? undefined} />
+      <AvatarImage alt={user.name} src={user.avatar_url ?? undefined} />
       <AvatarFallback delayMs={500}>{initials(user.name)}</AvatarFallback>
     </Avatar>
   )
