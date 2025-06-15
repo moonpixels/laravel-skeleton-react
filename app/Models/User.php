@@ -79,6 +79,14 @@ final class User extends Authenticatable implements MustVerifyEmail
         );
     }
 
+    /**
+     * @return Attribute<string, never>
+     */
+    public function firstName(): Attribute
+    {
+        return Attribute::get(fn (): string => Str::before($this->name, ' '));
+    }
+
     #[Override]
     protected function casts(): array
     {
@@ -89,13 +97,5 @@ final class User extends Authenticatable implements MustVerifyEmail
             'two_factor_recovery_codes' => 'encrypted:array',
             'two_factor_confirmed_at' => 'immutable_datetime',
         ];
-    }
-
-    /**
-     * @return Attribute<string, never>
-     */
-    protected function firstName(): Attribute
-    {
-        return Attribute::get(fn (): string => Str::before($this->name, ' '));
     }
 }
