@@ -95,7 +95,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
         </Form>
 
         <AuthFormFooter>
-          <Text as="p" size="sm" variant="muted">
+          <Text size="sm" variant="muted">
             {t('rememberedPassword') + ' '}
 
             <TextLink href={route('login')}>{t('logIn')}</TextLink>

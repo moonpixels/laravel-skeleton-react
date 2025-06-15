@@ -24,11 +24,12 @@ final class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'first_name' => $this->firstName,
             'email' => $this->email,
             'email_verified_at' => $this->email_verified_at?->toAtomString(),
             'two_factor_confirmed_at' => $this->two_factor_confirmed_at?->toAtomString(),
             'language' => Localisation::getIso639Locale($this->language),
-            'avatar_url' => $this->avatar_url,
+            'avatar_url' => $this->avatarUrl,
         ];
     }
 }

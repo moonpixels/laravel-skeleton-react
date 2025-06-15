@@ -90,7 +90,7 @@ export function PreferencesForm() {
   const supportedLocaleOptions = Object.values(page.props.supportedLocales).map(
     (data) => ({
       value: data.regional,
-      label: data.nativeName,
+      label: data.native_name,
       icon: getCountryFlag(data.regional),
     })
   )

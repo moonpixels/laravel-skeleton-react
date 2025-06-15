@@ -13,12 +13,12 @@ export function SettingsGrid({
   return (
     <div className="grid grid-cols-1 gap-12 py-16 md:grid-cols-3">
       <div className="space-y-2">
-        <Heading as="h2" size="lg">
+        <Heading as="h2" size="base">
           {title}
         </Heading>
 
         {description && (
-          <Text as="p" size="sm" variant="muted">
+          <Text size="sm" variant="muted">
             {description}
           </Text>
         )}

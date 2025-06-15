@@ -9,8 +9,8 @@
   "avatarDescription": "JPG, GIF or PNG up to 5MB.",
   "basicInformation": "Basic information",
   "basicInformationDescription": "Update the basic information for your account.",
-  "change_password": "Change password",
   "changePasswordDescription": "Update the password used to log in to your account.",
+  "change_password": "Change password",
   "confirmCode": "Confirm code",
   "confirmNewPassword": "Confirm new password",
   "confirmYourPassword": "Confirm your password",
@@ -77,5 +77,6 @@
   "useRecoveryCode": "Use a recovery code",
   "verifyEmail": "Verify your email address",
   "verifyEmailDescription": "To complete registration, we need to verify your email address. Please check your email for the verification link.",
-  "viewRecoveryCodes": "View recovery codes"
+  "viewRecoveryCodes": "View recovery codes",
+  "welcomeMessage": "Welcome back, {{name}}!"
 }

@@ -156,7 +156,7 @@ export default function Register() {
         </Form>
 
         <AuthFormFooter>
-          <Text as="p" size="sm" variant="muted">
+          <Text size="sm" variant="muted">
             {t('alreadyHaveAccount') + ' '}
 
             <TextLink href={route('login')}>{t('logIn')}</TextLink>

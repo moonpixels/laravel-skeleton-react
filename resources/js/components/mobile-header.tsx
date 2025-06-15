@@ -9,11 +9,11 @@ export function MobileHeader() {
 
   return isMobile ? (
     <header>
-      <div className="flex h-14 w-full items-center justify-between px-4 sm:px-6">
+      <div className="flex h-14 w-full items-center justify-between border-b px-4 sm:px-6">
         <SidebarTrigger />
 
         <Link href={route('dashboard')}>
-          <Logo className="h-6 w-auto" />
+          <Logo iconOnly className="h-6 w-auto" />
         </Link>
 
         <UserDropdown

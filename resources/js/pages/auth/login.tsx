@@ -147,7 +147,7 @@ export default function Login({ status }: { status?: string }) {
         </Form>
 
         <AuthFormFooter>
-          <Text as="p" size="sm" variant="muted">
+          <Text size="sm" variant="muted">
             {t('noAccount') + ' '}
 
             <TextLink href={route('register')}>{t('createAccount')}</TextLink>
