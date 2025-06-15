@@ -12,7 +12,7 @@ use Inertia\Inertia;
 Route::get('/', fn () => redirect()->route('login'));
 
 Route::middleware(['auth', 'verified'])->group(function (): void {
-    Route::get('dashboard', fn () => Inertia::render('dashboard', ['snake_case' => 'testing']))->name('dashboard');
+    Route::get('dashboard', fn () => Inertia::render('dashboard'))->name('dashboard');
 
     Route::controller(AccountAvatarController::class)->group(function (): void {
         Route::put('account/avatar', 'update')->name('account.avatar.update');
