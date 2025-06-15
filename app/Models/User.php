@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Override;
 
 /**
@@ -32,6 +33,7 @@ use Override;
  * @property ?CarbonImmutable $created_at
  * @property ?CarbonImmutable $updated_at
  * @property-read ?string $avatar_url
+ * @property-read string $first_name
  */
 final class User extends Authenticatable implements MustVerifyEmail
 {
@@ -87,5 +89,13 @@ final class User extends Authenticatable implements MustVerifyEmail
             'two_factor_recovery_codes' => 'encrypted:array',
             'two_factor_confirmed_at' => 'immutable_datetime',
         ];
+    }
+
+    /**
+     * @return Attribute<string, never>
+     */
+    protected function firstName(): Attribute
+    {
+        return Attribute::get(fn (): string => Str::before($this->name, ' '));
     }
 }

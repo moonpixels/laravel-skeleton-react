@@ -24,6 +24,7 @@ final class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'first_name' => $this->first_name,
             'email' => $this->email,
             'email_verified_at' => $this->email_verified_at?->toAtomString(),
             'two_factor_confirmed_at' => $this->two_factor_confirmed_at?->toAtomString(),

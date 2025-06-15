@@ -87,8 +87,6 @@ export function PreferencesForm() {
 
   const { setFormServerErrors } = useFormValidation()
 
-  console.log(page.props.supportedLocales)
-
   const supportedLocaleOptions = Object.values(page.props.supportedLocales).map(
     (data) => ({
       value: data.regional,

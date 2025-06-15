@@ -11,11 +11,13 @@ export default function Dashboard() {
 
   return (
     <AuthenticatedLayout title={t('common:dashboard')}>
-      <PageHeader>{t('common:dashboard')}</PageHeader>
+      <PageHeader>{t('welcomeMessage', { name: user.first_name })}</PageHeader>
 
       <div className="py-10">
         <Text size="sm" variant="muted">
-          Welcome back, {user.name}!
+          Mollitia necessitatibus vel iure esse ut ipsum accusantium odit
+          voluptatum. Numquam explicabo doloribus vel possimus facere dolor et.
+          Vitae dolore impedit cumque iure at molestias rerum.
         </Text>
       </div>
     </AuthenticatedLayout>
