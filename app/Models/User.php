@@ -9,7 +9,6 @@ use Carbon\CarbonImmutable;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -32,8 +31,6 @@ use Override;
  * @property ?CarbonImmutable $two_factor_confirmed_at
  * @property ?CarbonImmutable $created_at
  * @property ?CarbonImmutable $updated_at
- * @property-read ?string $avatar_url
- * @property-read string $first_name
  */
 final class User extends Authenticatable implements MustVerifyEmail
 {
@@ -42,6 +39,14 @@ final class User extends Authenticatable implements MustVerifyEmail
      * @use TwoFactorAuthenticatable<User>
      */
     use HasFactory, MassPrunable, Notifiable, TwoFactorAuthenticatable;
+
+    public ?string $avatarUrl {
+        get => $this->avatar_path ? Storage::url($this->avatar_path) : null;
+    }
+
+    public string $firstName {
+        get => Str::before($this->name, ' ');
+    }
 
     protected $hidden = [
         'password',
@@ -66,25 +71,6 @@ final class User extends Authenticatable implements MustVerifyEmail
         return self::query()
             ->whereNull('email_verified_at')
             ->where('created_at', '<=', now()->subDay());
-    }
-
-    /**
-     * @return Attribute<string|null, never>
-     */
-    public function avatarUrl(): Attribute
-    {
-        return Attribute::get(fn (): ?string => $this->avatar_path
-            ? Storage::url($this->avatar_path)
-            : null
-        );
-    }
-
-    /**
-     * @return Attribute<string, never>
-     */
-    public function firstName(): Attribute
-    {
-        return Attribute::get(fn (): string => Str::before($this->name, ' '));
     }
 
     #[Override]
