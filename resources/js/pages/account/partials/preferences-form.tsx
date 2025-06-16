@@ -18,35 +18,48 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
-import { useDarkMode } from '@/contexts/dark-mode-context'
+import { Theme, useTheme } from '@/contexts/theme-context'
 import { useFormValidation } from '@/hooks/use-form-validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router, usePage } from '@inertiajs/react'
-import { Globe } from 'lucide-react'
+import { Globe, MonitorIcon, MoonIcon, SunIcon } from 'lucide-react'
 import { ElementType } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-const formSchema = z.object({
-  language: z.string(),
-})
+const themeOptions = [
+  {
+    label: 'common:system',
+    value: 'system',
+    icon: MonitorIcon,
+  },
+  {
+    label: 'common:light',
+    value: 'light',
+    icon: SunIcon,
+  },
+  {
+    label: 'common:dark',
+    value: 'dark',
+    icon: MoonIcon,
+  },
+]
 
-export function DarkModeForm() {
+export function ThemeForm() {
   const { t } = useTranslation()
 
-  const { isDarkMode, setDarkMode } = useDarkMode()
+  const { theme, setTheme } = useTheme()
 
   const form = useForm({
     defaultValues: {
-      use_dark_mode: isDarkMode,
+      theme: theme,
     },
   })
 
-  function handleDarkModeChange(useDarkMode: boolean) {
-    setDarkMode(useDarkMode)
+  function handleThemeChange(theme: Theme) {
+    setTheme(theme)
   }
 
   return (
@@ -54,22 +67,40 @@ export function DarkModeForm() {
       <form className="mt-6 space-y-6">
         <FormField
           control={form.control}
-          name="use_dark_mode"
+          name="theme"
           render={({ field }) => (
-            <FormItem className="flex justify-between">
+            <FormItem className="flex flex-col justify-between sm:flex-row">
               <div className="space-y-2">
-                <FormLabel>{t('useDarkMode')}</FormLabel>
-                <FormDescription>{t('useDarkModeDescription')}</FormDescription>
+                <FormLabel>{t('translation:themeSelectLabel')}</FormLabel>
+                <FormDescription>
+                  {t('translation:themeSelectDescription')}
+                </FormDescription>
               </div>
 
               <FormControl>
-                <Switch
-                  checked={isDarkMode}
-                  onCheckedChange={(e) => {
-                    field.onChange(e)
-                    handleDarkModeChange(e)
+                <Select
+                  onValueChange={(value: Theme) => {
+                    field.onChange(value)
+                    handleThemeChange(value)
                   }}
-                />
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger className="max-w-32">
+                      <SelectValue />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {themeOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        <span className="flex items-center gap-2 truncate">
+                          <option.icon className="text-muted-foreground h-3 w-auto shrink-0" />
+                          {t(option.label)}
+                        </span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -79,6 +110,10 @@ export function DarkModeForm() {
     </Form>
   )
 }
+
+const formSchema = z.object({
+  language: z.string(),
+})
 
 export function PreferencesForm() {
   const { t, i18n } = useTranslation()
@@ -137,7 +172,7 @@ export function PreferencesForm() {
       description={t('preferencesDescription')}
       title={t('preferences')}
     >
-      <DarkModeForm />
+      <ThemeForm />
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-6">
@@ -145,15 +180,19 @@ export function PreferencesForm() {
             control={form.control}
             name="language"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t('common:language')}</FormLabel>
+              <FormItem className="flex flex-col justify-between sm:flex-row sm:items-center">
+                <div className="space-y-2">
+                  <FormLabel>{t('common:language')}</FormLabel>
+                  <FormDescription>{t('selectYourLanguage')}</FormDescription>
+                </div>
+
                 <FormControl>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="max-w-48">
                         <SelectValue />
                       </SelectTrigger>
                     </FormControl>
@@ -169,7 +208,6 @@ export function PreferencesForm() {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormDescription>{t('selectYourLanguage')}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

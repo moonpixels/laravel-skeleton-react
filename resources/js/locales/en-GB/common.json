@@ -8,6 +8,7 @@
   "copied": "Copied",
   "copy": "Copy",
   "copyrightNotice": "Copyright © {{year}} Moon Pixels Ltd. All rights reserved.",
+  "dark": "Dark",
   "dashboard": "Dashboard",
   "delete": "Delete",
   "disable": "Disable",
@@ -16,8 +17,10 @@
   "followUs": "Follow us on {{name}}",
   "github": "GitHub",
   "language": "Language",
+  "light": "Light",
   "name": "Name",
   "password": "Password",
   "remove": "Remove",
-  "submit": "Submit"
+  "submit": "Submit",
+  "system": "System"
 }

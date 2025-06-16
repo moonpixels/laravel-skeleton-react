@@ -1,9 +1,9 @@
-import { useDarkMode } from '@/contexts/dark-mode-context'
+import { useTheme } from '@/contexts/theme-context'
 import { AlertCircle, CheckCircle, Info, XCircle } from 'lucide-react'
 import { Toaster as Sonner, ToasterProps } from 'sonner'
 
 function Toaster({ ...props }: ToasterProps) {
-  const { isDarkMode } = useDarkMode()
+  const { isDarkMode } = useTheme()
 
   const icons = {
     success: (
