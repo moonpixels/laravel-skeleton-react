@@ -19,8 +19,11 @@
   "language": "Language",
   "light": "Light",
   "name": "Name",
+  "next": "Next",
   "password": "Password",
+  "previous": "Previous",
   "remove": "Remove",
   "submit": "Submit",
-  "system": "System"
+  "system": "System",
+  "users": "Users"
 }
