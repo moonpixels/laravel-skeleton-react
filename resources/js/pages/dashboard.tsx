@@ -32,7 +32,7 @@ import { useTranslation } from 'react-i18next'
 const userTableColumns: ColumnDef<User>[] = [
   {
     accessorKey: 'name',
-    header: 'common:name',
+    header: 'name',
     cell: ({ row }) => {
       const user = row.original
 
@@ -49,15 +49,15 @@ const userTableColumns: ColumnDef<User>[] = [
   },
   {
     accessorKey: 'email',
-    header: 'common:email',
+    header: 'email',
   },
   {
     accessorKey: 'language',
-    header: 'common:language',
+    header: 'language',
   },
   {
     accessorKey: 'two_factor_confirmed_at',
-    header: 'translation:2fa',
+    header: '2fa',
     cell: ({ cell }) => {
       return cell.getValue() ? (
         <CircleCheckIcon
@@ -99,12 +99,12 @@ export default function Dashboard({
   const { user } = useUser()
 
   return (
-    <AuthenticatedLayout title={t('common:dashboard')}>
+    <AuthenticatedLayout title={t('dashboard')}>
       <PageHeader>{t('welcomeMessage', { name: user.first_name })}</PageHeader>
 
       <div className="py-10">
         <Heading as="h2" size="base" className="mb-4">
-          {t('common:users')}
+          {t('users')}
         </Heading>
 
         {uuid && (
@@ -151,15 +151,15 @@ function UserActionsMenu({ user }: { user: User }) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">{t('common:openMenu')}</span>
+            <span className="sr-only">{t('openMenu')}</span>
             <MoreHorizontalIcon className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{t('common:actions')}</DropdownMenuLabel>
+          <DropdownMenuLabel>{t('actions')}</DropdownMenuLabel>
           <DropdownMenuItem onClick={handleCopyClick}>
             <ClipboardIcon className="size-4" />
-            {t('translation:copyId')}
+            {t('copyId')}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

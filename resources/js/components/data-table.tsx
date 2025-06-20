@@ -222,19 +222,19 @@ export function DataTableColumnHeader<TData, TValue>({
             onClick={() => column.toggleSorting(false)}
           >
             <ArrowUpIcon />
-            {t('translation:sortAsc')}
+            {t('sortAsc')}
           </DropdownMenuItem>
           <DropdownMenuItem
             disabled={!canSort}
             onClick={() => column.toggleSorting(true)}
           >
             <ArrowDownIcon />
-            {t('translation:sortDesc')}
+            {t('sortDesc')}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
             <EyeOffIcon />
-            {t('translation:hideColumn')}
+            {t('hideColumn')}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -251,10 +251,10 @@ function DataTableEmptyState({ columnsLength }: { columnsLength: number }) {
         <div className="mx-auto flex max-w-xs flex-col items-center py-4 text-center text-wrap">
           <ScanSearchIcon className="text-muted-foreground size-8" />
           <p className="text-foreground mt-4 font-medium">
-            {t('translation:emptyTableTitle')}
+            {t('emptyTableTitle')}
           </p>
           <p className="text-muted-foreground mt-2 text-sm">
-            {t('translation:emptyTableDescription')}
+            {t('emptyTableDescription')}
           </p>
         </div>
       </TableCell>
@@ -278,7 +278,7 @@ function DataTablePagination({
   return (
     <div className="flex flex-col items-center justify-between gap-2 sm:flex-row">
       <Text as="span" size="sm" className="shrink-0" variant="muted">
-        {t('translation:dataTableResults', {
+        {t('dataTableResults', {
           from: meta.from,
           to: meta.to,
           total: meta.total,
@@ -334,11 +334,11 @@ export function DataTableViewOptions<TData>({
       <DropdownMenuTrigger asChild>
         <Button variant="outline">
           <EyeIcon className="text-muted-foreground" />
-          {t('common:columns')}
+          {t('columns')}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[150px]">
-        <DropdownMenuLabel>{t('common:toggleColumns')}</DropdownMenuLabel>
+        <DropdownMenuLabel>{t('toggleColumns')}</DropdownMenuLabel>
         {columns
           .filter(
             (column) =>

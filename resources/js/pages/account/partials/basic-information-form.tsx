@@ -70,7 +70,7 @@ export function BasicInformationForm() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('common:name')}</FormLabel>
+                <FormLabel>{t('name')}</FormLabel>
                 <FormControl>
                   <Input autoComplete="name" required {...field} />
                 </FormControl>
@@ -84,7 +84,7 @@ export function BasicInformationForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('common:email')}</FormLabel>
+                <FormLabel>{t('email')}</FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="username"
@@ -100,7 +100,7 @@ export function BasicInformationForm() {
           />
 
           <Button loading={form.formState.isSubmitting} type="submit">
-            {t('common:submit')}
+            {t('submit')}
           </Button>
         </form>
       </Form>

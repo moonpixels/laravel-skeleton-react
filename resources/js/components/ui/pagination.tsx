@@ -78,7 +78,7 @@ function PaginationPrevious({
       {...props}
     >
       <MoveLeftIcon className="text-muted-foreground group-hover:text-foreground size-4" />
-      <span>{t('common:previous')}</span>
+      <span>{t('previous')}</span>
     </PaginationLink>
   )
 }
@@ -96,7 +96,7 @@ function PaginationNext({
       className={cn('group gap-2 px-2.5 sm:pr-2.5', className)}
       {...props}
     >
-      <span>{t('common:next')}</span>
+      <span>{t('next')}</span>
       <MoveRightIcon className="text-muted-foreground group-hover:text-foreground size-4" />
     </PaginationLink>
   )
@@ -116,7 +116,7 @@ function PaginationEllipsis({
       {...props}
     >
       <MoreHorizontalIcon className="size-4" />
-      <span className="sr-only">{t('translation:morePages')}</span>
+      <span className="sr-only">{t('morePages')}</span>
     </span>
   )
 }
