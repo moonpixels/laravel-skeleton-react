@@ -7,6 +7,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useUser } from '@/contexts/user-context'
@@ -155,6 +156,7 @@ function UserActionsMenu({ user }: { user: User }) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
+          <DropdownMenuLabel>{t('common:actions')}</DropdownMenuLabel>
           <DropdownMenuItem onClick={handleCopyClick}>
             <ClipboardIcon className="size-4" />
             {t('translation:copyId')}

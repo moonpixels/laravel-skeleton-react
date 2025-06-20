@@ -2,8 +2,11 @@ import { Text } from '@/components/text'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import {
@@ -32,6 +35,7 @@ import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
+  RowData,
   SortingState,
   TableOptions,
   Updater,
@@ -42,10 +46,23 @@ import {
   ArrowDownIcon,
   ArrowUpIcon,
   ChevronsUpDownIcon,
+  EyeIcon,
+  EyeOffIcon,
   ScanSearchIcon,
 } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+
+declare module '@tanstack/react-table' {
+  /**
+   * We include a `translationKey` in the column meta to allow for
+   * translating column headers.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface ColumnMeta<TData extends RowData, TValue> {
+    translationKey?: string
+  }
+}
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -112,7 +129,11 @@ export function DataTable<TData, TValue>({
   const table = useReactTable(merge(reactTableOptions, tableOptions))
 
   return (
-    <div>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div></div>
+        <DataTableViewOptions columns={table.getAllColumns()} />
+      </div>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -210,6 +231,11 @@ export function DataTableColumnHeader<TData, TValue>({
             <ArrowDownIcon />
             {t('translation:sortDesc')}
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
+            <EyeOffIcon />
+            {t('translation:hideColumn')}
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
@@ -250,7 +276,7 @@ function DataTablePagination({
   const pageLinks = meta.links.slice(1, -1)
 
   return (
-    <div className="mt-4 flex flex-col items-center justify-between gap-2 sm:flex-row">
+    <div className="flex flex-col items-center justify-between gap-2 sm:flex-row">
       <Text as="span" size="sm" className="shrink-0" variant="muted">
         {t('translation:dataTableResults', {
           from: meta.from,
@@ -293,5 +319,48 @@ function DataTablePagination({
         </PaginationContent>
       </Pagination>
     </div>
+  )
+}
+
+export function DataTableViewOptions<TData>({
+  columns,
+}: {
+  columns: Column<TData>[]
+}) {
+  const { t } = useTranslation()
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">
+          <EyeIcon className="text-muted-foreground" />
+          {t('common:columns')}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-[150px]">
+        <DropdownMenuLabel>{t('common:toggleColumns')}</DropdownMenuLabel>
+        {columns
+          .filter(
+            (column) =>
+              (typeof column.columnDef.header === 'string' ||
+                typeof column.columnDef.meta?.translationKey === 'string') &&
+              column.getCanHide()
+          )
+          .map((column) => {
+            return (
+              <DropdownMenuCheckboxItem
+                key={column.id}
+                checked={column.getIsVisible()}
+                onCheckedChange={(value) => column.toggleVisibility(value)}
+                onSelect={(e) => e.preventDefault()}
+              >
+                {column.columnDef.meta?.translationKey
+                  ? t(column.columnDef.meta.translationKey)
+                  : t(column.columnDef.header as string)}
+              </DropdownMenuCheckboxItem>
+            )
+          })}
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

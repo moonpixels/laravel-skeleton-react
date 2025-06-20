@@ -1,8 +1,10 @@
 {
+  "actions": "Actions",
   "avatar": "Avatar",
   "cancel": "Cancel",
   "change": "Change",
   "close": "Close",
+  "columns": "Columns",
   "confirm": "Confirm",
   "confirmPassword": "Confirm password",
   "copied": "Copied",
@@ -26,5 +28,6 @@
   "remove": "Remove",
   "submit": "Submit",
   "system": "System",
+  "toggleColumns": "Toggle columns",
   "users": "Users"
 }
