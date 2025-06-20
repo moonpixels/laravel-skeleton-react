@@ -27,11 +27,11 @@ import { PaginationMeta } from '@/types'
 import { cn } from '@/utils/utils'
 import { router } from '@inertiajs/react'
 import {
+  Column,
   ColumnDef,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
-  Header,
   SortingState,
   TableOptions,
   Updater,
@@ -120,7 +120,18 @@ export function DataTable<TData, TValue>({
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>
-                    <DataTableColumnHeader header={header} />
+                    {header.isPlaceholder ? null : typeof header.column
+                        .columnDef.header === 'string' ? (
+                      <DataTableColumnHeader
+                        column={header.column}
+                        title={header.column.columnDef.header}
+                      />
+                    ) : (
+                      flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )
+                    )}
                   </TableHead>
                 )
               })}
@@ -151,33 +162,22 @@ export function DataTable<TData, TValue>({
   )
 }
 
-function DataTableColumnHeader<TData, TValue>({
-  header,
+export function DataTableColumnHeader<TData, TValue>({
+  column,
+  title,
+  className,
 }: {
-  header: Header<TData, TValue>
+  column: Column<TData, TValue>
+  title: string
+  className?: string
 }) {
   const { t } = useTranslation()
-
-  if (header.isPlaceholder) {
-    return null
-  }
-
-  const column = header.column
-
-  // If the header is not a translation key, render it directly
-  if (typeof column.columnDef.header !== 'string') {
-    return flexRender(column.columnDef.header, header.getContext())
-  }
 
   const canSort = column.getCanSort()
   const sorting = column.getIsSorted()
 
-  if (!canSort) {
-    return t(column.columnDef.header)
-  }
-
   return (
-    <div className={cn('flex items-center gap-2')}>
+    <div className={cn('flex items-center gap-2', className)}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -185,7 +185,7 @@ function DataTableColumnHeader<TData, TValue>({
             size="sm"
             className="data-[state=open]:bg-accent -ml-2.5 h-8"
           >
-            <span>{t(column.columnDef.header)}</span>
+            <span>{t(title)}</span>
             {sorting === 'desc' ? (
               <ArrowDownIcon />
             ) : sorting === 'asc' ? (
@@ -196,11 +196,17 @@ function DataTableColumnHeader<TData, TValue>({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
-          <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
+          <DropdownMenuItem
+            disabled={!canSort}
+            onClick={() => column.toggleSorting(false)}
+          >
             <ArrowUpIcon />
             {t('translation:sortAsc')}
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
+          <DropdownMenuItem
+            disabled={!canSort}
+            onClick={() => column.toggleSorting(true)}
+          >
             <ArrowDownIcon />
             {t('translation:sortDesc')}
           </DropdownMenuItem>
