@@ -2,7 +2,15 @@ import { DataTable } from '@/components/data-table'
 import { Heading } from '@/components/heading'
 import { PageHeader } from '@/components/page-header'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { useUser } from '@/contexts/user-context'
+import { useCopy } from '@/hooks/use-copy'
 import { AuthenticatedLayout } from '@/layouts/authenticated-layout'
 import { PaginatedData } from '@/types'
 import { User } from '@/types/models'
@@ -12,7 +20,12 @@ import {
   ColumnFiltersState,
   SortingState,
 } from '@tanstack/react-table'
-import { CircleCheckIcon, XCircleIcon } from 'lucide-react'
+import {
+  CircleCheckIcon,
+  ClipboardIcon,
+  MoreHorizontalIcon,
+  XCircleIcon,
+} from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 const userTableColumns: ColumnDef<User>[] = [
@@ -21,6 +34,7 @@ const userTableColumns: ColumnDef<User>[] = [
     header: 'common:name',
     cell: ({ row }) => {
       const user = row.original
+
       return (
         <div className="inline-flex items-center gap-4 align-middle">
           <Avatar>
@@ -57,6 +71,14 @@ const userTableColumns: ColumnDef<User>[] = [
       )
     },
     enableSorting: false,
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      const user = row.original
+
+      return <UserActionsMenu user={user} />
+    },
   },
 ]
 
@@ -111,5 +133,34 @@ export default function Dashboard({
         />
       </div>
     </AuthenticatedLayout>
+  )
+}
+
+function UserActionsMenu({ user }: { user: User }) {
+  const { t } = useTranslation()
+
+  const { copyText } = useCopy()
+
+  function handleCopyClick() {
+    copyText(user.id.toString())
+  }
+
+  return (
+    <div className="flex items-center justify-end">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">{t('common:openMenu')}</span>
+            <MoreHorizontalIcon className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={handleCopyClick}>
+            <ClipboardIcon className="size-4" />
+            {t('translation:copyId')}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   )
 }
