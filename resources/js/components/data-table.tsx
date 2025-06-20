@@ -1,5 +1,6 @@
 import { Text } from '@/components/text'
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -35,6 +36,8 @@ import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
+  Table as ReactTable,
+  Row,
   RowData,
   SortingState,
   TableOptions,
@@ -197,6 +200,8 @@ export function DataTableColumnHeader<TData, TValue>({
   const canSort = column.getCanSort()
   const sorting = column.getIsSorted()
 
+  const canHide = column.getCanHide()
+
   return (
     <div className={cn('flex items-center gap-2', className)}>
       <DropdownMenu>
@@ -232,7 +237,10 @@ export function DataTableColumnHeader<TData, TValue>({
             {t('sortDesc')}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
+          <DropdownMenuItem
+            disabled={!canHide}
+            onClick={() => column.toggleVisibility(false)}
+          >
             <EyeOffIcon />
             {t('hideColumn')}
           </DropdownMenuItem>
@@ -362,5 +370,40 @@ export function DataTableViewOptions<TData>({
           })}
       </DropdownMenuContent>
     </DropdownMenu>
+  )
+}
+
+export function DataTableCheckboxHeader<TData>({
+  table,
+}: {
+  table: ReactTable<TData>
+}) {
+  const { t } = useTranslation()
+
+  return (
+    <div className="flex items-center">
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label={t('selectAllRows')}
+      />
+    </div>
+  )
+}
+
+export function DataTableCheckboxCell<TData>({ row }: { row: Row<TData> }) {
+  const { t } = useTranslation()
+
+  return (
+    <div className="flex items-center">
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label={t('selectRow', { row: row.index + 1 })}
+      />
+    </div>
   )
 }

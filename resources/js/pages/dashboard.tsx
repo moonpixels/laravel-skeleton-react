@@ -1,4 +1,8 @@
-import { DataTable } from '@/components/data-table'
+import {
+  DataTable,
+  DataTableCheckboxCell,
+  DataTableCheckboxHeader,
+} from '@/components/data-table'
 import { Heading } from '@/components/heading'
 import { PageHeader } from '@/components/page-header'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -30,6 +34,13 @@ import {
 import { useTranslation } from 'react-i18next'
 
 const userTableColumns: ColumnDef<User>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => <DataTableCheckboxHeader table={table} />,
+    cell: ({ row }) => <DataTableCheckboxCell row={row} />,
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: 'name',
     header: 'name',
@@ -80,6 +91,8 @@ const userTableColumns: ColumnDef<User>[] = [
 
       return <UserActionsMenu user={user} />
     },
+    enableSorting: false,
+    enableHiding: false,
   },
 ]
 
