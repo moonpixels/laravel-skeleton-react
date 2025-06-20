@@ -16,6 +16,7 @@
     "laravel/tinker": "^v2.9",
     "league/flysystem-aws-s3-v3": "^3.24",
     "pragmarx/google2fa": "^v8.0",
+    "spatie/laravel-query-builder": "^6.3",
     "tightenco/ziggy": "^v2.0"
   },
   "require-dev": {

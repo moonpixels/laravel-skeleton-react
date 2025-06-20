@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Mixins\RequestMixin;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Override;
+use ReflectionException;
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -27,12 +30,16 @@ final class AppServiceProvider extends ServiceProvider
         // @codeCoverageIgnoreEnd
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public function boot(): void
     {
         $this->configureCommands();
         $this->configureModels();
         $this->configureVite();
         $this->configureDates();
+        $this->configureMixins();
     }
 
     private function configureCommands(): void
@@ -55,5 +62,13 @@ final class AppServiceProvider extends ServiceProvider
     private function configureDates(): void
     {
         Date::use(CarbonImmutable::class);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    private function configureMixins(): void
+    {
+        Request::mixin(new RequestMixin);
     }
 }

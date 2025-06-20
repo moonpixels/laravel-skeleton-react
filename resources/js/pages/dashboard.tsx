@@ -7,7 +7,11 @@ import { AuthenticatedLayout } from '@/layouts/authenticated-layout'
 import { PaginatedData } from '@/types'
 import { User } from '@/types/models'
 import { initials } from '@/utils/strings'
-import { ColumnDef } from '@tanstack/react-table'
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+} from '@tanstack/react-table'
 import { CircleCheckIcon, XCircleIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
@@ -18,7 +22,7 @@ const userTableColumns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const user = row.original
       return (
-        <div className="inline-flex items-center gap-4">
+        <div className="inline-flex items-center gap-4 align-middle">
           <Avatar>
             <AvatarImage alt={user.name} src={user.avatar_url ?? undefined} />
             <AvatarFallback>{initials(user.name)}</AvatarFallback>
@@ -56,7 +60,17 @@ const userTableColumns: ColumnDef<User>[] = [
   },
 ]
 
-export default function Dashboard({ users }: { users: PaginatedData<User> }) {
+export default function Dashboard({
+  users,
+  uuid,
+  sorts,
+  filters,
+}: {
+  users: PaginatedData<User>
+  uuid: string
+  sorts: SortingState | null
+  filters: ColumnFiltersState | null
+}) {
   const { t } = useTranslation()
 
   const { user } = useUser()
@@ -70,11 +84,30 @@ export default function Dashboard({ users }: { users: PaginatedData<User> }) {
           {t('common:users')}
         </Heading>
 
+        {uuid && (
+          <pre className="text-muted-foreground text-xs">
+            {JSON.stringify({ uuid }, null, 2)}
+          </pre>
+        )}
+
+        {sorts && (
+          <pre className="text-muted-foreground text-xs">
+            {JSON.stringify(sorts, null, 2)}
+          </pre>
+        )}
+
+        {filters && (
+          <pre className="text-muted-foreground text-xs">
+            {JSON.stringify(filters, null, 2)}
+          </pre>
+        )}
+
         <DataTable
           columns={userTableColumns}
           data={users.data}
           meta={users.meta}
           dataProps={['users']}
+          initialSortingState={sorts ?? []}
         />
       </div>
     </AuthenticatedLayout>

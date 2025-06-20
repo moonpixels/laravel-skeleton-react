@@ -25,6 +25,7 @@ import {
 } from '@/components/ui/table'
 import { PaginationMeta } from '@/types'
 import { cn } from '@/utils/utils'
+import { router } from '@inertiajs/react'
 import {
   ColumnDef,
   flexRender,
@@ -33,16 +34,17 @@ import {
   Header,
   SortingState,
   TableOptions,
+  Updater,
   useReactTable,
 } from '@tanstack/react-table'
 import { merge } from 'es-toolkit'
 import {
-  ArrowDownWideNarrowIcon,
-  ArrowUpDownIcon,
-  ArrowUpNarrowWide,
+  ArrowDownIcon,
+  ArrowUpIcon,
+  ChevronsUpDownIcon,
   ScanSearchIcon,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface DataTableProps<TData, TValue> {
@@ -54,21 +56,42 @@ interface DataTableProps<TData, TValue> {
     TableOptions<TData>,
     'data' | 'columns' | 'getCoreRowModel'
   >
+  initialSortingState?: SortingState
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   meta,
-  dataProps = undefined,
+  dataProps = [],
   tableOptions = {},
+  initialSortingState = [],
 }: DataTableProps<TData, TValue>) {
   const [pagination, setPagination] = useState({
     pageIndex: meta ? meta.current_page - 1 : 0,
     pageSize: meta ? meta.per_page : 15,
   })
 
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>(initialSortingState)
+
+  const handleSortingChange = useCallback(
+    (updater: Updater<SortingState>) => {
+      const newValue =
+        typeof updater === 'function' ? updater(sorting) : updater
+
+      setSorting(newValue)
+
+      const sort = newValue.map((s) => (s.desc ? `-${s.id}` : s.id)).join(',')
+
+      router.reload({
+        data: {
+          sort,
+        },
+        only: dataProps,
+      })
+    },
+    [sorting, dataProps]
+  )
 
   const reactTableOptions: TableOptions<TData> = {
     data,
@@ -78,7 +101,7 @@ export function DataTable<TData, TValue>({
     rowCount: meta ? meta.total : data.length,
     onPaginationChange: setPagination,
     manualSorting: true,
-    onSortingChange: setSorting,
+    onSortingChange: handleSortingChange,
     getSortedRowModel: getSortedRowModel(),
     state: {
       pagination,
@@ -164,21 +187,21 @@ function DataTableColumnHeader<TData, TValue>({
           >
             <span>{t(column.columnDef.header)}</span>
             {sorting === 'desc' ? (
-              <ArrowDownWideNarrowIcon />
+              <ArrowDownIcon />
             ) : sorting === 'asc' ? (
-              <ArrowUpNarrowWide />
+              <ArrowUpIcon />
             ) : (
-              <ArrowUpDownIcon />
+              <ChevronsUpDownIcon />
             )}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-            <ArrowUpNarrowWide />
+            <ArrowUpIcon />
             {t('translation:sortAsc')}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-            <ArrowDownWideNarrowIcon />
+            <ArrowDownIcon />
             {t('translation:sortDesc')}
           </DropdownMenuItem>
         </DropdownMenuContent>
