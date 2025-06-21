@@ -50,6 +50,29 @@ test('filters can be retrieved', function (): void {
 
     expect($filters)->toBeArray()
         ->toHaveCount(2)
-        ->and($filters['foo'])->toBe('bar')
-        ->and($filters['baz'])->toBe('qux');
+        ->and($filters[0])->toBe(['id' => 'foo', 'value' => 'bar'])
+        ->and($filters[1])->toBe(['id' => 'baz', 'value' => 'qux']);
+});
+
+test('invalid filters are ignored', function (): void {
+    $request = new Request(query: [
+        'filter' => [
+            'foo' => 'bar',
+            '' => 'qux',
+        ],
+    ]);
+
+    $filters = $request->getFilters();
+
+    expect($filters)->toBeArray()
+        ->toHaveCount(1)
+        ->and($filters[0])->toBe(['id' => 'foo', 'value' => 'bar']);
+});
+
+test('no filters returns null', function (): void {
+    $request = new Request;
+
+    $filters = $request->getFilters();
+
+    expect($filters)->toBeNull();
 });

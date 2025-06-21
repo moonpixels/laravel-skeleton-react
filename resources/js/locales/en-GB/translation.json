@@ -95,6 +95,7 @@
   "resetPassword": "Reset password",
   "resetYourPassword": "Reset your password",
   "resetYourPasswordDescription": "Choose a new secure password for your account.",
+  "search": "Search",
   "security": "Security",
   "selectAllRows": "Select all rows",
   "selectRow": "Select row {{row, number}}",

@@ -17,8 +17,8 @@ final class RequestMixin
         /**
          * @return ?array<int, array{id: string, desc: bool}>
          */
-        return function (): ?array {
-            $sortQuery = $this->query('sort');
+        return function (?string $default = null): ?array {
+            $sortQuery = $this->query('sort', $default);
 
             if (is_string($sortQuery)) {
                 $sorts = explode(',', $sortQuery);
@@ -43,11 +43,19 @@ final class RequestMixin
 
     public function getFilters(): Closure
     {
+        /**
+         * @return ?array<int, array{id: string, value: string}>
+         */
         return function (?array $default = null): ?array {
             $filters = $this->query('filter', $default);
 
-            if (is_array($filters) && $filters !== []) {
-                return $filters;
+            if (is_array($filters)) {
+                $filters = array_map(fn (mixed $value, string $key): array => [
+                    'id' => $key,
+                    'value' => is_array($value) ? implode(',', $value) : urldecode((string) $value),
+                ], $filters, array_keys($filters));
+
+                return array_filter($filters, fn (array $filter): bool => $filter['id'] !== '');
             }
 
             return null;

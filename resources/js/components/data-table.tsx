@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
 import {
   Pagination,
   PaginationContent,
@@ -33,9 +34,9 @@ import { router } from '@inertiajs/react'
 import {
   Column,
   ColumnDef,
+  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
-  getSortedRowModel,
   Table as ReactTable,
   Row,
   RowData,
@@ -44,7 +45,7 @@ import {
   Updater,
   useReactTable,
 } from '@tanstack/react-table'
-import { merge } from 'es-toolkit'
+import { debounce, merge } from 'es-toolkit'
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -55,7 +56,13 @@ import {
   ListIcon,
   ScanSearchIcon,
 } from 'lucide-react'
-import { PropsWithChildren, ReactElement, useCallback, useState } from 'react'
+import {
+  PropsWithChildren,
+  ReactElement,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 
 declare module '@tanstack/react-table' {
@@ -73,24 +80,30 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   meta?: PaginationMeta
-  dataProps?: string[]
+  reloadProps?: string[]
   tableOptions?: Omit<
     TableOptions<TData>,
     'data' | 'columns' | 'getCoreRowModel'
   >
   initialSortingState?: SortingState
   actionsDropdown?: (table: ReactTable<TData>) => ReactElement
+  initialFiltersState?: ColumnFiltersState
+  enableSearch?: boolean
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   meta,
-  dataProps = [],
+  reloadProps = [],
   tableOptions = {},
   initialSortingState = [],
   actionsDropdown = undefined,
+  initialFiltersState = [],
+  enableSearch = true,
 }: DataTableProps<TData, TValue>) {
+  const { t } = useTranslation()
+
   const [pagination, setPagination] = useState({
     pageIndex: meta ? meta.current_page - 1 : 0,
     pageSize: meta ? meta.per_page : 15,
@@ -110,11 +123,52 @@ export function DataTable<TData, TValue>({
       router.reload({
         data: {
           sort,
+          page: undefined,
         },
-        only: dataProps,
+        only: reloadProps,
       })
     },
-    [sorting, dataProps]
+    [sorting, reloadProps]
+  )
+
+  const [columnFilters, setColumnFilters] =
+    useState<ColumnFiltersState>(initialFiltersState)
+
+  const initialSearchFilter = initialFiltersState.find(
+    (filter) => filter.id === 'search'
+  )?.value
+
+  const [globalFilter, setGlobalFilter] = useState<string | undefined>(
+    typeof initialSearchFilter === 'string' ? initialSearchFilter : undefined
+  )
+
+  const reloadSearchData = useMemo(
+    () =>
+      debounce((query?: string) => {
+        router.reload({
+          data: {
+            filter: {
+              search: query ? encodeURIComponent(query.trim()) : undefined,
+            },
+            page: undefined,
+          },
+          only: reloadProps,
+        })
+      }, 500),
+    [reloadProps]
+  )
+
+  const handleGlobalFilterChange = useCallback(
+    (updater: Updater<unknown>) => {
+      const newValue =
+        typeof updater === 'function' ? updater(globalFilter) : updater
+
+      const query = typeof newValue === 'string' ? newValue : ''
+
+      setGlobalFilter(query)
+      reloadSearchData(query)
+    },
+    [globalFilter, reloadSearchData]
   )
 
   const reactTableOptions: TableOptions<TData> = {
@@ -126,10 +180,15 @@ export function DataTable<TData, TValue>({
     onPaginationChange: setPagination,
     manualSorting: true,
     onSortingChange: handleSortingChange,
-    getSortedRowModel: getSortedRowModel(),
+    manualFiltering: true,
+    onColumnFiltersChange: setColumnFilters,
+    enableGlobalFilter: enableSearch,
+    onGlobalFilterChange: handleGlobalFilterChange,
     state: {
       pagination,
       sorting,
+      columnFilters,
+      globalFilter,
     },
   }
 
@@ -138,8 +197,21 @@ export function DataTable<TData, TValue>({
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div></div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          {enableSearch && (
+            <Input
+              value={globalFilter ?? ''}
+              role="searchbox"
+              autoComplete="off"
+              aria-label={t('search')}
+              type="search"
+              inputMode="search"
+              placeholder={t('search') + '...'}
+              onChange={(e) => table.setGlobalFilter(String(e.target.value))}
+            />
+          )}
+        </div>
+        <div className="flex items-center gap-2">
           {actionsDropdown?.(table)}
           <DataTableColumnVisibilityDropdown columns={table.getAllColumns()} />
         </div>
@@ -191,7 +263,7 @@ export function DataTable<TData, TValue>({
       {meta && (
         <DataTablePagination
           meta={meta}
-          dataProps={dataProps}
+          reloadProps={reloadProps}
           selectedRowsCount={table.getFilteredSelectedRowModel().rows.length}
         />
       )}
@@ -286,11 +358,11 @@ function DataTableEmptyState({ columnsLength }: { columnsLength: number }) {
 function DataTablePagination({
   meta,
   selectedRowsCount = 0,
-  dataProps,
+  reloadProps,
 }: {
   meta: PaginationMeta
   selectedRowsCount?: number
-  dataProps?: string[]
+  reloadProps?: string[]
 }) {
   const { t } = useTranslation()
 
@@ -326,7 +398,7 @@ function DataTablePagination({
             <PaginationPrevious
               href={previousPageLink?.url ?? '#'}
               disabled={!previousPageLink?.url}
-              only={dataProps}
+              only={reloadProps}
             />
           </PaginationItem>
           {pageLinks.map((link) =>
@@ -335,7 +407,7 @@ function DataTablePagination({
                 <PaginationLink
                   isActive={link.active}
                   href={link.url}
-                  only={dataProps}
+                  only={reloadProps}
                 >
                   {link.label}
                 </PaginationLink>
@@ -348,7 +420,7 @@ function DataTablePagination({
             <PaginationNext
               href={nextPageLink?.url ?? '#'}
               disabled={!nextPageLink?.url}
-              only={dataProps}
+              only={reloadProps}
             />
           </PaginationItem>
         </PaginationContent>

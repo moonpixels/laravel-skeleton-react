@@ -137,8 +137,9 @@ export default function Dashboard({
           columns={userTableColumns}
           data={users.data}
           meta={users.meta}
-          dataProps={['users']}
+          reloadProps={['users']}
           initialSortingState={sorts ?? []}
+          initialFiltersState={filters ?? []}
           actionsDropdown={(table) => <UserActionsDropdown table={table} />}
         />
       </div>
