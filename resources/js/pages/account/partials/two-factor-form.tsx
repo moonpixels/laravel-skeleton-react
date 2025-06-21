@@ -111,7 +111,7 @@ export function TwoFactorDisableDialog() {
         <DialogFooter>
           <DialogClose asChild>
             <Button type="button" variant="secondary">
-              {t('common:cancel')}
+              {t('cancel')}
             </Button>
           </DialogClose>
 
@@ -121,7 +121,7 @@ export function TwoFactorDisableDialog() {
             form="disable-two-factor-form"
             variant="destructive"
           >
-            {t('common:disable')}
+            {t('disable')}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -272,7 +272,7 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
         <DialogFooter>
           <DialogClose asChild>
             <Button type="button" variant="secondary">
-              {t('common:cancel')}
+              {t('cancel')}
             </Button>
           </DialogClose>
 
@@ -281,7 +281,7 @@ export function TwoFactorEnableDialog({ onEnable }: { onEnable?: () => void }) {
             type="submit"
             form="confirm-two-factor-form"
           >
-            {t('common:enable')}
+            {t('enable')}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -370,7 +370,7 @@ export function TwoFactorRecoveryCodesDialog({
         <DialogFooter>
           <DialogClose asChild>
             <Button type="button" variant="secondary">
-              {t('common:close')}
+              {t('close')}
             </Button>
           </DialogClose>
 
@@ -378,7 +378,7 @@ export function TwoFactorRecoveryCodesDialog({
             <span className="flex items-center gap-1">
               <CopyButtonIcon className="size-4" />
 
-              {copied ? t('common:copied') : t('common:copy')}
+              {copied ? t('copied') : t('copy')}
             </span>
           </Button>
         </DialogFooter>

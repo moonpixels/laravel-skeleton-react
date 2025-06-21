@@ -20,7 +20,7 @@ export function useFormValidation() {
   function passwordConfirmationMessage(): z.CustomErrorParams {
     return {
       message: t('validation:confirmed', {
-        attribute: t('common:password').toLowerCase(),
+        attribute: t('password').toLowerCase(),
       }),
       path: ['password'],
     }

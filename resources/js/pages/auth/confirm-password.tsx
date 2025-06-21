@@ -57,7 +57,7 @@ export default function ConfirmPassword() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('common:password')}</FormLabel>
+                  <FormLabel>{t('password')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="current-password"
@@ -76,7 +76,7 @@ export default function ConfirmPassword() {
               className="w-full"
               type="submit"
             >
-              {t('common:confirm')}
+              {t('confirm')}
             </Button>
           </form>
         </Form>

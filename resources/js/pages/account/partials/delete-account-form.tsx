@@ -57,7 +57,7 @@ export function DeleteAccountForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('common:password')}</FormLabel>
+                <FormLabel>{t('password')}</FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="current-password"

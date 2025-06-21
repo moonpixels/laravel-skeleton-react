@@ -1,18 +1,9 @@
+import { User } from '@/types/models'
+
 export interface SupportedLocale {
   name: string
   native_name: string
   regional: string
-}
-
-export interface User {
-  id: number
-  name: string
-  first_name: string
-  email: string
-  email_verified_at: string | null
-  two_factor_confirmed_at: string | null
-  language: string
-  avatar_url: string | null
 }
 
 export type PageProps<
@@ -20,4 +11,24 @@ export type PageProps<
 > = T & {
   user: User | null
   supportedLocales: Record<string, SupportedLocale>
+}
+
+export interface PaginationMeta {
+  current_page: number
+  from: number
+  last_page: number
+  path: string
+  per_page: number
+  to: number
+  total: number
+  links: {
+    url: string | null
+    label: string
+    active: boolean
+  }[]
+}
+
+export interface PaginatedData<TData> {
+  data: TData[]
+  meta: PaginationMeta
 }

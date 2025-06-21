@@ -6,14 +6,12 @@ use App\Http\Controllers\Account\AccountAvatarController;
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\AccountPreferencesController;
 use App\Http\Controllers\Account\AccountSecurityController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', fn () => redirect()->route('login'));
 
 Route::middleware(['auth', 'verified'])->group(function (): void {
-    Route::get('dashboard', fn () => Inertia::render('dashboard'))->name('dashboard');
-
     Route::controller(AccountAvatarController::class)->group(function (): void {
         Route::put('account/avatar', 'update')->name('account.avatar.update');
         Route::delete('account/avatar', 'destroy')->name('account.avatar.destroy');
@@ -32,6 +30,10 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
 
     Route::controller(AccountSecurityController::class)->group(function (): void {
         Route::get('account/security', 'edit')->name('account.security.edit');
+    });
+
+    Route::controller(DashboardController::class)->group(function (): void {
+        Route::get('dashboard', 'index')->name('dashboard');
     });
 });
 

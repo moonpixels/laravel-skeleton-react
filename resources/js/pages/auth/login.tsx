@@ -75,7 +75,7 @@ export default function Login({ status }: { status?: string }) {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('common:email')}</FormLabel>
+                  <FormLabel>{t('email')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="username"
@@ -95,7 +95,7 @@ export default function Login({ status }: { status?: string }) {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('common:password')}</FormLabel>
+                  <FormLabel>{t('password')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="current-password"

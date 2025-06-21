@@ -1,4 +1,4 @@
-import { User } from '@/types'
+import { User } from '@/types/models'
 import { usePage } from '@inertiajs/react'
 import { createContext, PropsWithChildren, useContext } from 'react'
 
