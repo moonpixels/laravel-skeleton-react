@@ -76,7 +76,7 @@ final class AppServiceProvider extends ServiceProvider
 
     private function configurePagination(): void
     {
-        $this->app->extend(LengthAwarePaginator::class, function (LengthAwarePaginator $paginator) {
+        $this->app->extend(LengthAwarePaginator::class, function (LengthAwarePaginator $paginator): LengthAwarePaginator {
             // Ensures there are not too many links in the pagination
             $paginator->onEachSide(1);
 
