@@ -49,11 +49,13 @@ import {
   ArrowDownIcon,
   ArrowUpIcon,
   ChevronsUpDownIcon,
+  DotIcon,
   EyeIcon,
   EyeOffIcon,
+  ListIcon,
   ScanSearchIcon,
 } from 'lucide-react'
-import { useCallback, useState } from 'react'
+import { PropsWithChildren, ReactElement, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 declare module '@tanstack/react-table' {
@@ -77,6 +79,7 @@ interface DataTableProps<TData, TValue> {
     'data' | 'columns' | 'getCoreRowModel'
   >
   initialSortingState?: SortingState
+  actionsDropdown?: (table: ReactTable<TData>) => ReactElement
 }
 
 export function DataTable<TData, TValue>({
@@ -86,6 +89,7 @@ export function DataTable<TData, TValue>({
   dataProps = [],
   tableOptions = {},
   initialSortingState = [],
+  actionsDropdown = undefined,
 }: DataTableProps<TData, TValue>) {
   const [pagination, setPagination] = useState({
     pageIndex: meta ? meta.current_page - 1 : 0,
@@ -133,9 +137,12 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div></div>
-        <DataTableViewOptions columns={table.getAllColumns()} />
+        <div className="flex items-center gap-4">
+          {actionsDropdown?.(table)}
+          <DataTableColumnVisibilityDropdown columns={table.getAllColumns()} />
+        </div>
       </div>
       <Table>
         <TableHeader>
@@ -181,7 +188,13 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
-      {meta && <DataTablePagination meta={meta} dataProps={dataProps} />}
+      {meta && (
+        <DataTablePagination
+          meta={meta}
+          dataProps={dataProps}
+          selectedRowsCount={table.getFilteredSelectedRowModel().rows.length}
+        />
+      )}
     </div>
   )
 }
@@ -272,9 +285,11 @@ function DataTableEmptyState({ columnsLength }: { columnsLength: number }) {
 
 function DataTablePagination({
   meta,
+  selectedRowsCount = 0,
   dataProps,
 }: {
   meta: PaginationMeta
+  selectedRowsCount?: number
   dataProps?: string[]
 }) {
   const { t } = useTranslation()
@@ -284,16 +299,28 @@ function DataTablePagination({
   const pageLinks = meta.links.slice(1, -1)
 
   return (
-    <div className="flex flex-col items-center justify-between gap-2 sm:flex-row">
-      <Text as="span" size="sm" className="shrink-0" variant="muted">
-        {t('dataTableResults', {
-          from: meta.from,
-          to: meta.to,
-          total: meta.total,
-        })}
-      </Text>
+    <div className="flex flex-col items-center justify-between gap-4 xl:flex-row">
+      <div className="flex items-center gap-1">
+        {selectedRowsCount > 0 && (
+          <>
+            <Text size="sm" variant="muted" className="shrink-0">
+              {t('dataTableSelectedRows', {
+                count: selectedRowsCount,
+              })}
+            </Text>
+            <DotIcon className="text-muted-foreground size-4 shrink-0" />
+          </>
+        )}
+        <Text as="span" size="sm" className="shrink-0" variant="muted">
+          {t('dataTableResults', {
+            from: meta.from,
+            to: meta.to,
+            total: meta.total,
+          })}
+        </Text>
+      </div>
 
-      <Pagination className="sm:justify-end">
+      <Pagination className="xl:justify-end">
         <PaginationContent className="flex w-full items-center justify-between sm:w-auto">
           <PaginationItem>
             <PaginationPrevious
@@ -330,7 +357,7 @@ function DataTablePagination({
   )
 }
 
-export function DataTableViewOptions<TData>({
+export function DataTableColumnVisibilityDropdown<TData>({
   columns,
 }: {
   columns: Column<TData>[]
@@ -405,5 +432,31 @@ export function DataTableCheckboxCell<TData>({ row }: { row: Row<TData> }) {
         aria-label={t('selectRow', { row: row.index + 1 })}
       />
     </div>
+  )
+}
+
+export function DataTableActionsDropdown({
+  className,
+  children,
+}: PropsWithChildren<{
+  className?: string
+}>) {
+  const { t } = useTranslation()
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">
+          <ListIcon className="text-muted-foreground" />
+          {t('actions')}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        align="end"
+        className={cn('min-w-[150px]', className)}
+      >
+        {children}
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

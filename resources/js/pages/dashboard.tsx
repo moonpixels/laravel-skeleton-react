@@ -1,5 +1,6 @@
 import {
   DataTable,
+  DataTableActionsDropdown,
   DataTableCheckboxCell,
   DataTableCheckboxHeader,
 } from '@/components/data-table'
@@ -10,8 +11,10 @@ import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useUser } from '@/contexts/user-context'
@@ -24,12 +27,15 @@ import {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
+  Table,
 } from '@tanstack/react-table'
 import {
-  CircleCheckIcon,
+  CheckIcon,
   ClipboardIcon,
+  FileSpreadsheetIcon,
   MoreHorizontalIcon,
-  XCircleIcon,
+  TrashIcon,
+  XIcon,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
@@ -71,15 +77,12 @@ const userTableColumns: ColumnDef<User>[] = [
     header: '2fa',
     cell: ({ cell }) => {
       return cell.getValue() ? (
-        <CircleCheckIcon
-          className="text-successful size-5"
+        <CheckIcon
+          className="text-successful size-4"
           aria-label="2FA enabled"
         />
       ) : (
-        <XCircleIcon
-          className="text-destructive size-5"
-          aria-label="2FA disabled"
-        />
+        <XIcon className="text-destructive size-4" aria-label="2FA disabled" />
       )
     },
     enableSorting: false,
@@ -98,12 +101,10 @@ const userTableColumns: ColumnDef<User>[] = [
 
 export default function Dashboard({
   users,
-  uuid,
   sorts,
   filters,
 }: {
   users: PaginatedData<User>
-  uuid: string
   sorts: SortingState | null
   filters: ColumnFiltersState | null
 }) {
@@ -119,12 +120,6 @@ export default function Dashboard({
         <Heading as="h2" size="base" className="mb-4">
           {t('users')}
         </Heading>
-
-        {uuid && (
-          <pre className="text-muted-foreground text-xs">
-            {JSON.stringify({ uuid }, null, 2)}
-          </pre>
-        )}
 
         {sorts && (
           <pre className="text-muted-foreground text-xs">
@@ -144,6 +139,7 @@ export default function Dashboard({
           meta={users.meta}
           dataProps={['users']}
           initialSortingState={sorts ?? []}
+          actionsDropdown={(table) => <UserActionsDropdown table={table} />}
         />
       </div>
     </AuthenticatedLayout>
@@ -169,7 +165,6 @@ function UserActionsMenu({ user }: { user: User }) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{t('actions')}</DropdownMenuLabel>
           <DropdownMenuItem onClick={handleCopyClick}>
             <ClipboardIcon className="size-4" />
             {t('copyId')}
@@ -177,5 +172,44 @@ function UserActionsMenu({ user }: { user: User }) {
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
+  )
+}
+
+function UserActionsDropdown({ table }: { table: Table<User> }) {
+  const { t } = useTranslation()
+
+  const selectedRows = table.getSelectedRowModel().rows
+
+  return (
+    <DataTableActionsDropdown>
+      <DropdownMenuGroup>
+        <DropdownMenuLabel>{t('actions')}</DropdownMenuLabel>
+        <DropdownMenuItem
+          onClick={() => {
+            console.log('Downloading CSV')
+          }}
+        >
+          <FileSpreadsheetIcon className="size-4" />
+          {t('downloadCsv')}
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuGroup>
+        <DropdownMenuLabel>{t('bulkActions')}</DropdownMenuLabel>
+        <DropdownMenuItem
+          variant="destructive"
+          disabled={selectedRows.length === 0}
+          onClick={() => {
+            console.log(
+              'Delete selected users:',
+              selectedRows.map((row) => row.original.id)
+            )
+          }}
+        >
+          <TrashIcon className="size-4" />
+          {t('delete')}
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
+    </DataTableActionsDropdown>
   )
 }

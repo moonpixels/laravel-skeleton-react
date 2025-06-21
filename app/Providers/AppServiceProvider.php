@@ -8,6 +8,7 @@ use App\Mixins\RequestMixin;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Vite;
@@ -40,6 +41,7 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureVite();
         $this->configureDates();
         $this->configureMixins();
+        $this->configurePagination();
     }
 
     private function configureCommands(): void
@@ -70,5 +72,15 @@ final class AppServiceProvider extends ServiceProvider
     private function configureMixins(): void
     {
         Request::mixin(new RequestMixin);
+    }
+
+    private function configurePagination(): void
+    {
+        $this->app->extend(LengthAwarePaginator::class, function (LengthAwarePaginator $paginator) {
+            // Ensures there are not too many links in the pagination
+            $paginator->onEachSide(1);
+
+            return $paginator;
+        });
     }
 }

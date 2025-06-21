@@ -18,7 +18,7 @@ final class DashboardController extends Controller
         $users = QueryBuilder::for(User::class)
             ->defaultSort('name')
             ->allowedSorts(['name', 'email', 'language'])
-            ->paginate(5)
+            ->paginate()
             ->withQueryString();
 
         return Inertia::render('dashboard', [
