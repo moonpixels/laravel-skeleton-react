@@ -30,12 +30,13 @@ test('invalid sorts are ignored', function (): void {
         ->and($sorts[1])->toBe(['id' => 'email', 'desc' => true]);
 });
 
-test('no sorts returns null', function (): void {
+test('no sorts returns empty array', function (): void {
     $request = new Request;
 
     $sorts = $request->getSorts();
 
-    expect($sorts)->toBeNull();
+    expect($sorts)->toBeArray()
+        ->toHaveCount(0);
 });
 
 test('filters can be retrieved', function (): void {
@@ -69,10 +70,11 @@ test('invalid filters are ignored', function (): void {
         ->and($filters[0])->toBe(['id' => 'foo', 'value' => 'bar']);
 });
 
-test('no filters returns null', function (): void {
+test('no filters returns empty array', function (): void {
     $request = new Request;
 
     $filters = $request->getFilters();
 
-    expect($filters)->toBeNull();
+    expect($filters)->toBeArray()
+        ->toHaveCount(0);
 });

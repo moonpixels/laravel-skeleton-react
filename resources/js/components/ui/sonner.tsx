@@ -26,6 +26,7 @@ function Toaster({ ...props }: ToasterProps) {
       theme={isDarkMode ? 'dark' : 'light'}
       className="toaster group"
       icons={icons}
+      closeButton
       toastOptions={{
         classNames: {
           toast:

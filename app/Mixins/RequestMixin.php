@@ -15,9 +15,9 @@ final class RequestMixin
     public function getSorts(): Closure
     {
         /**
-         * @return ?array<int, array{id: string, desc: bool}>
+         * @return array<int, array{id: string, desc: bool}>
          */
-        return function (?string $default = null): ?array {
+        return function (?string $default = null): array {
             $sortQuery = $this->query('sort', $default);
 
             if (is_string($sortQuery)) {
@@ -37,16 +37,16 @@ final class RequestMixin
                 return array_filter($sorts, fn (array $sort): bool => $sort['id'] !== '');
             }
 
-            return null;
+            return [];
         };
     }
 
     public function getFilters(): Closure
     {
         /**
-         * @return ?array<int, array{id: string, value: string}>
+         * @return array<int, array{id: string, value: string}>
          */
-        return function (?array $default = null): ?array {
+        return function (?array $default = null): array {
             $filters = $this->query('filter', $default);
 
             if (is_array($filters)) {
@@ -58,7 +58,7 @@ final class RequestMixin
                 return array_filter($filters, fn (array $filter): bool => $filter['id'] !== '');
             }
 
-            return null;
+            return [];
         };
     }
 }

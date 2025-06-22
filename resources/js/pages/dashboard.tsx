@@ -3,6 +3,7 @@ import {
   DataTableActionsDropdown,
   DataTableCheckboxCell,
   DataTableCheckboxHeader,
+  DataTableColumnHeader,
 } from '@/components/data-table'
 import { Heading } from '@/components/heading'
 import { PageHeader } from '@/components/page-header'
@@ -49,7 +50,9 @@ const userTableColumns: ColumnDef<User>[] = [
   },
   {
     accessorKey: 'name',
-    header: 'name',
+    header: ({ table, column }) => (
+      <DataTableColumnHeader table={table} column={column} title="name" />
+    ),
     cell: ({ row }) => {
       const user = row.original
 
@@ -63,18 +66,33 @@ const userTableColumns: ColumnDef<User>[] = [
         </div>
       )
     },
+    meta: {
+      translationKey: 'name',
+    },
   },
   {
     accessorKey: 'email',
-    header: 'email',
+    header: ({ table, column }) => (
+      <DataTableColumnHeader table={table} column={column} title="email" />
+    ),
+    meta: {
+      translationKey: 'email',
+    },
   },
   {
     accessorKey: 'language',
-    header: 'language',
+    header: ({ table, column }) => (
+      <DataTableColumnHeader table={table} column={column} title="language" />
+    ),
+    meta: {
+      translationKey: 'language',
+    },
   },
   {
     accessorKey: 'two_factor_confirmed_at',
-    header: '2fa',
+    header: ({ table, column }) => (
+      <DataTableColumnHeader table={table} column={column} title="2fa" />
+    ),
     cell: ({ cell }) => {
       return cell.getValue() ? (
         <CheckIcon
@@ -86,6 +104,9 @@ const userTableColumns: ColumnDef<User>[] = [
       )
     },
     enableSorting: false,
+    meta: {
+      translationKey: '2fa',
+    },
   },
   {
     id: 'actions',
@@ -105,8 +126,8 @@ export default function Dashboard({
   filters,
 }: {
   users: PaginatedData<User>
-  sorts: SortingState | null
-  filters: ColumnFiltersState | null
+  sorts: SortingState
+  filters: ColumnFiltersState
 }) {
   const { t } = useTranslation()
 
@@ -136,10 +157,10 @@ export default function Dashboard({
         <DataTable
           columns={userTableColumns}
           data={users.data}
-          meta={users.meta}
+          paginationMeta={users.meta}
           reloadProps={['users']}
-          initialSortingState={sorts ?? []}
-          initialFiltersState={filters ?? []}
+          initialSortingState={sorts}
+          initialFiltersState={filters}
           actionsDropdown={(table) => <UserActionsDropdown table={table} />}
         />
       </div>

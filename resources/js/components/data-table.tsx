@@ -37,15 +37,15 @@ import {
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  PaginationState,
   Table as ReactTable,
   Row,
   RowData,
   SortingState,
   TableOptions,
-  Updater,
   useReactTable,
 } from '@tanstack/react-table'
-import { debounce, merge } from 'es-toolkit'
+import { debounce, merge, union } from 'es-toolkit'
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -57,13 +57,24 @@ import {
   ScanSearchIcon,
 } from 'lucide-react'
 import {
+  ChangeEvent,
   PropsWithChildren,
   ReactElement,
-  useCallback,
   useMemo,
   useState,
 } from 'react'
 import { useTranslation } from 'react-i18next'
+
+declare module '@tanstack/table-core' {
+  /**
+   * We include a `reloadProps` in the table meta to allow for
+   * reloading the table data with specific props.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface TableMeta<TData extends RowData> {
+    reloadProps: string[]
+  }
+}
 
 declare module '@tanstack/react-table' {
   /**
@@ -79,7 +90,7 @@ declare module '@tanstack/react-table' {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  meta?: PaginationMeta
+  paginationMeta?: PaginationMeta
   reloadProps?: string[]
   tableOptions?: Omit<
     TableOptions<TData>,
@@ -91,10 +102,62 @@ interface DataTableProps<TData, TValue> {
   enableSearch?: boolean
 }
 
+interface ReloadDataProps {
+  pagination?: PaginationState
+  sorting?: SortingState
+  columnFilters?: ColumnFiltersState
+  globalFilter?: unknown
+  reloadProps?: string[]
+}
+
+function reloadData({
+  pagination = undefined,
+  sorting = undefined,
+  columnFilters = undefined,
+  globalFilter = undefined,
+  reloadProps = [],
+}: ReloadDataProps) {
+  const sort = sorting?.map((s) => (s.desc ? `-${s.id}` : s.id)).join(',')
+
+  const page = pagination ? pagination.pageIndex + 1 : undefined
+
+  const search =
+    typeof globalFilter === 'string' && globalFilter !== ''
+      ? encodeURIComponent(globalFilter.trim())
+      : undefined
+
+  const only = reloadProps?.length
+    ? union(['sorts', 'filters'], reloadProps)
+    : []
+
+  const filters = columnFilters?.reduce(
+    (acc, filter) => {
+      if (filter.id !== 'search' && filter.value) {
+        acc[filter.id] = String(filter.value)
+      }
+
+      return acc
+    },
+    {} as Record<string, string>
+  )
+
+  router.reload({
+    data: {
+      sort,
+      page,
+      filter: {
+        search,
+        ...filters,
+      },
+    },
+    only,
+  })
+}
+
 export function DataTable<TData, TValue>({
   columns,
   data,
-  meta,
+  paginationMeta,
   reloadProps = [],
   tableOptions = {},
   initialSortingState = [],
@@ -102,118 +165,68 @@ export function DataTable<TData, TValue>({
   initialFiltersState = [],
   enableSearch = true,
 }: DataTableProps<TData, TValue>) {
-  const { t } = useTranslation()
+  const pagination = useMemo(() => {
+    return {
+      pageIndex: paginationMeta ? paginationMeta.current_page - 1 : 0,
+      pageSize: paginationMeta ? paginationMeta.per_page : 15,
+    }
+  }, [paginationMeta])
 
-  const [pagination, setPagination] = useState({
-    pageIndex: meta ? meta.current_page - 1 : 0,
-    pageSize: meta ? meta.per_page : 15,
-  })
+  const columnFilters = useMemo(() => {
+    return initialFiltersState.filter((filter) => filter.id !== 'search')
+  }, [initialFiltersState])
 
-  const [sorting, setSorting] = useState<SortingState>(initialSortingState)
+  const globalFilter = useMemo(() => {
+    const searchFilter = initialFiltersState.find(
+      (filter) => filter.id === 'search'
+    )
 
-  const handleSortingChange = useCallback(
-    (updater: Updater<SortingState>) => {
-      const newValue =
-        typeof updater === 'function' ? updater(sorting) : updater
+    return typeof searchFilter?.value === 'string'
+      ? searchFilter.value
+      : undefined
+  }, [initialFiltersState])
 
-      setSorting(newValue)
+  const sorting = useMemo(() => initialSortingState, [initialSortingState])
 
-      const sort = newValue.map((s) => (s.desc ? `-${s.id}` : s.id)).join(',')
-
-      router.reload({
-        data: {
-          sort,
-          page: undefined,
-        },
-        only: reloadProps,
-      })
-    },
-    [sorting, reloadProps]
-  )
-
-  const [columnFilters, setColumnFilters] =
-    useState<ColumnFiltersState>(initialFiltersState)
-
-  const initialSearchFilter = initialFiltersState.find(
-    (filter) => filter.id === 'search'
-  )?.value
-
-  const [globalFilter, setGlobalFilter] = useState<string | undefined>(
-    typeof initialSearchFilter === 'string' ? initialSearchFilter : undefined
-  )
-
-  const reloadSearchData = useMemo(
-    () =>
-      debounce((query?: string) => {
-        router.reload({
-          data: {
-            filter: {
-              search: query ? encodeURIComponent(query.trim()) : undefined,
-            },
-            page: undefined,
-          },
-          only: reloadProps,
-        })
-      }, 500),
-    [reloadProps]
-  )
-
-  const handleGlobalFilterChange = useCallback(
-    (updater: Updater<unknown>) => {
-      const newValue =
-        typeof updater === 'function' ? updater(globalFilter) : updater
-
-      const query = typeof newValue === 'string' ? newValue : ''
-
-      setGlobalFilter(query)
-      reloadSearchData(query)
-    },
-    [globalFilter, reloadSearchData]
-  )
+  const rowCount = useMemo(() => {
+    return paginationMeta ? paginationMeta.total : data.length
+  }, [paginationMeta, data.length])
 
   const reactTableOptions: TableOptions<TData> = {
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
-    rowCount: meta ? meta.total : data.length,
-    onPaginationChange: setPagination,
+    rowCount,
     manualSorting: true,
-    onSortingChange: handleSortingChange,
     manualFiltering: true,
-    onColumnFiltersChange: setColumnFilters,
     enableGlobalFilter: enableSearch,
-    onGlobalFilterChange: handleGlobalFilterChange,
     state: {
       pagination,
       sorting,
       columnFilters,
       globalFilter,
     },
+    meta: {
+      reloadProps,
+    },
   }
 
   const table = useReactTable(merge(reactTableOptions, tableOptions))
+
+  console.log('DataTable information:', {
+    ...table.getState(),
+  })
 
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
-          {enableSearch && (
-            <Input
-              value={globalFilter ?? ''}
-              role="searchbox"
-              autoComplete="off"
-              aria-label={t('search')}
-              type="search"
-              inputMode="search"
-              placeholder={t('search') + '...'}
-              onChange={(e) => table.setGlobalFilter(String(e.target.value))}
-            />
-          )}
+          {enableSearch && <DataTableSearchInput table={table} />}
         </div>
         <div className="flex items-center gap-2">
           {actionsDropdown?.(table)}
-          <DataTableColumnVisibilityDropdown columns={table.getAllColumns()} />
+          <DataTableColumnVisibilityDropdown table={table} />
         </div>
       </div>
       <Table>
@@ -223,18 +236,12 @@ export function DataTable<TData, TValue>({
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>
-                    {header.isPlaceholder ? null : typeof header.column
-                        .columnDef.header === 'string' ? (
-                      <DataTableColumnHeader
-                        column={header.column}
-                        title={header.column.columnDef.header}
-                      />
-                    ) : (
-                      flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )
-                    )}
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                   </TableHead>
                 )
               })}
@@ -260,32 +267,101 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
-      {meta && (
-        <DataTablePagination
-          meta={meta}
-          reloadProps={reloadProps}
-          selectedRowsCount={table.getFilteredSelectedRowModel().rows.length}
-        />
+      {paginationMeta && (
+        <DataTablePagination table={table} paginationMeta={paginationMeta} />
       )}
     </div>
   )
 }
 
+function DataTableSearchInput<TData>({ table }: { table: ReactTable<TData> }) {
+  const { t } = useTranslation()
+
+  const [query, setQuery] = useState<string>(
+    table.getState().globalFilter ?? ''
+  )
+
+  const debouncedReload = useMemo(
+    () =>
+      debounce(
+        ({
+          pagination,
+          sorting,
+          columnFilters,
+          globalFilter,
+          reloadProps,
+        }: ReloadDataProps) => {
+          reloadData({
+            pagination,
+            sorting,
+            columnFilters,
+            globalFilter,
+            reloadProps,
+          })
+        },
+        500
+      ),
+    []
+  )
+
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    const value = event.target.value
+
+    setQuery(value)
+
+    debouncedReload({
+      pagination: undefined,
+      sorting: table.getState().sorting,
+      columnFilters: table.getState().columnFilters,
+      globalFilter: value,
+      reloadProps: table.options.meta?.reloadProps,
+    })
+  }
+
+  return (
+    <Input
+      value={query}
+      role="searchbox"
+      autoComplete="off"
+      aria-label={t('search')}
+      type="search"
+      inputMode="search"
+      placeholder={t('search') + '...'}
+      onChange={handleChange}
+    />
+  )
+}
+
 export function DataTableColumnHeader<TData, TValue>({
+  table,
   column,
   title,
   className,
 }: {
+  table: ReactTable<TData>
   column: Column<TData, TValue>
   title: string
+  reloadProps?: string[]
   className?: string
 }) {
   const { t } = useTranslation()
 
   const canSort = column.getCanSort()
-  const sorting = column.getIsSorted()
+  const isSorted = column.getIsSorted()
 
   const canHide = column.getCanHide()
+
+  function handleSortingClick(desc: boolean) {
+    if (canSort) {
+      reloadData({
+        pagination: undefined,
+        sorting: [{ id: column.id, desc }],
+        columnFilters: table.getState().columnFilters,
+        globalFilter: table.getState().globalFilter,
+        reloadProps: table.options.meta?.reloadProps,
+      })
+    }
+  }
 
   return (
     <div className={cn('flex items-center gap-2', className)}>
@@ -297,9 +373,9 @@ export function DataTableColumnHeader<TData, TValue>({
             className="data-[state=open]:bg-accent -ml-2.5 h-8"
           >
             <span>{t(title)}</span>
-            {sorting === 'desc' ? (
+            {isSorted === 'desc' ? (
               <ArrowDownIcon />
-            ) : sorting === 'asc' ? (
+            ) : isSorted === 'asc' ? (
               <ArrowUpIcon />
             ) : (
               <ChevronsUpDownIcon />
@@ -309,14 +385,14 @@ export function DataTableColumnHeader<TData, TValue>({
         <DropdownMenuContent align="start">
           <DropdownMenuItem
             disabled={!canSort}
-            onClick={() => column.toggleSorting(false)}
+            onClick={() => handleSortingClick(false)}
           >
             <ArrowUpIcon />
             {t('sortAsc')}
           </DropdownMenuItem>
           <DropdownMenuItem
             disabled={!canSort}
-            onClick={() => column.toggleSorting(true)}
+            onClick={() => handleSortingClick(true)}
           >
             <ArrowDownIcon />
             {t('sortDesc')}
@@ -355,20 +431,23 @@ function DataTableEmptyState({ columnsLength }: { columnsLength: number }) {
   )
 }
 
-function DataTablePagination({
-  meta,
-  selectedRowsCount = 0,
-  reloadProps,
+function DataTablePagination<TData>({
+  table,
+  paginationMeta,
 }: {
-  meta: PaginationMeta
-  selectedRowsCount?: number
-  reloadProps?: string[]
+  table: ReactTable<TData>
+  paginationMeta: PaginationMeta
 }) {
   const { t } = useTranslation()
 
-  const previousPageLink = meta.links[0] ?? null
-  const nextPageLink = meta.links[meta.links.length - 1] ?? null
-  const pageLinks = meta.links.slice(1, -1)
+  const previousPageLink = paginationMeta.links[0] ?? null
+  const nextPageLink =
+    paginationMeta.links[paginationMeta.links.length - 1] ?? null
+  const pageLinks = paginationMeta.links.slice(1, -1)
+
+  const reloadProps = table.options.meta?.reloadProps ?? []
+
+  const selectedRowsCount = table.getSelectedRowModel().rows.length
 
   return (
     <div className="flex flex-col items-center justify-between gap-4 xl:flex-row">
@@ -385,9 +464,9 @@ function DataTablePagination({
         )}
         <Text as="span" size="sm" className="shrink-0" variant="muted">
           {t('dataTableResults', {
-            from: meta.from,
-            to: meta.to,
-            total: meta.total,
+            from: paginationMeta.from,
+            to: paginationMeta.to,
+            total: paginationMeta.total,
           })}
         </Text>
       </div>
@@ -430,11 +509,13 @@ function DataTablePagination({
 }
 
 export function DataTableColumnVisibilityDropdown<TData>({
-  columns,
+  table,
 }: {
-  columns: Column<TData>[]
+  table: ReactTable<TData>
 }) {
   const { t } = useTranslation()
+
+  const columns = table.getAllColumns()
 
   return (
     <DropdownMenu>
@@ -449,9 +530,7 @@ export function DataTableColumnVisibilityDropdown<TData>({
         {columns
           .filter(
             (column) =>
-              (typeof column.columnDef.header === 'string' ||
-                typeof column.columnDef.meta?.translationKey === 'string') &&
-              column.getCanHide()
+              column.columnDef.meta?.translationKey && column.getCanHide()
           )
           .map((column) => {
             return (
@@ -461,9 +540,7 @@ export function DataTableColumnVisibilityDropdown<TData>({
                 onCheckedChange={(value) => column.toggleVisibility(value)}
                 onSelect={(e) => e.preventDefault()}
               >
-                {column.columnDef.meta?.translationKey
-                  ? t(column.columnDef.meta.translationKey)
-                  : t(column.columnDef.header as string)}
+                {t(String(column.columnDef.meta?.translationKey))}
               </DropdownMenuCheckboxItem>
             )
           })}
