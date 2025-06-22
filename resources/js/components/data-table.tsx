@@ -117,7 +117,9 @@ function reloadData({
   globalFilter = undefined,
   reloadProps = [],
 }: ReloadDataProps) {
-  const sort = sorting?.map((s) => (s.desc ? `-${s.id}` : s.id)).join(',')
+  const sort = sorting?.length
+    ? sorting.map((s) => (s.desc ? `-${s.id}` : s.id)).join(',')
+    : undefined
 
   const page = pagination ? pagination.pageIndex + 1 : undefined
 
