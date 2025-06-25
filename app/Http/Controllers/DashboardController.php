@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\Enums\FilterOperator;
 use Spatie\QueryBuilder\QueryBuilder;
 
 final class DashboardController extends Controller
@@ -28,6 +29,8 @@ final class DashboardController extends Controller
                         value: "%{$value}%",
                     );
                 }),
+                AllowedFilter::partial('_name', 'name'),
+                AllowedFilter::operator('name', FilterOperator::DYNAMIC),
             ])
             ->paginate()
             ->withQueryString();

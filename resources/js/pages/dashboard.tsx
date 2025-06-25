@@ -4,6 +4,7 @@ import {
   DataTableCheckboxCell,
   DataTableCheckboxHeader,
   DataTableColumnHeader,
+  DataTableFilterOption,
 } from '@/components/data-table'
 import { Heading } from '@/components/heading'
 import { PageHeader } from '@/components/page-header'
@@ -120,6 +121,30 @@ const userTableColumns: ColumnDef<User>[] = [
   },
 ]
 
+const userTableFilterOptions: DataTableFilterOption[] = [
+  {
+    id: 'name',
+    label: 'name',
+    type: 'text',
+    clause: [
+      {
+        type: 'equal',
+        filterKey: 'name',
+        valuePrefix: '=',
+      },
+      {
+        type: 'notEqual',
+        filterKey: 'name',
+        valuePrefix: '<>',
+      },
+      {
+        type: 'contains',
+        filterKey: '_name',
+      },
+    ],
+  },
+]
+
 export default function Dashboard({
   users,
   sorts,
@@ -162,6 +187,7 @@ export default function Dashboard({
           initialSortingState={sorts}
           initialFiltersState={filters}
           actionsDropdown={(table) => <UserActionsDropdown table={table} />}
+          filterOptions={userTableFilterOptions}
         />
       </div>
     </AuthenticatedLayout>
