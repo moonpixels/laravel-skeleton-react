@@ -55,6 +55,7 @@
   "enable": "Enable",
   "enableTwoFactor": "Enable two-factor authentication",
   "enableTwoFactorDescription": "Scan the QR code below with your two-factor authentication app then enter the code shown.",
+  "filterBy": "Filter by {{column}}",
   "filterClause": {
     "between": "is between",
     "contains": "contains",

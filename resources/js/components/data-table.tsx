@@ -67,14 +67,14 @@ import {
   DotIcon,
   EyeIcon,
   EyeOffIcon,
-  ListFilterIcon,
-  MinusIcon,
-  PlusIcon,
+  MinusCircleIcon,
+  PlusCircleIcon,
   ScanSearchIcon,
   SquareMenuIcon,
 } from 'lucide-react'
 import {
   ChangeEvent,
+  MouseEvent,
   PropsWithChildren,
   ReactElement,
   useMemo,
@@ -262,21 +262,18 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
           {enableSearch && <DataTableSearchInput table={table} />}
         </div>
         <div className="flex items-center gap-2">
           {actionsDropdown?.(table)}
-          {filterOptions.length > 0 && (
-            <DataTableFiltersDropdown
-              filterOptions={filterOptions}
-              table={table}
-            />
-          )}
           <DataTableColumnVisibilityDropdown table={table} />
         </div>
       </div>
+      {filterOptions.length > 0 && (
+        <DataTableFiltersDropdown filterOptions={filterOptions} table={table} />
+      )}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -663,42 +660,22 @@ export interface DataTableFilterOption {
 interface DataTableFiltersDropdownProps<TData> {
   table: ReactTable<TData>
   filterOptions?: DataTableFilterOption[]
-  className?: string
 }
 
 export function DataTableFiltersDropdown<TData>({
   table,
   filterOptions = [],
-  className,
 }: DataTableFiltersDropdownProps<TData>) {
-  const { t } = useTranslation()
-
   return (
-    <Popover modal>
-      <PopoverTrigger asChild>
-        <Button variant="outline">
-          <ListFilterIcon className="text-muted-foreground" />
-          {t('filters')}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        collisionPadding={6}
-        className={cn('w-[225px] p-1', className)}
-      >
-        <DropdownMenuLabel>{t('addFilters')}</DropdownMenuLabel>
-        <div className="space-y-1">
-          {filterOptions.map((option) => {
-            return (
-              <DataTableFiltersDropdownOption
-                table={table}
-                key={option.id}
-                option={option}
-              />
-            )
-          })}
-        </div>
-      </PopoverContent>
-    </Popover>
+    <div className="flex flex-wrap items-center gap-2">
+      {filterOptions.map((option) => (
+        <DataTableFiltersDropdownOption<TData>
+          key={option.id}
+          table={table}
+          option={option}
+        />
+      ))}
+    </div>
   )
 }
 
@@ -711,14 +688,13 @@ function DataTableFiltersDropdownOption<TData>({
 }) {
   const { t } = useTranslation()
 
-  const [clause, setClause] =
-    useState<DataTableFilterClause>(getDefaultClause())
+  const [open, setOpen] = useState(false)
 
-  const [value, setValue] = useState<string>(getDefaultValue())
+  const [clause, setClause] = useState<DataTableFilterClause>(
+    getAppliedClause() ?? option.clause[0]
+  )
 
-  const [isOpen, setIsOpen] = useState(value !== '')
-
-  const ItemIcon = isOpen ? MinusIcon : PlusIcon
+  const [value, setValue] = useState<string>(getAppliedValue())
 
   function handleClauseChange(clauseType: DataTableFilterClauseType) {
     const selectedClause = option.clause.find((c) => c.type === clauseType)
@@ -728,59 +704,12 @@ function DataTableFiltersDropdownOption<TData>({
     }
 
     setClause(selectedClause)
-
-    if (!hasExistingColumnFilter()) {
-      return
-    }
-
-    const filterValue = getFilterValue(selectedClause, value)
-
-    debouncedReloadData({
-      pagination: undefined,
-      sorting: table.getState().sorting,
-      columnFilters: [
-        ...getExistingTableFilters(),
-        {
-          id: selectedClause.filterKey,
-          value: filterValue,
-        },
-      ],
-      globalFilter: table.getState().globalFilter,
-      reloadProps: table.options.meta?.reloadProps,
-    })
   }
 
-  function handleValueChange(value: string) {
-    setValue(value)
-
-    if (!hasExistingColumnFilter() && value.trim() === '') {
-      return
-    }
-
-    const filterValue = getFilterValue(clause, value)
-
-    debouncedReloadData({
-      pagination: undefined,
-      sorting: table.getState().sorting,
-      columnFilters: [
-        ...getExistingTableFilters(),
-        {
-          id: clause.filterKey,
-          value: filterValue,
-        },
-      ],
-      globalFilter: table.getState().globalFilter,
-      reloadProps: table.options.meta?.reloadProps,
-    })
-  }
-
-  function getExistingTableFilters(): ColumnFiltersState {
+  function getCurrentColumnFilters(): ColumnFiltersState {
     return table.getState().columnFilters.map((filter) => {
-      const existingClause = option.clause.find(
-        (c) => c.filterKey === filter.id
-      )
-
-      if (existingClause) {
+      // Remove filter for the current option so we can apply the new one
+      if (findClauseFromColumnFilter(filter)) {
         return {
           id: filter.id,
           value: undefined,
@@ -791,7 +720,7 @@ function DataTableFiltersDropdownOption<TData>({
     })
   }
 
-  function getFilterValue(
+  function formatFilterValue(
     clause: DataTableFilterClause,
     value: string
   ): string {
@@ -800,7 +729,29 @@ function DataTableFiltersDropdownOption<TData>({
       : ''
   }
 
-  function getExistingColumnFilter(): ColumnFilter | undefined {
+  function findClauseFromColumnFilter(
+    columnFilter: ColumnFilter
+  ): DataTableFilterClause | undefined {
+    return option.clause.find((c) => {
+      const keyMatchesId = c.filterKey === columnFilter.id
+
+      if (columnFilter.value === undefined) {
+        return keyMatchesId
+      }
+
+      const valueMatchesPrefix = c.valuePrefix
+        ? String(columnFilter.value).startsWith(c.valuePrefix)
+        : true
+
+      const valueMatchesSuffix = c.valueSuffix
+        ? String(columnFilter.value).endsWith(c.valueSuffix)
+        : true
+
+      return keyMatchesId && valueMatchesPrefix && valueMatchesSuffix
+    })
+  }
+
+  function getAppliedColumnFilter(): ColumnFilter | undefined {
     return table
       .getState()
       .columnFilters.find((filter) =>
@@ -808,55 +759,118 @@ function DataTableFiltersDropdownOption<TData>({
       )
   }
 
-  function hasExistingColumnFilter(): boolean {
-    return !!getExistingColumnFilter()
+  function isApplied(): boolean {
+    return !!getAppliedColumnFilter()
   }
 
-  function getDefaultClause(): DataTableFilterClause {
-    const existingClause = option.clause.find(
-      (c) => c.filterKey === getExistingColumnFilter()?.id
-    )
+  function getAppliedClause(): DataTableFilterClause | undefined {
+    const appliedColumnFilter = getAppliedColumnFilter()
 
-    return existingClause ?? option.clause[0]
-  }
-
-  function getDefaultValue(): string {
-    const defaultClause = getDefaultClause()
-    const existingFilter = getExistingColumnFilter()
-
-    if (existingFilter?.value) {
-      return existingFilter.value
-        .toString()
-        .replace(new RegExp(`^${defaultClause.valuePrefix ?? ''}`), '')
-        .replace(new RegExp(`${defaultClause.valueSuffix ?? ''}$`), '')
+    if (!appliedColumnFilter) {
+      return undefined
     }
 
-    return ''
+    return findClauseFromColumnFilter(appliedColumnFilter)
   }
 
-  function handleFilterClick(open: boolean) {
-    setIsOpen(open)
+  function getAppliedValue(): string {
+    const appliedClause = getAppliedClause()
+    const appliedColumnFilter = getAppliedColumnFilter()
 
-    if (!open) {
-      handleValueChange('')
+    if (!appliedClause || !appliedColumnFilter) {
+      return ''
     }
+
+    return String(appliedColumnFilter.value)
+      .replace(new RegExp(`^${appliedClause.valuePrefix ?? ''}`), '')
+      .replace(new RegExp(`${appliedClause.valueSuffix ?? ''}$`), '')
   }
 
-  return (
-    <div
-      data-open={isOpen}
-      className="group rounded-sm data-[open=true]:border data-[open=true]:shadow-xs"
-    >
-      <div
-        className="hover:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative m-1 mb-0 flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none group-data-[open=false]:m-0 [&_svg]:pointer-events-none [&_svg]:shrink-0"
-        onClick={() => handleFilterClick(!isOpen)}
-      >
-        <ItemIcon className="size-3" />
+  function handleRemoveFilterClick(event: MouseEvent) {
+    event.stopPropagation()
+
+    if (!isApplied()) {
+      return
+    }
+
+    setValue('')
+
+    debouncedReloadData({
+      pagination: undefined,
+      sorting: table.getState().sorting,
+      columnFilters: getCurrentColumnFilters(),
+      globalFilter: table.getState().globalFilter,
+      reloadProps: table.options.meta?.reloadProps,
+    })
+  }
+
+  function handleApplyFilterClick() {
+    if (!value.trim()) {
+      return
+    }
+
+    const filterValue = formatFilterValue(clause, value)
+
+    debouncedReloadData({
+      pagination: undefined,
+      sorting: table.getState().sorting,
+      columnFilters: [
+        ...getCurrentColumnFilters(),
+        {
+          id: clause.filterKey,
+          value: filterValue,
+        },
+      ],
+      globalFilter: table.getState().globalFilter,
+      reloadProps: table.options.meta?.reloadProps,
+    })
+
+    setOpen(false)
+  }
+
+  const appliedTriggerButton = (
+    <button className="text-muted-foreground hover:bg-accent flex items-center gap-1.5 rounded-full border px-2 py-1 text-xs font-medium shadow-xs transition-colors">
+      <div className="flex items-center gap-1">
+        <MinusCircleIcon className="size-3" onClick={handleRemoveFilterClick} />
         {t(option.label)}
       </div>
+      <span className="bg-border h-3 w-px" />
+      <span className="text-foreground max-w-[250px] overflow-hidden text-nowrap text-ellipsis">
+        {getAppliedValue()}
+      </span>
+    </button>
+  )
 
-      {isOpen && (
-        <div className="space-y-2 p-2">
+  const unappliedTriggerButton = (
+    <button className="text-muted-foreground hover:bg-accent flex items-center gap-1 rounded-full border border-dashed px-2 py-1 text-xs font-medium transition-colors">
+      <PlusCircleIcon className="size-3" />
+      {t(option.label)}
+    </button>
+  )
+
+  return (
+    <Popover modal open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        {isApplied() ? appliedTriggerButton : unappliedTriggerButton}
+      </PopoverTrigger>
+      <PopoverContent
+        align="start"
+        collisionPadding={6}
+        className="w-[250px] space-y-2 p-2"
+      >
+        <Text
+          as="span"
+          className="block"
+          weight="medium"
+          variant="muted"
+          size="xs"
+        >
+          {t('filterBy', {
+            column: t(option.label).toLowerCase(),
+          })}
+        </Text>
+
+        <div className="space-y-2">
           <Select onValueChange={handleClauseChange} defaultValue={clause.type}>
             <SelectTrigger>
               <div className="overflow-hidden text-nowrap text-ellipsis">
@@ -871,21 +885,19 @@ function DataTableFiltersDropdownOption<TData>({
               ))}
             </SelectContent>
           </Select>
+
           <div className="flex items-center gap-2 pl-2">
             <CornerDownRightIcon className="text-muted-foreground pointer-events-none size-4 shrink-0" />
             {['text', 'number'].includes(option.type) && (
               <Input
                 type={option.type}
                 value={value}
-                onChange={(e) => handleValueChange(e.target.value)}
+                onChange={(e) => setValue(e.target.value)}
               />
             )}
 
             {option.type === 'select' && (
-              <Select
-                onValueChange={(value) => handleValueChange(value)}
-                defaultValue={value}
-              >
+              <Select onValueChange={setValue} defaultValue={value}>
                 <SelectTrigger>
                   <SelectValue placeholder={t('selectOption')} />
                 </SelectTrigger>
@@ -906,12 +918,12 @@ function DataTableFiltersDropdownOption<TData>({
               <Input
                 type="date"
                 value={value}
-                onChange={(e) => handleValueChange(e.target.value)}
+                onChange={(e) => setValue(e.target.value)}
               />
             )}
 
             {option.type === 'boolean' && (
-              <Select onValueChange={handleValueChange} defaultValue={value}>
+              <Select onValueChange={setValue} defaultValue={value}>
                 <SelectTrigger>
                   <SelectValue placeholder={t('selectOption')} />
                 </SelectTrigger>
@@ -923,7 +935,16 @@ function DataTableFiltersDropdownOption<TData>({
             )}
           </div>
         </div>
-      )}
-    </div>
+
+        <Button
+          size="sm"
+          className="w-full"
+          onClick={handleApplyFilterClick}
+          disabled={!value.trim()}
+        >
+          {t('apply')}
+        </Button>
+      </PopoverContent>
+    </Popover>
   )
 }

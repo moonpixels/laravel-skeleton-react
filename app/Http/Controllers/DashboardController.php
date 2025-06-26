@@ -31,6 +31,8 @@ final class DashboardController extends Controller
                 }),
                 AllowedFilter::partial('_name', 'name'),
                 AllowedFilter::operator('name', FilterOperator::DYNAMIC),
+                AllowedFilter::partial('_email', 'email'),
+                AllowedFilter::operator('email', FilterOperator::DYNAMIC),
             ])
             ->paginate()
             ->withQueryString();

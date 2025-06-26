@@ -143,6 +143,49 @@ const userTableFilterOptions: DataTableFilterOption[] = [
       },
     ],
   },
+  {
+    id: 'email',
+    label: 'email',
+    type: 'text',
+    clause: [
+      {
+        type: 'equal',
+        filterKey: 'email',
+        valuePrefix: '=',
+      },
+      {
+        type: 'notEqual',
+        filterKey: 'email',
+        valuePrefix: '<>',
+      },
+      {
+        type: 'contains',
+        filterKey: '_email',
+      },
+    ],
+  },
+  {
+    id: 'language',
+    label: 'language',
+    type: 'select',
+    options: [
+      { value: 'en', label: 'English' },
+      { value: 'fr', label: 'Français' },
+      { value: 'es', label: 'Español' },
+    ],
+    clause: [
+      {
+        type: 'equal',
+        filterKey: 'language',
+        valuePrefix: '=',
+      },
+      {
+        type: 'notEqual',
+        filterKey: 'language',
+        valuePrefix: '<>',
+      },
+    ],
+  },
 ]
 
 export default function Dashboard({
@@ -166,18 +209,6 @@ export default function Dashboard({
         <Heading as="h2" size="base" className="mb-4">
           {t('users')}
         </Heading>
-
-        {sorts && (
-          <pre className="text-muted-foreground text-xs">
-            {JSON.stringify(sorts, null, 2)}
-          </pre>
-        )}
-
-        {filters && (
-          <pre className="text-muted-foreground text-xs">
-            {JSON.stringify(filters, null, 2)}
-          </pre>
-        )}
 
         <DataTable
           columns={userTableColumns}
