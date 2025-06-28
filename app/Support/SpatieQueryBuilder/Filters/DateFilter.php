@@ -4,16 +4,36 @@ declare(strict_types=1);
 
 namespace App\Support\SpatieQueryBuilder\Filters;
 
+use Carbon\CarbonImmutable;
+use Carbon\CarbonPeriodImmutable;
+use Carbon\Exceptions\InvalidFormatException;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use InvalidArgumentException;
 use Spatie\QueryBuilder\Enums\FilterOperator;
 use Spatie\QueryBuilder\Filters\Filter;
 
+/**
+ * @implements Filter<Model>
+ */
 final class DateFilter implements Filter
 {
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
-        if (is_array($value) && count($value) === 2) {
-            $query->whereBetween($property, $value);
+        if (is_array($value)) {
+            if (count($value) < 2) {
+                return;
+            }
+
+            try {
+                $period = new CarbonPeriodImmutable($value[0], $value[1]);
+
+                $query->whereBetween($property, $period->setTimezone('UTC'));
+
+                return;
+            } catch (InvalidArgumentException) {
+                return;
+            }
         }
 
         $value = (string) $value;
@@ -22,19 +42,25 @@ final class DateFilter implements Filter
 
         $this->removeFilterOperatorFromValue($value, $filterOperator);
 
-        if (empty($value)) {
+        if ($value === '') {
             return;
         }
 
-        match ($filterOperator) {
-            FilterOperator::EQUAL => $query->whereDate($property, $value),
-            FilterOperator::NOT_EQUAL => $query->whereDate($property, '!=', $value),
-            FilterOperator::GREATER_THAN => $query->whereDate($property, '>', $value),
-            FilterOperator::GREATER_THAN_OR_EQUAL => $query->whereDate($property, '>=', $value),
-            FilterOperator::LESS_THAN => $query->whereDate($property, '<', $value),
-            FilterOperator::LESS_THAN_OR_EQUAL => $query->whereDate($property, '<=', $value),
-            default => null
-        };
+        try {
+            $date = new CarbonImmutable($value);
+
+            match ($filterOperator) {
+                FilterOperator::EQUAL => $query->whereDate($property, $date),
+                FilterOperator::NOT_EQUAL => $query->whereDate($property, '!=', $date),
+                FilterOperator::GREATER_THAN => $query->whereDate($property, '>', $date),
+                FilterOperator::GREATER_THAN_OR_EQUAL => $query->whereDate($property, '>=', $date),
+                FilterOperator::LESS_THAN => $query->whereDate($property, '<', $date),
+                FilterOperator::LESS_THAN_OR_EQUAL => $query->whereDate($property, '<=', $date),
+                default => null
+            };
+        } catch (InvalidFormatException) {
+            return;
+        }
     }
 
     private function getFilterOperator(string $value): FilterOperator

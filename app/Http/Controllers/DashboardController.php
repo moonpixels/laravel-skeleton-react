@@ -33,9 +33,9 @@ final class DashboardController extends Controller
                 AllowedFilter::operator('email', FilterOperator::DYNAMIC),
                 AllowedFilter::operator('language', FilterOperator::DYNAMIC),
                 AllowedFilter::callback('verified', function (Builder $query, bool $value): void {
-                    if ($value === true) {
+                    if ($value) {
                         $query->whereNotNull('email_verified_at');
-                    } elseif ($value === false) {
+                    } else {
                         $query->whereNull('email_verified_at');
                     }
                 }),

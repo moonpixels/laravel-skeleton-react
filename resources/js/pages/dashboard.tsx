@@ -247,7 +247,7 @@ const userTableFilterOptions: DataTableFilterOption[] = [
       },
       {
         type: 'between',
-        filterKey: 'created_between',
+        filterKey: 'created_at',
       },
     ],
   },

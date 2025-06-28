@@ -80,6 +80,7 @@ import {
   MouseEvent,
   PropsWithChildren,
   ReactElement,
+  useEffect,
   useMemo,
   useState,
 } from 'react'
@@ -258,6 +259,12 @@ export function DataTable<TData, TValue>({
   }
 
   const table = useReactTable(merge(reactTableOptions, tableOptions))
+
+  useEffect(() => {
+    if (table.getSelectedRowModel().rows.length) {
+      table.toggleAllRowsSelected(false)
+    }
+  }, [data, table])
 
   console.log('DataTable information:', {
     ...table.getState(),
@@ -713,40 +720,94 @@ function DataTableFiltersOption<TData>({
   const [clause, setClause] = useState<DataTableFilterClause>(
     getAppliedClause() ?? option.clause[0]
   )
+  const isBetween =
+    clause.type === 'between' &&
+    ['number', 'date', 'datetime'].includes(option.type)
 
-  const [value, setValue] = useState<string>(getAppliedValue())
+  type FilterValue =
+    | { type: 'single'; value: string }
+    | { type: 'between'; value: [string, string] }
+
+  const [value, setValue] = useState<FilterValue>(() => {
+    const appliedValue = getAppliedValue()
+
+    if (isBetween) {
+      const [from = '', to = ''] = appliedValue.split(',', 2)
+      return { type: 'between', value: [from, to] }
+    }
+
+    return { type: 'single', value: appliedValue }
+  })
 
   function handleClauseChange(clauseType: DataTableFilterClauseType) {
-    const selectedClause = option.clause.find((c) => c.type === clauseType)
+    const newClause = option.clause.find((c) => c.type === clauseType)
 
-    if (!selectedClause) {
+    if (!newClause) {
       return
     }
 
-    setClause(selectedClause)
+    const oldClause = clause
+
+    setClause(newClause)
+
+    // When changing the clause type from 'between' use the first value as the new value
+    if (clauseType !== 'between' && oldClause.type === 'between') {
+      setValue({
+        type: 'single',
+        value: value.type === 'between' ? value.value[0] : '',
+      })
+      return
+    }
+
+    // When changing the clause type to 'between' use the current value as the first value
+    if (clauseType === 'between' && oldClause.type !== 'between') {
+      setValue({
+        type: 'between',
+        value: [value.type === 'single' ? value.value : '', ''],
+      })
+      return
+    }
   }
 
-  function getCurrentColumnFilters(): ColumnFiltersState {
-    return table.getState().columnFilters.map((filter) => {
-      // Remove filter for the current option so we can apply the new one
-      if (findClauseFromColumnFilter(filter)) {
-        return {
-          id: filter.id,
-          value: undefined,
-        }
-      }
+  function handleSingleValueChange(val: string) {
+    setValue({ type: 'single', value: val })
+  }
 
-      return filter
-    })
+  function handleBetweenValueChange(idx: 0 | 1, val: string) {
+    setValue((prev) =>
+      prev.type === 'between'
+        ? {
+            type: 'between',
+            value: idx === 0 ? [val, prev.value[1]] : [prev.value[0], val],
+          }
+        : prev
+    )
   }
 
   function formatFilterValue(
     clause: DataTableFilterClause,
-    value: string
+    value: FilterValue
   ): string {
-    return value.trim()
-      ? `${clause.valuePrefix ?? ''}${value}${clause.valueSuffix ?? ''}`
-      : ''
+    if (clause.type === 'between' && value.type === 'between') {
+      const [from, to] = value.value
+      return from && to ? `${from},${to}` : ''
+    }
+
+    if (value.type === 'single') {
+      return value.value.trim()
+        ? `${clause.valuePrefix ?? ''}${value.value}${clause.valueSuffix ?? ''}`
+        : ''
+    }
+
+    return ''
+  }
+
+  function getAppliedColumnFilter(): ColumnFilter | undefined {
+    return table
+      .getState()
+      .columnFilters.find((filter) =>
+        option.clause.some((c) => c.filterKey === filter.id)
+      )
   }
 
   function findClauseFromColumnFilter(
@@ -771,18 +832,6 @@ function DataTableFiltersOption<TData>({
     })
   }
 
-  function getAppliedColumnFilter(): ColumnFilter | undefined {
-    return table
-      .getState()
-      .columnFilters.find((filter) =>
-        option.clause.some((c) => c.filterKey === filter.id)
-      )
-  }
-
-  function isApplied(): boolean {
-    return !!getAppliedColumnFilter()
-  }
-
   function getAppliedClause(): DataTableFilterClause | undefined {
     const appliedColumnFilter = getAppliedColumnFilter()
 
@@ -801,15 +850,39 @@ function DataTableFiltersOption<TData>({
       return ''
     }
 
-    return String(appliedColumnFilter.value)
+    const rawValue = String(appliedColumnFilter.value)
+
+    if (appliedClause.type === 'between') {
+      return rawValue
+    }
+
+    return rawValue
       .replace(new RegExp(`^${appliedClause.valuePrefix ?? ''}`), '')
       .replace(new RegExp(`${appliedClause.valueSuffix ?? ''}$`), '')
   }
 
+  function getCurrentColumnFilters(): ColumnFiltersState {
+    return table.getState().columnFilters.map((filter) => {
+      // Remove filter for the current option so we can apply the new one
+      if (findClauseFromColumnFilter(filter)) {
+        return {
+          id: filter.id,
+          value: undefined,
+        }
+      }
+      return filter
+    })
+  }
+
+  function isApplied(): boolean {
+    return !!getAppliedColumnFilter()
+  }
+
   function getFormattedAppliedValue(): string {
     const appliedValue = getAppliedValue()
+    const appliedClause = getAppliedClause()
 
-    if (!appliedValue) {
+    if (!appliedValue || !appliedClause) {
       return ''
     }
 
@@ -825,7 +898,30 @@ function DataTableFiltersOption<TData>({
     }
 
     if (option.type === 'date') {
+      if (appliedClause.type === 'between') {
+        const [from, to] = appliedValue.split(',', 2)
+
+        return `${
+          from
+            ? new Date(from).toLocaleDateString(i18n.language, {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+              })
+            : ''
+        } – ${
+          to
+            ? new Date(to).toLocaleDateString(i18n.language, {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+              })
+            : ''
+        }`
+      }
+
       const date = new Date(appliedValue)
+
       return date.toLocaleDateString(i18n.language, {
         day: '2-digit',
         month: 'short',
@@ -834,8 +930,36 @@ function DataTableFiltersOption<TData>({
     }
 
     if (option.type === 'datetime') {
-      console.log('Formatting datetime:', appliedValue)
+      if (appliedClause.type === 'between') {
+        const [from, to] = appliedValue.split(',', 2)
+
+        return `${
+          from
+            ? new Date(from).toLocaleString(i18n.language, {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+              })
+            : ''
+        } – ${
+          to
+            ? new Date(to).toLocaleString(i18n.language, {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+              })
+            : ''
+        }`
+      }
+
+      console.log('appliedValue:', appliedValue)
+
       const date = new Date(appliedValue)
+
       return date.toLocaleString(i18n.language, {
         day: '2-digit',
         month: 'short',
@@ -855,7 +979,11 @@ function DataTableFiltersOption<TData>({
       return
     }
 
-    setValue('')
+    setValue(
+      isBetween
+        ? { type: 'between', value: ['', ''] }
+        : { type: 'single', value: '' }
+    )
 
     debouncedReloadData({
       pagination: undefined,
@@ -867,11 +995,11 @@ function DataTableFiltersOption<TData>({
   }
 
   function handleApplyFilterClick() {
-    if (!value.trim()) {
+    const filterValue = formatFilterValue(clause, value)
+
+    if (!filterValue) {
       return
     }
-
-    const filterValue = formatFilterValue(clause, value)
 
     debouncedReloadData({
       pagination: undefined,
@@ -950,16 +1078,31 @@ function DataTableFiltersOption<TData>({
 
           <div className="flex items-center gap-2 pl-2">
             <CornerDownRightIcon className="text-muted-foreground pointer-events-none size-4 shrink-0" />
-            {['text', 'number'].includes(option.type) && (
+            {option.type === 'text' && (
               <Input
-                type={option.type}
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
+                type="text"
+                value={value.type === 'single' ? value.value : ''}
+                onChange={(e) => handleSingleValueChange(e.target.value)}
+              />
+            )}
+
+            {option.type === 'number' && (
+              <Input
+                type="number"
+                value={value.type === 'single' ? value.value : value.value[0]}
+                onChange={(e) =>
+                  isBetween
+                    ? handleBetweenValueChange(0, e.target.value)
+                    : handleSingleValueChange(e.target.value)
+                }
               />
             )}
 
             {option.type === 'select' && (
-              <Select onValueChange={setValue} defaultValue={value}>
+              <Select
+                onValueChange={handleSingleValueChange}
+                defaultValue={value.type === 'single' ? value.value : ''}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder={t('selectOption')} />
                 </SelectTrigger>
@@ -978,27 +1121,51 @@ function DataTableFiltersOption<TData>({
 
             {option.type === 'date' && (
               <DatePicker
-                selected={value ? new Date(value) : undefined}
-                onSelect={(date) => {
-                  setValue(date ? format(date, 'yyyy-MM-dd') : '')
-                }}
+                selected={
+                  value.type === 'single' && value.value
+                    ? new Date(value.value)
+                    : value.value[0]
+                      ? new Date(value.value[0])
+                      : undefined
+                }
+                onSelect={(date) =>
+                  isBetween
+                    ? handleBetweenValueChange(
+                        0,
+                        date ? format(date, 'yyyy-MM-dd') : ''
+                      )
+                    : handleSingleValueChange(
+                        date ? format(date, 'yyyy-MM-dd') : ''
+                      )
+                }
                 locale={i18n.language}
               />
             )}
 
             {option.type === 'datetime' && (
               <DatePicker
-                selected={value ? new Date(value) : undefined}
-                onSelect={(date) => {
-                  setValue(date ? formatISO(date) : '')
-                }}
+                selected={
+                  value.type === 'single' && value.value
+                    ? new Date(value.value)
+                    : value.value[0]
+                      ? new Date(value.value[0])
+                      : undefined
+                }
+                onSelect={(date) =>
+                  isBetween
+                    ? handleBetweenValueChange(0, date ? formatISO(date) : '')
+                    : handleSingleValueChange(date ? formatISO(date) : '')
+                }
                 locale={i18n.language}
                 showTime
               />
             )}
 
             {option.type === 'boolean' && (
-              <Select onValueChange={setValue} defaultValue={value}>
+              <Select
+                onValueChange={handleSingleValueChange}
+                defaultValue={value.type === 'single' ? value.value : ''}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder={t('selectOption')} />
                 </SelectTrigger>
@@ -1013,30 +1180,42 @@ function DataTableFiltersOption<TData>({
           {clause.type === 'between' && (
             <div className="flex items-center gap-2 pl-2">
               <AmpersandIcon className="text-muted-foreground pointer-events-none size-4 shrink-0" />
+
               {option.type === 'number' && (
                 <Input
                   type="number"
-                  value={value}
-                  onChange={(e) => setValue(e.target.value)}
+                  value={value.type === 'between' ? value.value[1] : ''}
+                  onChange={(e) => handleBetweenValueChange(1, e.target.value)}
                 />
               )}
 
               {option.type === 'date' && (
                 <DatePicker
-                  selected={value ? new Date(value) : undefined}
-                  onSelect={(date) => {
-                    setValue(date ? format(date, 'yyyy-MM-dd') : '')
-                  }}
+                  selected={
+                    value.type === 'between' && value.value[1]
+                      ? new Date(value.value[1])
+                      : undefined
+                  }
+                  onSelect={(date) =>
+                    handleBetweenValueChange(
+                      1,
+                      date ? format(date, 'yyyy-MM-dd') : ''
+                    )
+                  }
                   locale={i18n.language}
                 />
               )}
 
               {option.type === 'datetime' && (
                 <DatePicker
-                  selected={value ? new Date(value) : undefined}
-                  onSelect={(date) => {
-                    setValue(date ? formatISO(date) : '')
-                  }}
+                  selected={
+                    value.type === 'between' && value.value[1]
+                      ? new Date(value.value[1])
+                      : undefined
+                  }
+                  onSelect={(date) =>
+                    handleBetweenValueChange(1, date ? formatISO(date) : '')
+                  }
                   locale={i18n.language}
                   showTime
                 />
@@ -1050,7 +1229,13 @@ function DataTableFiltersOption<TData>({
           className="w-full"
           onClick={handleApplyFilterClick}
           disabled={
-            !value.trim() || (clause.type === 'between' && !value.includes(','))
+            isBetween
+              ? !(
+                  value.type === 'between' &&
+                  value.value[0].trim() &&
+                  value.value[1].trim()
+                )
+              : !(value.type === 'single' && value.value.trim())
           }
         >
           {t('apply')}

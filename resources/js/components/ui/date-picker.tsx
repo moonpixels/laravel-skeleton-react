@@ -105,7 +105,7 @@ function DatePicker({
             disabled={!date}
             value={date ? format(date, 'HH:mm:ss') : ''}
             onChange={handleTimeChange}
-            className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+            className="min-w-[106px] appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
           />
         </div>
       )}
