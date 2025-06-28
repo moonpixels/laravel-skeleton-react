@@ -55,6 +55,8 @@
   "enable": "Enable",
   "enableTwoFactor": "Enable two-factor authentication",
   "enableTwoFactorDescription": "Scan the QR code below with your two-factor authentication app then enter the code shown.",
+  "english": "English",
+  "false": "False",
   "filterBy": "Filter by {{column}}",
   "filterClause": {
     "between": "is between",
@@ -124,6 +126,7 @@
   "themeSelectDescription": "Select the interface colour scheme.",
   "themeSelectLabel": "Theme",
   "toggleColumns": "Toggle columns",
+  "true": "True",
   "twoFactorAuthentication": "Two-factor authentication",
   "twoFactorAuthenticationDescription": "Add additional security to your account using two-factor authentication.",
   "twoFactorCodeDescription": "Enter the code from your authenticator app to continue.",
@@ -137,8 +140,11 @@
   "useCode": "Use an authentication code",
   "useRecoveryCode": "Use a recovery code",
   "users": "Users",
+  "verified": "Verified",
   "verifyEmail": "Verify your email address",
   "verifyEmailDescription": "To complete registration, we need to verify your email address. Please check your email for the verification link.",
   "viewRecoveryCodes": "View recovery codes",
-  "welcomeMessage": "Welcome back, {{name}}!"
+  "welcomeMessage": "Welcome back, {{name}}!",
+  "emailVerified": "Email verified",
+  "createdAt": "Created at"
 }

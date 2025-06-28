@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Support\SpatieQueryBuilder\Filters\DateFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -23,16 +24,22 @@ final class DashboardController extends Controller
             ->allowedSorts(['name', 'email', 'language'])
             ->allowedFilters([
                 AllowedFilter::callback('search', function (Builder $query, string $value): void {
-                    $query->whereAny(
-                        columns: ['name', 'email'],
-                        operator: 'ilike',
-                        value: "%{$value}%",
-                    );
+                    $query->whereLike(column: 'name', value: "%{$value}%")
+                        ->orWhereLike(column: 'email', value: "%{$value}%");
                 }),
                 AllowedFilter::partial('_name', 'name'),
                 AllowedFilter::operator('name', FilterOperator::DYNAMIC),
                 AllowedFilter::partial('_email', 'email'),
                 AllowedFilter::operator('email', FilterOperator::DYNAMIC),
+                AllowedFilter::operator('language', FilterOperator::DYNAMIC),
+                AllowedFilter::callback('verified', function (Builder $query, bool $value): void {
+                    if ($value === true) {
+                        $query->whereNotNull('email_verified_at');
+                    } elseif ($value === false) {
+                        $query->whereNull('email_verified_at');
+                    }
+                }),
+                AllowedFilter::custom('created_at', new DateFilter),
             ])
             ->paginate()
             ->withQueryString();

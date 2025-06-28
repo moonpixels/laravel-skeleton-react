@@ -5,7 +5,7 @@ import {
   DataTableCheckboxHeader,
   DataTableColumnHeader,
   DataTableFilterOption,
-} from '@/components/data-table'
+} from '@/components/data-table/data-table'
 import { Heading } from '@/components/heading'
 import { PageHeader } from '@/components/page-header'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -90,6 +90,33 @@ const userTableColumns: ColumnDef<User>[] = [
     },
   },
   {
+    accessorKey: 'email_verified_at',
+    header: ({ table, column }) => (
+      <DataTableColumnHeader
+        table={table}
+        column={column}
+        title="emailVerified"
+      />
+    ),
+    cell: ({ cell }) => {
+      return cell.getValue() ? (
+        <CheckIcon
+          className="text-successful size-4"
+          aria-label="Email verified"
+        />
+      ) : (
+        <XIcon
+          className="text-destructive size-4"
+          aria-label="Email not verified"
+        />
+      )
+    },
+    enableSorting: false,
+    meta: {
+      translationKey: 'emailVerified',
+    },
+  },
+  {
     accessorKey: 'two_factor_confirmed_at',
     header: ({ table, column }) => (
       <DataTableColumnHeader table={table} column={column} title="2fa" />
@@ -168,11 +195,7 @@ const userTableFilterOptions: DataTableFilterOption[] = [
     id: 'language',
     label: 'language',
     type: 'select',
-    options: [
-      { value: 'en', label: 'English' },
-      { value: 'fr', label: 'Français' },
-      { value: 'es', label: 'Español' },
-    ],
+    options: [{ value: 'en_GB', label: 'english' }],
     clause: [
       {
         type: 'equal',
@@ -183,6 +206,48 @@ const userTableFilterOptions: DataTableFilterOption[] = [
         type: 'notEqual',
         filterKey: 'language',
         valuePrefix: '<>',
+      },
+    ],
+  },
+  {
+    id: 'verified',
+    label: 'verified',
+    type: 'boolean',
+    clause: [
+      {
+        type: 'equal',
+        filterKey: 'verified',
+      },
+    ],
+  },
+  {
+    id: 'createdAt',
+    label: 'createdAt',
+    type: 'datetime',
+    clause: [
+      {
+        type: 'equal',
+        filterKey: 'created_at',
+        valuePrefix: '=',
+      },
+      {
+        type: 'notEqual',
+        filterKey: 'created_at',
+        valuePrefix: '<>',
+      },
+      {
+        type: 'greaterThan',
+        filterKey: 'created_at',
+        valuePrefix: '>',
+      },
+      {
+        type: 'lessThan',
+        filterKey: 'created_at',
+        valuePrefix: '<',
+      },
+      {
+        type: 'between',
+        filterKey: 'created_between',
       },
     ],
   },

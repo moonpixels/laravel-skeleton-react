@@ -52,7 +52,7 @@ final class RequestMixin
             if (is_array($filters)) {
                 $filters = array_map(fn (mixed $value, string $key): array => [
                     'id' => $key,
-                    'value' => is_array($value) ? implode(',', $value) : urldecode((string) $value),
+                    'value' => is_array($value) ? implode(',', $value) : $value,
                 ], $filters, array_keys($filters));
 
                 return array_filter($filters, fn (array $filter): bool => $filter['id'] !== '');

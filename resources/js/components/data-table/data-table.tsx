@@ -1,6 +1,7 @@
 import { Text } from '@/components/text'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import { DatePicker } from '@/components/ui/date-picker'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -58,8 +59,10 @@ import {
   TableOptions,
   useReactTable,
 } from '@tanstack/react-table'
+import { format, formatISO } from 'date-fns'
 import { debounce, merge, union } from 'es-toolkit'
 import {
+  AmpersandIcon,
   ArrowDownIcon,
   ArrowUpIcon,
   ChevronsUpDownIcon,
@@ -272,7 +275,7 @@ export function DataTable<TData, TValue>({
         </div>
       </div>
       {filterOptions.length > 0 && (
-        <DataTableFiltersDropdown filterOptions={filterOptions} table={table} />
+        <DataTableFilters filterOptions={filterOptions} table={table} />
       )}
       <Table>
         <TableHeader>
@@ -652,7 +655,7 @@ export interface DataTableFilterClause {
 export interface DataTableFilterOption {
   id: string
   label: string
-  type: 'text' | 'number' | 'select' | 'date' | 'boolean'
+  type: 'text' | 'number' | 'select' | 'date' | 'datetime' | 'boolean'
   clause: DataTableFilterClause[]
   options?: { label: string; value: string }[]
 }
@@ -662,14 +665,31 @@ interface DataTableFiltersDropdownProps<TData> {
   filterOptions?: DataTableFilterOption[]
 }
 
-export function DataTableFiltersDropdown<TData>({
+export function DataTableFilters<TData>({
   table,
   filterOptions = [],
 }: DataTableFiltersDropdownProps<TData>) {
+  // Check if any filter option has a 'between' clause that is not compatible with its type
+  filterOptions.forEach((option) => {
+    if (
+      option.clause.some(
+        (clause) =>
+          clause.type === 'between' &&
+          option.type !== 'date' &&
+          option.type !== 'datetime' &&
+          option.type !== 'number'
+      )
+    ) {
+      throw new Error(
+        `The 'between' clause can only be used with 'date', 'datetime' or 'number' type filters.`
+      )
+    }
+  })
+
   return (
     <div className="flex flex-wrap items-center gap-2">
       {filterOptions.map((option) => (
-        <DataTableFiltersDropdownOption<TData>
+        <DataTableFiltersOption<TData>
           key={option.id}
           table={table}
           option={option}
@@ -679,14 +699,14 @@ export function DataTableFiltersDropdown<TData>({
   )
 }
 
-function DataTableFiltersDropdownOption<TData>({
+function DataTableFiltersOption<TData>({
   table,
   option,
 }: {
   table: ReactTable<TData>
   option: DataTableFilterOption
 }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const [open, setOpen] = useState(false)
 
@@ -786,6 +806,48 @@ function DataTableFiltersDropdownOption<TData>({
       .replace(new RegExp(`${appliedClause.valueSuffix ?? ''}$`), '')
   }
 
+  function getFormattedAppliedValue(): string {
+    const appliedValue = getAppliedValue()
+
+    if (!appliedValue) {
+      return ''
+    }
+
+    if (option.type === 'boolean') {
+      return appliedValue === '1' ? t('true') : t('false')
+    }
+
+    if (option.type === 'select') {
+      const selectedOption = option.options?.find(
+        (o) => o.value === appliedValue
+      )
+      return selectedOption ? t(selectedOption.label) : appliedValue
+    }
+
+    if (option.type === 'date') {
+      const date = new Date(appliedValue)
+      return date.toLocaleDateString(i18n.language, {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      })
+    }
+
+    if (option.type === 'datetime') {
+      console.log('Formatting datetime:', appliedValue)
+      const date = new Date(appliedValue)
+      return date.toLocaleString(i18n.language, {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    }
+
+    return appliedValue
+  }
+
   function handleRemoveFilterClick(event: MouseEvent) {
     event.stopPropagation()
 
@@ -836,7 +898,7 @@ function DataTableFiltersDropdownOption<TData>({
       </div>
       <span className="bg-border h-3 w-px" />
       <span className="text-foreground max-w-[250px] overflow-hidden text-nowrap text-ellipsis">
-        {getAppliedValue()}
+        {getFormattedAppliedValue()}
       </span>
     </button>
   )
@@ -856,7 +918,7 @@ function DataTableFiltersDropdownOption<TData>({
       <PopoverContent
         align="start"
         collisionPadding={6}
-        className="w-[250px] space-y-2 p-2"
+        className="w-full min-w-[250px] space-y-2 p-2"
       >
         <Text
           as="span"
@@ -907,7 +969,7 @@ function DataTableFiltersDropdownOption<TData>({
                       key={opt.value.toString()}
                       value={opt.value.toString()}
                     >
-                      {opt.label}
+                      {t(opt.label)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -915,10 +977,23 @@ function DataTableFiltersDropdownOption<TData>({
             )}
 
             {option.type === 'date' && (
-              <Input
-                type="date"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
+              <DatePicker
+                selected={value ? new Date(value) : undefined}
+                onSelect={(date) => {
+                  setValue(date ? format(date, 'yyyy-MM-dd') : '')
+                }}
+                locale={i18n.language}
+              />
+            )}
+
+            {option.type === 'datetime' && (
+              <DatePicker
+                selected={value ? new Date(value) : undefined}
+                onSelect={(date) => {
+                  setValue(date ? formatISO(date) : '')
+                }}
+                locale={i18n.language}
+                showTime
               />
             )}
 
@@ -934,13 +1009,49 @@ function DataTableFiltersDropdownOption<TData>({
               </Select>
             )}
           </div>
+
+          {clause.type === 'between' && (
+            <div className="flex items-center gap-2 pl-2">
+              <AmpersandIcon className="text-muted-foreground pointer-events-none size-4 shrink-0" />
+              {option.type === 'number' && (
+                <Input
+                  type="number"
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                />
+              )}
+
+              {option.type === 'date' && (
+                <DatePicker
+                  selected={value ? new Date(value) : undefined}
+                  onSelect={(date) => {
+                    setValue(date ? format(date, 'yyyy-MM-dd') : '')
+                  }}
+                  locale={i18n.language}
+                />
+              )}
+
+              {option.type === 'datetime' && (
+                <DatePicker
+                  selected={value ? new Date(value) : undefined}
+                  onSelect={(date) => {
+                    setValue(date ? formatISO(date) : '')
+                  }}
+                  locale={i18n.language}
+                  showTime
+                />
+              )}
+            </div>
+          )}
         </div>
 
         <Button
           size="sm"
           className="w-full"
           onClick={handleApplyFilterClick}
-          disabled={!value.trim()}
+          disabled={
+            !value.trim() || (clause.type === 'between' && !value.includes(','))
+          }
         >
           {t('apply')}
         </Button>
