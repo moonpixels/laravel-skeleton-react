@@ -1,7 +1,5 @@
-import {
-  DataTable,
-  DataTableActionsDropdown,
-} from '@/components/data-table/data-table'
+import { DataTable } from '@/components/data-table/data-table'
+import { DataTableActionsDropdown } from '@/components/data-table/data-table-actions-dropdown'
 import { Heading } from '@/components/heading'
 import { PageHeader } from '@/components/page-header'
 import {

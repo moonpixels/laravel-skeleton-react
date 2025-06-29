@@ -1,8 +1,8 @@
+import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
 import {
-  DataTableCheckboxCell,
-  DataTableCheckboxHeader,
-  DataTableColumnHeader,
-} from '@/components/data-table/data-table'
+  DataTableSelectCell,
+  DataTableSelectHeader,
+} from '@/components/data-table/data-table-select'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -26,15 +26,19 @@ import { useTranslation } from 'react-i18next'
 export const columns: ColumnDef<User>[] = [
   {
     id: 'select',
-    header: ({ table }) => <DataTableCheckboxHeader table={table} />,
-    cell: ({ row }) => <DataTableCheckboxCell row={row} />,
+    header: ({ table }) => <DataTableSelectHeader table={table} />,
+    cell: ({ row }) => <DataTableSelectCell row={row} />,
     enableSorting: false,
     enableHiding: false,
   },
   {
     accessorKey: 'name',
     header: ({ table, column }) => (
-      <DataTableColumnHeader table={table} column={column} title="name" />
+      <DataTableColumnHeader
+        table={table}
+        column={column}
+        titleTransKey="name"
+      />
     ),
     cell: ({ row }) => {
       const user = row.original
@@ -50,25 +54,33 @@ export const columns: ColumnDef<User>[] = [
       )
     },
     meta: {
-      translationKey: 'name',
+      transKey: 'name',
     },
   },
   {
     accessorKey: 'email',
     header: ({ table, column }) => (
-      <DataTableColumnHeader table={table} column={column} title="email" />
+      <DataTableColumnHeader
+        table={table}
+        column={column}
+        titleTransKey="email"
+      />
     ),
     meta: {
-      translationKey: 'email',
+      transKey: 'email',
     },
   },
   {
     accessorKey: 'language',
     header: ({ table, column }) => (
-      <DataTableColumnHeader table={table} column={column} title="language" />
+      <DataTableColumnHeader
+        table={table}
+        column={column}
+        titleTransKey="language"
+      />
     ),
     meta: {
-      translationKey: 'language',
+      transKey: 'language',
     },
   },
   {
@@ -77,7 +89,7 @@ export const columns: ColumnDef<User>[] = [
       <DataTableColumnHeader
         table={table}
         column={column}
-        title="emailVerified"
+        titleTransKey="emailVerified"
       />
     ),
     cell: ({ cell }) => {
@@ -95,13 +107,17 @@ export const columns: ColumnDef<User>[] = [
     },
     enableSorting: false,
     meta: {
-      translationKey: 'emailVerified',
+      transKey: 'emailVerified',
     },
   },
   {
     accessorKey: 'two_factor_confirmed_at',
     header: ({ table, column }) => (
-      <DataTableColumnHeader table={table} column={column} title="2fa" />
+      <DataTableColumnHeader
+        table={table}
+        column={column}
+        titleTransKey="2fa"
+      />
     ),
     cell: ({ cell }) => {
       return cell.getValue() ? (
@@ -115,7 +131,7 @@ export const columns: ColumnDef<User>[] = [
     },
     enableSorting: false,
     meta: {
-      translationKey: '2fa',
+      transKey: '2fa',
     },
   },
   {
