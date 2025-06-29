@@ -51,7 +51,7 @@
     "i18next": "^25.2.1",
     "i18next-browser-languagedetector": "^8.2.0",
     "input-otp": "^1.4.2",
-    "lucide-react": "^0.515.0",
+    "lucide-react": "^0.525.0",
     "radix-ui": "^1.4.2",
     "react-day-picker": "^9.7.0",
     "react-hook-form": "^7.54.2",
