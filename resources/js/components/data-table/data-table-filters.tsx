@@ -176,6 +176,33 @@ function DataTableFiltersOption<TData>({
     [appliedValue, appliedClause, clause, option, t, i18n]
   )
 
+  const displaySymbol = useMemo((): string => {
+    if (!appliedClause) {
+      return ''
+    }
+
+    switch (appliedClause.type) {
+      case 'equal':
+        return '='
+      case 'notEqual':
+        return '≠'
+      case 'contains':
+        return '≈'
+      case 'greaterThan':
+        return '>'
+      case 'lessThan':
+        return '<'
+      case 'greaterThanOrEqual':
+        return '≥'
+      case 'lessThanOrEqual':
+        return '≤'
+      case 'between':
+        return '><'
+      default:
+        return ''
+    }
+  }, [appliedClause])
+
   function handleRemoveFilterClick(event: MouseEvent) {
     event.stopPropagation()
 
@@ -269,12 +296,12 @@ function DataTableFiltersOption<TData>({
   }
 
   const activeTrigger = (
-    <button className="text-muted-foreground hover:bg-accent flex items-center gap-1.5 rounded-full border px-2 py-1 text-xs font-medium shadow-xs transition-colors">
+    <button className="text-muted-foreground hover:bg-accent flex items-center gap-1 rounded-full border px-2 py-1 text-xs font-medium shadow-xs transition-colors">
       <div className="flex items-center gap-1">
         <MinusCircleIcon className="size-3" onClick={handleRemoveFilterClick} />
         {t(option.labelTransKey)}
       </div>
-      <span className="bg-border h-3 w-px" />
+      <span>{displaySymbol}</span>
       <span className="text-foreground max-w-[250px] overflow-hidden text-nowrap text-ellipsis">
         {displayValue}
       </span>
