@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 test('new users can register', function (): void {
     $this->post(route('register'), getRegistrationData())
         ->assertValid()
-        ->assertRedirect(route('dashboard'));
+        ->assertRedirect(route('dashboard.index'));
 
     $this->assertAuthenticated();
 
@@ -25,7 +25,7 @@ test('new users can register', function (): void {
 test('users are registered with the default locale when no locale is provided', function (): void {
     $this->post(route('register'), getRegistrationData(['language' => null]))
         ->assertValid()
-        ->assertRedirect(route('dashboard'));
+        ->assertRedirect(route('dashboard.index'));
 
     $user = User::sole();
 
@@ -35,7 +35,7 @@ test('users are registered with the default locale when no locale is provided', 
 test('users are registered with the default locale when an invalid locale is provided', function (): void {
     $this->post(route('register'), getRegistrationData(['language' => 'invalid-locale']))
         ->assertValid()
-        ->assertRedirect(route('dashboard'));
+        ->assertRedirect(route('dashboard.index'));
 
     $user = User::sole();
 

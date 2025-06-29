@@ -44,7 +44,7 @@ final class DashboardController extends Controller
             ->paginate()
             ->withQueryString();
 
-        return Inertia::render('dashboard', [
+        return Inertia::render('dashboard/index', [
             'users' => UserResource::collection($users),
             'sorts' => $request->getSorts(),
             'filters' => $request->getFilters(),

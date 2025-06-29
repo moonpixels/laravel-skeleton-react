@@ -10,11 +10,11 @@ beforeEach(function (): void {
     $this->actingAs($this->user);
 });
 
-test('account page can be rendered', function (): void {
-    $this->get(route('dashboard'))
+test('dashboard page can be rendered', function (): void {
+    $this->get(route('dashboard.index'))
         ->assertOk()
         ->assertInertia(fn (AssertableInertia $page): AssertableInertia => $page
-            ->component('dashboard')
+            ->component('dashboard/index')
             ->hasAll(['users', 'sorts', 'filters'])
         );
 });

@@ -33,7 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     });
 
     Route::controller(DashboardController::class)->group(function (): void {
-        Route::get('dashboard', 'index')->name('dashboard');
+        Route::get('dashboard', 'index')->name('dashboard.index');
     });
 });
 

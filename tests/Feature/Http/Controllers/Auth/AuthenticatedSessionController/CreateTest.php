@@ -20,5 +20,5 @@ test('login page can be rendered', function (): void {
 test('user is redirected to the dashboard page if already authenticated', function (): void {
     $this->actingAs($this->user)
         ->get(route('login'))
-        ->assertRedirect(route('dashboard'));
+        ->assertRedirect(route('dashboard.index'));
 });

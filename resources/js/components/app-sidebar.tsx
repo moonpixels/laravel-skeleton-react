@@ -31,7 +31,7 @@ export function AppSidebar() {
   const primaryNavItems = [
     {
       label: t('dashboard'),
-      href: route('dashboard'),
+      href: route('dashboard.index'),
       isActive: route().current('dashboard*'),
       icon: LayoutDashboard,
     },
@@ -43,7 +43,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <Link
-              href={route('dashboard')}
+              href={route('dashboard.index')}
               className="flex p-2 group-data-[collapsible=icon]:px-1"
               onClick={cleanup}
               prefetch
