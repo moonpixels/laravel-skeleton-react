@@ -1,4 +1,10 @@
 import { reloadData } from '@/components/data-table/data-table'
+import {
+  findClauseFromColumnFilter,
+  formatValueForDisplay,
+  formatValueForQueryParam,
+  validateFilterOptions,
+} from '@/components/data-table/data-table-filters-utils'
 import { Text } from '@/components/text'
 import { Button } from '@/components/ui/button'
 import { DatePicker } from '@/components/ui/date-picker'
@@ -24,7 +30,7 @@ import {
   MinusCircleIcon,
   PlusCircleIcon,
 } from 'lucide-react'
-import { MouseEvent, useState } from 'react'
+import { MouseEvent, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 type DataTableFilterClauseType =
@@ -57,47 +63,15 @@ interface DataTableFiltersDropdownProps<TData> {
   filterOptions?: DataTableFilterOption[]
 }
 
-function validateFilterOptions(filterOptions: DataTableFilterOption[]): void {
-  filterOptions.forEach((option) => {
-    // Check `between` clause is only used with compatible types
-    option.clause.forEach((clause) => {
-      if (
-        clause.type === 'between' &&
-        !['date', 'datetime', 'number'].includes(option.type)
-      ) {
-        throw new Error(
-          `The 'between' clause can only be used with 'date', 'datetime' or 'number' type filters.`
-        )
-      }
-    })
-
-    // Check `between` clause is not used with prefix or suffix
-    if (
-      option.clause.some(
-        (clause) =>
-          clause.type === 'between' &&
-          (clause.valuePrefix ?? clause.valueSuffix)
-      )
-    ) {
-      throw new Error(
-        `The 'between' clause cannot have a value prefix or suffix.`
-      )
-    }
-
-    // Check `select` options are provided for select type filters
-    if (option.type === 'select' && !option.options?.length) {
-      throw new Error(
-        `The 'select' type filter '${option.labelTransKey}' must have options defined.`
-      )
-    }
-  })
-}
+export type FilterValue =
+  | { type: 'single'; value: string }
+  | { type: 'between'; value: [string, string] }
 
 export function DataTableFilters<TData>({
   table,
   filterOptions = [],
 }: DataTableFiltersDropdownProps<TData>) {
-  validateFilterOptions(filterOptions)
+  useMemo(() => validateFilterOptions(filterOptions), [filterOptions])
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -112,24 +86,6 @@ export function DataTableFilters<TData>({
   )
 }
 
-const dateStringOptions: Intl.DateTimeFormatOptions = {
-  day: '2-digit',
-  month: 'short',
-  year: 'numeric',
-}
-
-const dateTimeStringOptions: Intl.DateTimeFormatOptions = {
-  day: '2-digit',
-  month: 'short',
-  year: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit',
-}
-
-type FilterValue =
-  | { type: 'single'; value: string }
-  | { type: 'between'; value: [string, string] }
-
 function DataTableFiltersOption<TData>({
   table,
   option,
@@ -143,16 +99,49 @@ function DataTableFiltersOption<TData>({
 
   const [open, setOpen] = useState(false)
 
+  const appliedColumnFilter = useMemo((): ColumnFilter | undefined => {
+    return tableState.columnFilters.find((filter) =>
+      option.clause.some((clause) => clause.filterKey === filter.id)
+    )
+  }, [tableState.columnFilters, option.clause])
+
+  const appliedClause = useMemo((): DataTableFilterClause | undefined => {
+    if (!appliedColumnFilter) {
+      return undefined
+    }
+
+    return findClauseFromColumnFilter(option, appliedColumnFilter)
+  }, [option, appliedColumnFilter])
+
   const [clause, setClause] = useState<DataTableFilterClause>(
-    getAppliedClause() ?? option.clause[0]
+    appliedClause ?? option.clause[0]
   )
+
   const isBetween =
     clause.type === 'between' &&
     ['number', 'date', 'datetime'].includes(option.type)
 
-  const [value, setValue] = useState<FilterValue>(() => {
-    const appliedValue = getAppliedValue()
+  const isActive = !!appliedColumnFilter
 
+  const appliedValue = useMemo((): string => {
+    if (!appliedClause || !appliedColumnFilter) {
+      return ''
+    }
+
+    const rawValue = String(appliedColumnFilter.value)
+
+    // We don't support prefix and suffix on `between` clauses, so we don't need to remove them
+    if (appliedClause.type === 'between') {
+      return rawValue
+    }
+
+    // Remove the prefix and suffix from the value if they exist
+    return rawValue
+      .replace(new RegExp(`^${appliedClause.valuePrefix ?? ''}`), '')
+      .replace(new RegExp(`${appliedClause.valueSuffix ?? ''}$`), '')
+  }, [appliedClause, appliedColumnFilter])
+
+  const [value, setValue] = useState<FilterValue>(() => {
     if (isBetween) {
       const [from = '', to = ''] = appliedValue.split(',', 2)
       return { type: 'between', value: [from, to] }
@@ -160,6 +149,54 @@ function DataTableFiltersOption<TData>({
 
     return { type: 'single', value: appliedValue }
   })
+
+  const currentColumnFilters = useMemo((): ColumnFiltersState => {
+    return tableState.columnFilters.map((filter) => {
+      // Remove filter for the current option so we can apply the new one
+      if (findClauseFromColumnFilter(option, filter)) {
+        return {
+          id: filter.id,
+          value: undefined,
+        }
+      }
+
+      return filter
+    })
+  }, [tableState.columnFilters, option])
+
+  const displayValue = useMemo(
+    (): string =>
+      formatValueForDisplay({
+        appliedValue: appliedValue,
+        appliedClause: appliedClause ?? clause,
+        option,
+        t,
+        i18n,
+      }),
+    [appliedValue, appliedClause, clause, option, t, i18n]
+  )
+
+  function handleRemoveFilterClick(event: MouseEvent) {
+    event.stopPropagation()
+
+    if (!isActive) {
+      return
+    }
+
+    setValue(
+      isBetween
+        ? { type: 'between', value: ['', ''] }
+        : { type: 'single', value: '' }
+    )
+
+    reloadData({
+      pagination: undefined,
+      sorting: tableState.sorting,
+      columnFilters: currentColumnFilters,
+      globalFilter: tableState.globalFilter,
+      reloadProps: table.options.meta?.reloadProps,
+    })
+  }
 
   function handleClauseChange(clauseType: DataTableFilterClauseType) {
     const newClause = option.clause.find((c) => c.type === clauseType)
@@ -207,198 +244,8 @@ function DataTableFiltersOption<TData>({
     )
   }
 
-  function formatFilterValue(
-    clause: DataTableFilterClause,
-    value: FilterValue
-  ): string {
-    // Separate between values with a comma
-    if (clause.type === 'between' && value.type === 'between') {
-      const [from, to] = value.value
-      return from && to ? `${from},${to}` : ''
-    }
-
-    // Add prefix and suffix to the value if they exist
-    if (value.type === 'single') {
-      return value.value.trim()
-        ? `${clause.valuePrefix ?? ''}${value.value}${clause.valueSuffix ?? ''}`
-        : ''
-    }
-
-    return ''
-  }
-
-  function getAppliedColumnFilter(): ColumnFilter | undefined {
-    return tableState.columnFilters.find((filter) =>
-      option.clause.some((c) => c.filterKey === filter.id)
-    )
-  }
-
-  function findClauseFromColumnFilter(
-    columnFilter: ColumnFilter
-  ): DataTableFilterClause | undefined {
-    return option.clause.find((c) => {
-      const keyMatchesId = c.filterKey === columnFilter.id
-
-      // If the value is undefined, we don't check the value against the prefix or suffix
-      if (columnFilter.value === undefined) {
-        return keyMatchesId
-      }
-
-      const valueMatchesPrefix = c.valuePrefix
-        ? String(columnFilter.value).startsWith(c.valuePrefix)
-        : true
-
-      const valueMatchesSuffix = c.valueSuffix
-        ? String(columnFilter.value).endsWith(c.valueSuffix)
-        : true
-
-      return keyMatchesId && valueMatchesPrefix && valueMatchesSuffix
-    })
-  }
-
-  function getAppliedClause(): DataTableFilterClause | undefined {
-    const appliedColumnFilter = getAppliedColumnFilter()
-
-    if (!appliedColumnFilter) {
-      return undefined
-    }
-
-    return findClauseFromColumnFilter(appliedColumnFilter)
-  }
-
-  function getAppliedValue(): string {
-    const appliedClause = getAppliedClause()
-    const appliedColumnFilter = getAppliedColumnFilter()
-
-    if (!appliedClause || !appliedColumnFilter) {
-      return ''
-    }
-
-    const rawValue = String(appliedColumnFilter.value)
-
-    // We don't support prefix and suffix on `between` clauses, so we don't need to remove them
-    if (appliedClause.type === 'between') {
-      return rawValue
-    }
-
-    // Remove the prefix and suffix from the value if they exist
-    return rawValue
-      .replace(new RegExp(`^${appliedClause.valuePrefix ?? ''}`), '')
-      .replace(new RegExp(`${appliedClause.valueSuffix ?? ''}$`), '')
-  }
-
-  function getCurrentColumnFilters(): ColumnFiltersState {
-    return tableState.columnFilters.map((filter) => {
-      // Remove filter for the current option so we can apply the new one
-      if (findClauseFromColumnFilter(filter)) {
-        return {
-          id: filter.id,
-          value: undefined,
-        }
-      }
-
-      return filter
-    })
-  }
-
-  function isApplied(): boolean {
-    return !!getAppliedColumnFilter()
-  }
-
-  function getFormattedAppliedValue(): string {
-    const appliedValue = getAppliedValue()
-    const appliedClause = getAppliedClause()
-
-    if (!appliedValue || !appliedClause) {
-      return ''
-    }
-
-    if (option.type === 'boolean') {
-      return appliedValue === '1' ? t('true') : t('false')
-    }
-
-    if (option.type === 'select') {
-      const selectedOption = option.options?.find(
-        (o) => o.value === appliedValue
-      )
-      return selectedOption ? t(selectedOption.labelTransKey) : appliedValue
-    }
-
-    if (option.type === 'date') {
-      if (appliedClause.type === 'between') {
-        const [from, to] = appliedValue.split(',', 2)
-
-        return `${
-          from
-            ? new Date(from).toLocaleDateString(
-                i18n.language,
-                dateStringOptions
-              )
-            : ''
-        } – ${
-          to
-            ? new Date(to).toLocaleDateString(i18n.language, dateStringOptions)
-            : ''
-        }`
-      }
-
-      return new Date(appliedValue).toLocaleDateString(
-        i18n.language,
-        dateStringOptions
-      )
-    }
-
-    if (option.type === 'datetime') {
-      if (appliedClause.type === 'between') {
-        const [from, to] = appliedValue.split(',', 2)
-
-        return `${
-          from
-            ? new Date(from).toLocaleString(
-                i18n.language,
-                dateTimeStringOptions
-              )
-            : ''
-        } – ${
-          to
-            ? new Date(to).toLocaleString(i18n.language, dateTimeStringOptions)
-            : ''
-        }`
-      }
-
-      return new Date(appliedValue).toLocaleString(
-        i18n.language,
-        dateTimeStringOptions
-      )
-    }
-
-    return appliedValue
-  }
-
-  function handleRemoveFilterClick(event: MouseEvent) {
-    event.stopPropagation()
-
-    if (!isApplied()) {
-      return
-    }
-
-    setValue(
-      isBetween
-        ? { type: 'between', value: ['', ''] }
-        : { type: 'single', value: '' }
-    )
-
-    reloadData({
-      pagination: undefined,
-      sorting: tableState.sorting,
-      columnFilters: getCurrentColumnFilters(),
-      globalFilter: tableState.globalFilter,
-      reloadProps: table.options.meta?.reloadProps,
-    })
-  }
-
   function handleApplyFilterClick() {
-    const filterValue = formatFilterValue(clause, value)
+    const filterValue = formatValueForQueryParam(clause, value)
 
     if (!filterValue) {
       return
@@ -408,7 +255,7 @@ function DataTableFiltersOption<TData>({
       pagination: undefined,
       sorting: tableState.sorting,
       columnFilters: [
-        ...getCurrentColumnFilters(),
+        ...currentColumnFilters,
         {
           id: clause.filterKey,
           value: filterValue,
@@ -421,7 +268,7 @@ function DataTableFiltersOption<TData>({
     setOpen(false)
   }
 
-  const appliedTriggerButton = (
+  const activeTrigger = (
     <button className="text-muted-foreground hover:bg-accent flex items-center gap-1.5 rounded-full border px-2 py-1 text-xs font-medium shadow-xs transition-colors">
       <div className="flex items-center gap-1">
         <MinusCircleIcon className="size-3" onClick={handleRemoveFilterClick} />
@@ -429,12 +276,12 @@ function DataTableFiltersOption<TData>({
       </div>
       <span className="bg-border h-3 w-px" />
       <span className="text-foreground max-w-[250px] overflow-hidden text-nowrap text-ellipsis">
-        {getFormattedAppliedValue()}
+        {displayValue}
       </span>
     </button>
   )
 
-  const unappliedTriggerButton = (
+  const inactiveTrigger = (
     <button className="text-muted-foreground hover:bg-accent flex items-center gap-1 rounded-full border border-dashed px-2 py-1 text-xs font-medium transition-colors">
       <PlusCircleIcon className="size-3" />
       {t(option.labelTransKey)}
@@ -444,7 +291,7 @@ function DataTableFiltersOption<TData>({
   return (
     <Popover modal open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        {isApplied() ? appliedTriggerButton : unappliedTriggerButton}
+        {isActive ? activeTrigger : inactiveTrigger}
       </PopoverTrigger>
       <PopoverContent
         align="start"

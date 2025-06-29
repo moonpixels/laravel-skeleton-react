@@ -146,18 +146,14 @@ export function DataTable<TData, TValue>({
   enableSearch = true,
   filterOptions = [],
 }: DataTableProps<TData, TValue>) {
-  const pagination = useMemo(() => {
-    return {
-      pageIndex: paginationMeta ? paginationMeta.current_page - 1 : 0,
-      pageSize: paginationMeta ? paginationMeta.per_page : 15,
-    }
-  }, [paginationMeta])
+  const pagination = {
+    pageIndex: paginationMeta ? paginationMeta.current_page - 1 : 0,
+    pageSize: paginationMeta ? paginationMeta.per_page : 15,
+  }
 
-  const rowCount = useMemo(() => {
-    return paginationMeta ? paginationMeta.total : data.length
-  }, [paginationMeta, data.length])
+  const rowCount = paginationMeta ? paginationMeta.total : data.length
 
-  const sorting = useMemo(() => initialSortingState, [initialSortingState])
+  const sorting = initialSortingState
 
   // Filter out the search filter from the initial filters state
   const columnFilters = useMemo(() => {

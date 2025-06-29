@@ -8,7 +8,6 @@ import {
 import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 import * as React from 'react'
-import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 
 type DatePickerProps = Omit<
@@ -33,38 +32,32 @@ function DatePicker({
   const [openFrom, setOpenFrom] = React.useState(false)
   const date = selected
 
-  const handleDateChange = useCallback(
-    (selectedDate: Date | undefined) => {
-      if (date && selectedDate) {
-        selectedDate.setHours(
-          date.getHours(),
-          date.getMinutes(),
-          date.getSeconds()
-        )
-      }
+  function handleDateChange(selectedDate: Date | undefined) {
+    if (date && selectedDate) {
+      selectedDate.setHours(
+        date.getHours(),
+        date.getMinutes(),
+        date.getSeconds()
+      )
+    }
 
-      onSelect(selectedDate)
+    onSelect(selectedDate)
 
-      setOpenFrom(false)
-    },
-    [date, onSelect]
-  )
+    setOpenFrom(false)
+  }
 
-  const handleTimeChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const timeValue = event.target.value
+  function handleTimeChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const timeValue = event.target.value
 
-      if (date && timeValue) {
-        const [hours, minutes, seconds] = timeValue.split(':').map(Number)
+    if (date && timeValue) {
+      const [hours, minutes, seconds] = timeValue.split(':').map(Number)
 
-        const updatedDate = new Date(date)
-        updatedDate.setHours(hours, minutes, seconds)
+      const updatedDate = new Date(date)
+      updatedDate.setHours(hours, minutes, seconds)
 
-        onSelect(updatedDate)
-      }
-    },
-    [date, onSelect]
-  )
+      onSelect(updatedDate)
+    }
+  }
 
   return (
     <div className="flex w-full gap-2">

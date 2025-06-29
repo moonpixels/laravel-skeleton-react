@@ -24,8 +24,10 @@ final class DashboardController extends Controller
             ->allowedSorts(['name', 'email', 'language'])
             ->allowedFilters([
                 AllowedFilter::callback('search', function (Builder $query, string $value): void {
-                    $query->whereLike(column: 'name', value: "%{$value}%")
-                        ->orWhereLike(column: 'email', value: "%{$value}%");
+                    $query->where(function (Builder $query) use ($value): void {
+                        $query->whereLike(column: 'name', value: "%{$value}%")
+                            ->orWhereLike(column: 'email', value: "%{$value}%");
+                    });
                 }),
                 AllowedFilter::partial('_name', 'name'),
                 AllowedFilter::operator('name', FilterOperator::DYNAMIC),
