@@ -102,7 +102,7 @@ export function AvatarForm() {
           name="avatar"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('common:avatar')}</FormLabel>
+              <FormLabel>{t('avatar')}</FormLabel>
               <FormDescription>{t('avatarDescription')}</FormDescription>
               <FormControl>
                 <div className="flex items-center space-x-4">
@@ -154,7 +154,7 @@ export function AvatarForm() {
                         variant="secondary"
                         onClick={() => inputRef.current?.click()}
                       >
-                        {t('common:change')}
+                        {t('change')}
                       </Button>
 
                       <Button
@@ -164,7 +164,7 @@ export function AvatarForm() {
                         variant="destructive"
                         onClick={handleRemoveAvatarClick}
                       >
-                        {t('common:remove')}
+                        {t('remove')}
                       </Button>
                     </div>
                   </div>

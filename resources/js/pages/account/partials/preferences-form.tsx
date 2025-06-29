@@ -31,17 +31,17 @@ import { z } from 'zod'
 
 const themeOptions = [
   {
-    label: 'common:system',
+    label: 'system',
     value: 'system',
     icon: MonitorIcon,
   },
   {
-    label: 'common:light',
+    label: 'light',
     value: 'light',
     icon: SunIcon,
   },
   {
-    label: 'common:dark',
+    label: 'dark',
     value: 'dark',
     icon: MoonIcon,
   },
@@ -71,10 +71,8 @@ export function ThemeForm() {
           render={({ field }) => (
             <FormItem className="flex flex-col justify-between sm:flex-row">
               <div className="space-y-2">
-                <FormLabel>{t('translation:themeSelectLabel')}</FormLabel>
-                <FormDescription>
-                  {t('translation:themeSelectDescription')}
-                </FormDescription>
+                <FormLabel>{t('themeSelectLabel')}</FormLabel>
+                <FormDescription>{t('themeSelectDescription')}</FormDescription>
               </div>
 
               <FormControl>
@@ -182,7 +180,7 @@ export function PreferencesForm() {
             render={({ field }) => (
               <FormItem className="flex flex-col justify-between sm:flex-row sm:items-center">
                 <div className="space-y-2">
-                  <FormLabel>{t('common:language')}</FormLabel>
+                  <FormLabel>{t('language')}</FormLabel>
                   <FormDescription>{t('selectYourLanguage')}</FormDescription>
                 </div>
 

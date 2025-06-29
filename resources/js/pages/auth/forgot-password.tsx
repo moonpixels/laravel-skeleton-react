@@ -69,7 +69,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('common:email')}</FormLabel>
+                  <FormLabel>{t('email')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="username"

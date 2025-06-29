@@ -21,7 +21,7 @@ test('users can authenticate using two factor authentication with a valid code',
         'code' => $validOtp,
     ])
         ->assertValid()
-        ->assertRedirect(route('dashboard'))
+        ->assertRedirect(route('dashboard.index'))
         ->assertSessionMissing(['login.id', 'login.remember']);
 
     $this->assertAuthenticatedAs($this->user);
@@ -42,7 +42,7 @@ test('users can authenticate using two factor authentication with a valid recove
         'is_recovery' => true,
     ])
         ->assertValid()
-        ->assertRedirect(route('dashboard'))
+        ->assertRedirect(route('dashboard.index'))
         ->assertSessionMissing(['login.id', 'login.remember']);
 
     $this->assertAuthenticatedAs($this->user);

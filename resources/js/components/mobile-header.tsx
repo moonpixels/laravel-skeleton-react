@@ -12,7 +12,7 @@ export function MobileHeader() {
       <div className="flex h-14 w-full items-center justify-between border-b px-4 sm:px-6">
         <SidebarTrigger />
 
-        <Link href={route('dashboard')}>
+        <Link href={route('dashboard.index')}>
           <Logo iconOnly className="h-6 w-auto" />
         </Link>
 

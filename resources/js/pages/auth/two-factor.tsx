@@ -10,6 +10,12 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from '@/components/ui/input-otp'
 import { useFormValidation } from '@/hooks/use-form-validation'
 import { GuestLayout } from '@/layouts/guest-layout'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -75,13 +81,35 @@ export default function TwoFactor() {
               name="code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
+                  <FormLabel className="sr-only">
                     {isRecoveryMode
                       ? t('recoveryCodeLabel')
                       : t('2faCodeLabel')}
                   </FormLabel>
                   <FormControl>
-                    <Input autoComplete="one-time-code" required {...field} />
+                    {isRecoveryMode ? (
+                      <Input required {...field} />
+                    ) : (
+                      <InputOTP
+                        containerClassName="justify-center font-mono"
+                        autoComplete="one-time-code"
+                        required
+                        maxLength={6}
+                        {...field}
+                      >
+                        <InputOTPGroup>
+                          <InputOTPSlot index={0} />
+                          <InputOTPSlot index={1} />
+                          <InputOTPSlot index={2} />
+                        </InputOTPGroup>
+                        <InputOTPSeparator />
+                        <InputOTPGroup>
+                          <InputOTPSlot index={3} />
+                          <InputOTPSlot index={4} />
+                          <InputOTPSlot index={5} />
+                        </InputOTPGroup>
+                      </InputOTP>
+                    )}
                   </FormControl>
                   <FormMessage />
                 </FormItem>

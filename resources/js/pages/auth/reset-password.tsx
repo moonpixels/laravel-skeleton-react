@@ -75,7 +75,7 @@ export default function ResetPassword({
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('common:email')}</FormLabel>
+                  <FormLabel>{t('email')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="username"
@@ -95,7 +95,7 @@ export default function ResetPassword({
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('common:password')}</FormLabel>
+                  <FormLabel>{t('password')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="new-password"
@@ -114,7 +114,7 @@ export default function ResetPassword({
               name="password_confirmation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('common:confirmPassword')}</FormLabel>
+                  <FormLabel>{t('confirmPassword')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="new-password"
