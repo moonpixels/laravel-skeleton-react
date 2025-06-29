@@ -11,9 +11,9 @@ export function DataTableSearchInput<TData>({
 }) {
   const { t } = useTranslation()
 
-  const [query, setQuery] = useState<string>(
-    table.getState().globalFilter ?? ''
-  )
+  const tableState = table.getState()
+
+  const [query, setQuery] = useState<string>(tableState.globalFilter ?? '')
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const value = event.target.value
@@ -22,8 +22,8 @@ export function DataTableSearchInput<TData>({
 
     reloadData({
       pagination: undefined,
-      sorting: table.getState().sorting,
-      columnFilters: table.getState().columnFilters,
+      sorting: tableState.sorting,
+      columnFilters: tableState.columnFilters,
       globalFilter: value,
       reloadProps: table.options.meta?.reloadProps,
     })

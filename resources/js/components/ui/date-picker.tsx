@@ -9,6 +9,7 @@ import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 import * as React from 'react'
 import { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 
 type DatePickerProps = Omit<
   React.ComponentProps<typeof Calendar>,
@@ -27,6 +28,8 @@ function DatePicker({
   locale = 'en-GB',
   ...props
 }: DatePickerProps) {
+  const { t } = useTranslation()
+
   const [openFrom, setOpenFrom] = React.useState(false)
   const date = selected
 
@@ -69,7 +72,7 @@ function DatePicker({
         <Popover open={openFrom} onOpenChange={setOpenFrom}>
           <PopoverTrigger asChild>
             <button
-              aria-label="Select date"
+              aria-label={t('selectDate')}
               data-placeholder={date ? undefined : ''}
               className="border-input data-placeholder:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive flex h-9 w-full min-w-[136px] items-center justify-between gap-3 rounded-md border bg-white px-3 py-2 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 dark:bg-white/5 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&>span]:line-clamp-1"
             >
@@ -99,7 +102,7 @@ function DatePicker({
       {showTime && (
         <div>
           <Input
-            aria-label="Select time"
+            aria-label={t('selectTime')}
             type="time"
             step="1"
             disabled={!date}

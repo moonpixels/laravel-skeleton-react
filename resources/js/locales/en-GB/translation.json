@@ -33,6 +33,7 @@
   "copyId": "Copy ID",
   "copyrightNotice": "Copyright © {{year}} Moon Pixels Ltd. All rights reserved.",
   "createAccount": "Create account",
+  "createdAt": "Created at",
   "currentPassword": "Current password",
   "dark": "Dark",
   "dashboard": "Dashboard",
@@ -50,6 +51,7 @@
   "emailDeliveredTo": "The email was delivered to {{email}}. If you can't find it, check your spam folder.",
   "emailVerificationEmailSent": "Email verification email sent",
   "emailVerificationEmailSentDescription": "We've emailed you instructions to verify your email address. You should be receiving it shortly.",
+  "emailVerified": "Email verified",
   "emptyTableDescription": "There are no records to display. Try adjusting your search criteria or filters.",
   "emptyTableTitle": "No results found",
   "enable": "Enable",
@@ -115,8 +117,10 @@
   "search": "Search",
   "security": "Security",
   "selectAllRows": "Select all rows",
+  "selectDate": "Select date",
   "selectOption": "Select an option",
   "selectRow": "Select row {{row, number}}",
+  "selectTime": "Select time",
   "selectYourLanguage": "Select the language you would like to use.",
   "sendPasswordResetEmail": "Send password reset email",
   "sortAsc": "Asc",
@@ -144,7 +148,5 @@
   "verifyEmail": "Verify your email address",
   "verifyEmailDescription": "To complete registration, we need to verify your email address. Please check your email for the verification link.",
   "viewRecoveryCodes": "View recovery codes",
-  "welcomeMessage": "Welcome back, {{name}}!",
-  "emailVerified": "Email verified",
-  "createdAt": "Created at"
+  "welcomeMessage": "Welcome back, {{name}}!"
 }

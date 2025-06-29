@@ -46,10 +46,10 @@ export interface DataTableFilterClause {
 
 export interface DataTableFilterOption {
   id: string
-  label: string
+  labelTransKey: string
   type: 'text' | 'number' | 'select' | 'date' | 'datetime' | 'boolean'
   clause: DataTableFilterClause[]
-  options?: { label: string; value: string }[]
+  options?: { labelTransKey: string; value: string }[]
 }
 
 interface DataTableFiltersDropdownProps<TData> {
@@ -57,26 +57,47 @@ interface DataTableFiltersDropdownProps<TData> {
   filterOptions?: DataTableFilterOption[]
 }
 
-export function DataTableFilters<TData>({
-  table,
-  filterOptions = [],
-}: DataTableFiltersDropdownProps<TData>) {
-  // Check if any filter option has a 'between' clause that is not compatible with its type
+function validateFilterOptions(filterOptions: DataTableFilterOption[]): void {
   filterOptions.forEach((option) => {
+    // Check `between` clause is only used with compatible types
+    option.clause.forEach((clause) => {
+      if (
+        clause.type === 'between' &&
+        !['date', 'datetime', 'number'].includes(option.type)
+      ) {
+        throw new Error(
+          `The 'between' clause can only be used with 'date', 'datetime' or 'number' type filters.`
+        )
+      }
+    })
+
+    // Check `between` clause is not used with prefix or suffix
     if (
       option.clause.some(
         (clause) =>
           clause.type === 'between' &&
-          option.type !== 'date' &&
-          option.type !== 'datetime' &&
-          option.type !== 'number'
+          (clause.valuePrefix ?? clause.valueSuffix)
       )
     ) {
       throw new Error(
-        `The 'between' clause can only be used with 'date', 'datetime' or 'number' type filters.`
+        `The 'between' clause cannot have a value prefix or suffix.`
+      )
+    }
+
+    // Check `select` options are provided for select type filters
+    if (option.type === 'select' && !option.options?.length) {
+      throw new Error(
+        `The 'select' type filter '${option.labelTransKey}' must have options defined.`
       )
     }
   })
+}
+
+export function DataTableFilters<TData>({
+  table,
+  filterOptions = [],
+}: DataTableFiltersDropdownProps<TData>) {
+  validateFilterOptions(filterOptions)
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -91,6 +112,24 @@ export function DataTableFilters<TData>({
   )
 }
 
+const dateStringOptions: Intl.DateTimeFormatOptions = {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+}
+
+const dateTimeStringOptions: Intl.DateTimeFormatOptions = {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+}
+
+type FilterValue =
+  | { type: 'single'; value: string }
+  | { type: 'between'; value: [string, string] }
+
 function DataTableFiltersOption<TData>({
   table,
   option,
@@ -100,6 +139,8 @@ function DataTableFiltersOption<TData>({
 }) {
   const { t, i18n } = useTranslation()
 
+  const tableState = table.getState()
+
   const [open, setOpen] = useState(false)
 
   const [clause, setClause] = useState<DataTableFilterClause>(
@@ -108,10 +149,6 @@ function DataTableFiltersOption<TData>({
   const isBetween =
     clause.type === 'between' &&
     ['number', 'date', 'datetime'].includes(option.type)
-
-  type FilterValue =
-    | { type: 'single'; value: string }
-    | { type: 'between'; value: [string, string] }
 
   const [value, setValue] = useState<FilterValue>(() => {
     const appliedValue = getAppliedValue()
@@ -158,12 +195,13 @@ function DataTableFiltersOption<TData>({
     setValue({ type: 'single', value: val })
   }
 
-  function handleBetweenValueChange(idx: 0 | 1, val: string) {
+  function handleBetweenValueChange(index: 0 | 1, value: string) {
     setValue((prev) =>
       prev.type === 'between'
         ? {
             type: 'between',
-            value: idx === 0 ? [val, prev.value[1]] : [prev.value[0], val],
+            value:
+              index === 0 ? [value, prev.value[1]] : [prev.value[0], value],
           }
         : prev
     )
@@ -173,11 +211,13 @@ function DataTableFiltersOption<TData>({
     clause: DataTableFilterClause,
     value: FilterValue
   ): string {
+    // Separate between values with a comma
     if (clause.type === 'between' && value.type === 'between') {
       const [from, to] = value.value
       return from && to ? `${from},${to}` : ''
     }
 
+    // Add prefix and suffix to the value if they exist
     if (value.type === 'single') {
       return value.value.trim()
         ? `${clause.valuePrefix ?? ''}${value.value}${clause.valueSuffix ?? ''}`
@@ -188,11 +228,9 @@ function DataTableFiltersOption<TData>({
   }
 
   function getAppliedColumnFilter(): ColumnFilter | undefined {
-    return table
-      .getState()
-      .columnFilters.find((filter) =>
-        option.clause.some((c) => c.filterKey === filter.id)
-      )
+    return tableState.columnFilters.find((filter) =>
+      option.clause.some((c) => c.filterKey === filter.id)
+    )
   }
 
   function findClauseFromColumnFilter(
@@ -201,6 +239,7 @@ function DataTableFiltersOption<TData>({
     return option.clause.find((c) => {
       const keyMatchesId = c.filterKey === columnFilter.id
 
+      // If the value is undefined, we don't check the value against the prefix or suffix
       if (columnFilter.value === undefined) {
         return keyMatchesId
       }
@@ -237,17 +276,19 @@ function DataTableFiltersOption<TData>({
 
     const rawValue = String(appliedColumnFilter.value)
 
+    // We don't support prefix and suffix on `between` clauses, so we don't need to remove them
     if (appliedClause.type === 'between') {
       return rawValue
     }
 
+    // Remove the prefix and suffix from the value if they exist
     return rawValue
       .replace(new RegExp(`^${appliedClause.valuePrefix ?? ''}`), '')
       .replace(new RegExp(`${appliedClause.valueSuffix ?? ''}$`), '')
   }
 
   function getCurrentColumnFilters(): ColumnFiltersState {
-    return table.getState().columnFilters.map((filter) => {
+    return tableState.columnFilters.map((filter) => {
       // Remove filter for the current option so we can apply the new one
       if (findClauseFromColumnFilter(filter)) {
         return {
@@ -255,6 +296,7 @@ function DataTableFiltersOption<TData>({
           value: undefined,
         }
       }
+
       return filter
     })
   }
@@ -279,7 +321,7 @@ function DataTableFiltersOption<TData>({
       const selectedOption = option.options?.find(
         (o) => o.value === appliedValue
       )
-      return selectedOption ? t(selectedOption.label) : appliedValue
+      return selectedOption ? t(selectedOption.labelTransKey) : appliedValue
     }
 
     if (option.type === 'date') {
@@ -288,30 +330,22 @@ function DataTableFiltersOption<TData>({
 
         return `${
           from
-            ? new Date(from).toLocaleDateString(i18n.language, {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-              })
+            ? new Date(from).toLocaleDateString(
+                i18n.language,
+                dateStringOptions
+              )
             : ''
         } – ${
           to
-            ? new Date(to).toLocaleDateString(i18n.language, {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-              })
+            ? new Date(to).toLocaleDateString(i18n.language, dateStringOptions)
             : ''
         }`
       }
 
-      const date = new Date(appliedValue)
-
-      return date.toLocaleDateString(i18n.language, {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-      })
+      return new Date(appliedValue).toLocaleDateString(
+        i18n.language,
+        dateStringOptions
+      )
     }
 
     if (option.type === 'datetime') {
@@ -320,38 +354,22 @@ function DataTableFiltersOption<TData>({
 
         return `${
           from
-            ? new Date(from).toLocaleString(i18n.language, {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-              })
+            ? new Date(from).toLocaleString(
+                i18n.language,
+                dateTimeStringOptions
+              )
             : ''
         } – ${
           to
-            ? new Date(to).toLocaleString(i18n.language, {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-              })
+            ? new Date(to).toLocaleString(i18n.language, dateTimeStringOptions)
             : ''
         }`
       }
 
-      console.log('appliedValue:', appliedValue)
-
-      const date = new Date(appliedValue)
-
-      return date.toLocaleString(i18n.language, {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      })
+      return new Date(appliedValue).toLocaleString(
+        i18n.language,
+        dateTimeStringOptions
+      )
     }
 
     return appliedValue
@@ -372,9 +390,9 @@ function DataTableFiltersOption<TData>({
 
     reloadData({
       pagination: undefined,
-      sorting: table.getState().sorting,
+      sorting: tableState.sorting,
       columnFilters: getCurrentColumnFilters(),
-      globalFilter: table.getState().globalFilter,
+      globalFilter: tableState.globalFilter,
       reloadProps: table.options.meta?.reloadProps,
     })
   }
@@ -388,7 +406,7 @@ function DataTableFiltersOption<TData>({
 
     reloadData({
       pagination: undefined,
-      sorting: table.getState().sorting,
+      sorting: tableState.sorting,
       columnFilters: [
         ...getCurrentColumnFilters(),
         {
@@ -396,7 +414,7 @@ function DataTableFiltersOption<TData>({
           value: filterValue,
         },
       ],
-      globalFilter: table.getState().globalFilter,
+      globalFilter: tableState.globalFilter,
       reloadProps: table.options.meta?.reloadProps,
     })
 
@@ -407,7 +425,7 @@ function DataTableFiltersOption<TData>({
     <button className="text-muted-foreground hover:bg-accent flex items-center gap-1.5 rounded-full border px-2 py-1 text-xs font-medium shadow-xs transition-colors">
       <div className="flex items-center gap-1">
         <MinusCircleIcon className="size-3" onClick={handleRemoveFilterClick} />
-        {t(option.label)}
+        {t(option.labelTransKey)}
       </div>
       <span className="bg-border h-3 w-px" />
       <span className="text-foreground max-w-[250px] overflow-hidden text-nowrap text-ellipsis">
@@ -419,7 +437,7 @@ function DataTableFiltersOption<TData>({
   const unappliedTriggerButton = (
     <button className="text-muted-foreground hover:bg-accent flex items-center gap-1 rounded-full border border-dashed px-2 py-1 text-xs font-medium transition-colors">
       <PlusCircleIcon className="size-3" />
-      {t(option.label)}
+      {t(option.labelTransKey)}
     </button>
   )
 
@@ -441,7 +459,7 @@ function DataTableFiltersOption<TData>({
           size="xs"
         >
           {t('filterBy', {
-            column: t(option.label).toLowerCase(),
+            column: t(option.labelTransKey).toLowerCase(),
           })}
         </Text>
 
@@ -497,7 +515,7 @@ function DataTableFiltersOption<TData>({
                       key={opt.value.toString()}
                       value={opt.value.toString()}
                     >
-                      {t(opt.label)}
+                      {t(opt.labelTransKey)}
                     </SelectItem>
                   ))}
                 </SelectContent>

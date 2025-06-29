@@ -22,10 +22,16 @@ export function DataTablePagination<TData>({
 }) {
   const { t } = useTranslation()
 
-  const previousPageLink = paginationMeta.links[0] ?? null
-  const nextPageLink =
-    paginationMeta.links[paginationMeta.links.length - 1] ?? null
-  const pageLinks = paginationMeta.links.slice(1, -1)
+  const links = paginationMeta.links
+
+  // First item in links is always the previous page link
+  const previousPageLink = links[0] ?? null
+
+  // Last item in links is always the next page link
+  const nextPageLink = links[links.length - 1] ?? null
+
+  // The rest of the links are the page numbers
+  const pageLinks = links.slice(1, -1)
 
   const reloadProps = table.options.meta?.reloadProps ?? []
 

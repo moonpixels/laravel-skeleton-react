@@ -3,7 +3,7 @@ import { DataTableFilterOption } from '@/components/data-table/data-table-filter
 export const filterOptions: DataTableFilterOption[] = [
   {
     id: 'name',
-    label: 'name',
+    labelTransKey: 'name',
     type: 'text',
     clause: [
       {
@@ -24,7 +24,7 @@ export const filterOptions: DataTableFilterOption[] = [
   },
   {
     id: 'email',
-    label: 'email',
+    labelTransKey: 'email',
     type: 'text',
     clause: [
       {
@@ -45,9 +45,9 @@ export const filterOptions: DataTableFilterOption[] = [
   },
   {
     id: 'language',
-    label: 'language',
+    labelTransKey: 'language',
     type: 'select',
-    options: [{ value: 'en_GB', label: 'english' }],
+    options: [{ value: 'en_GB', labelTransKey: 'english' }],
     clause: [
       {
         type: 'equal',
@@ -63,7 +63,7 @@ export const filterOptions: DataTableFilterOption[] = [
   },
   {
     id: 'verified',
-    label: 'verified',
+    labelTransKey: 'verified',
     type: 'boolean',
     clause: [
       {
@@ -74,7 +74,7 @@ export const filterOptions: DataTableFilterOption[] = [
   },
   {
     id: 'createdAt',
-    label: 'createdAt',
+    labelTransKey: 'createdAt',
     type: 'datetime',
     clause: [
       {

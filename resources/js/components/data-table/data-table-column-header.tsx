@@ -39,11 +39,13 @@ export function DataTableColumnHeader<TData, TValue>({
 
   function handleSortingClick(desc: boolean) {
     if (canSort) {
+      const tableState = table.getState()
+
       reloadData({
         pagination: undefined,
         sorting: [{ id: column.id, desc }],
-        columnFilters: table.getState().columnFilters,
-        globalFilter: table.getState().globalFilter,
+        columnFilters: tableState.columnFilters,
+        globalFilter: tableState.globalFilter,
         reloadProps: table.options.meta?.reloadProps,
       })
     }

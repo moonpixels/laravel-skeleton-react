@@ -54,7 +54,7 @@ declare module '@tanstack/react-table' {
   }
 }
 
-interface ReloadDataProps {
+interface ReloadDataOptions {
   pagination?: PaginationState
   sorting?: SortingState
   columnFilters?: ColumnFiltersState
@@ -69,7 +69,9 @@ export const reloadData = debounce(
     columnFilters = undefined,
     globalFilter = undefined,
     reloadProps = [],
-  }: ReloadDataProps) => {
+  }: ReloadDataOptions) => {
+    // Format the sorting state to match the expected format for the backend.
+    // The format is `-columnId` for descending and `columnId` for ascending.
     const sort = sorting?.length
       ? sorting.map((s) => (s.desc ? `-${s.id}` : s.id)).join(',')
       : undefined
@@ -81,10 +83,13 @@ export const reloadData = debounce(
         ? globalFilter.trim()
         : undefined
 
+    // Always reload sorts and filters if a partial reload is requested.
     const only = reloadProps?.length
       ? union(['sorts', 'filters'], reloadProps)
       : []
 
+    // Format the column filters to match the expected format for the backend, removing
+    // the search filter if it exists. The format is `filter[columnId]=value`,
     const filters = columnFilters?.reduce(
       (acc, filter) => {
         if (filter.id !== 'search') {
@@ -148,10 +153,18 @@ export function DataTable<TData, TValue>({
     }
   }, [paginationMeta])
 
+  const rowCount = useMemo(() => {
+    return paginationMeta ? paginationMeta.total : data.length
+  }, [paginationMeta, data.length])
+
+  const sorting = useMemo(() => initialSortingState, [initialSortingState])
+
+  // Filter out the search filter from the initial filters state
   const columnFilters = useMemo(() => {
     return initialFiltersState.filter((filter) => filter.id !== 'search')
   }, [initialFiltersState])
 
+  // Extract the search filter value from the initial filters state
   const globalFilter = useMemo(() => {
     const searchFilter = initialFiltersState.find(
       (filter) => filter.id === 'search'
@@ -161,12 +174,6 @@ export function DataTable<TData, TValue>({
       ? searchFilter.value
       : undefined
   }, [initialFiltersState])
-
-  const sorting = useMemo(() => initialSortingState, [initialSortingState])
-
-  const rowCount = useMemo(() => {
-    return paginationMeta ? paginationMeta.total : data.length
-  }, [paginationMeta, data.length])
 
   const reactTableOptions: TableOptions<TData> = {
     data,
@@ -190,6 +197,7 @@ export function DataTable<TData, TValue>({
 
   const table = useReactTable(merge(reactTableOptions, tableOptions))
 
+  // Remove row selection when data changes
   useEffect(() => {
     if (table.getSelectedRowModel().rows.length) {
       table.toggleAllRowsSelected(false)
