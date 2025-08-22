@@ -38,7 +38,7 @@ export default function ResetPassword({
 
   formSchema.refine(
     (data) => data.password === data.password_confirmation,
-    () => passwordConfirmationMessage()
+    passwordConfirmationMessage
   )
 
   const form = useForm({
