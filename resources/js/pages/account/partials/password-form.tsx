@@ -31,7 +31,7 @@ export function PasswordForm() {
 
   formSchema.refine(
     (data) => data.password === data.password_confirmation,
-    () => passwordConfirmationMessage()
+    passwordConfirmationMessage
   )
 
   const form = useForm({

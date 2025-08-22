@@ -34,7 +34,7 @@ export default function Register() {
 
   formSchema.refine(
     (data) => data.password === data.password_confirmation,
-    () => passwordConfirmationMessage()
+    passwordConfirmationMessage
   )
 
   const form = useForm({

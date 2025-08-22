@@ -5,6 +5,62 @@ import { z } from 'zod'
 export function useFormValidation() {
   const { t } = useTranslation()
 
+  // Map of attribute names to their translations e.g. 'example_attribute' to 'Example Attribute'
+  const attributeMap: Record<string, string> = {}
+
+  const passwordConfirmationMessage: z.core.$ZodCustomParams = {
+    message: t('validation:confirmed', {
+      attribute: t('password').toLowerCase(),
+    }),
+    path: ['password'],
+  }
+
+  const customErrorMap: z.ZodErrorMap = (issue: z.core.$ZodRawIssue) => {
+    const issueCode = issue.code
+    const issuePath = issue.path ?? []
+
+    if (issueCode === undefined) {
+      return t('validation:required', {
+        attribute: pathToAttribute(issuePath),
+      })
+    }
+
+    switch (issueCode) {
+      case 'invalid_type':
+        switch (issue.expected) {
+          case 'boolean':
+            return t('validation:boolean', {
+              attribute: pathToAttribute(issuePath),
+            })
+        }
+        break
+
+      case 'invalid_format':
+        switch (issue.format) {
+          case 'email':
+            return t('validation:email', {
+              attribute: pathToAttribute(issuePath),
+            })
+        }
+        break
+
+      case 'too_small':
+        switch (issue.origin) {
+          case 'string':
+            return t('validation:min.string', {
+              attribute: pathToAttribute(issuePath),
+              min: issue.minimum.toString(),
+            })
+        }
+    }
+  }
+
+  function pathToAttribute(path: PropertyKey[]): string {
+    const attribute = path[0].toString()
+
+    return attributeMap[attribute] ?? attribute.replace('_', ' ')
+  }
+
   function setFormServerErrors<T extends FieldValues>(
     form: UseFormReturn<T>,
     errors: Record<string, string>
@@ -17,71 +73,9 @@ export function useFormValidation() {
     })
   }
 
-  function passwordConfirmationMessage(): z.CustomErrorParams {
-    return {
-      message: t('validation:confirmed', {
-        attribute: t('password').toLowerCase(),
-      }),
-      path: ['password'],
-    }
-  }
-
-  const customErrorMap: z.ZodErrorMap = (error, ctx) => {
-    if (ctx.data === undefined) {
-      return {
-        message: t('validation:required', {
-          attribute: pathToAttribute(error.path),
-        }),
-      }
-    }
-
-    switch (error.code) {
-      case z.ZodIssueCode.invalid_type:
-        switch (error.expected) {
-          case 'boolean':
-            return {
-              message: t('validation:boolean', {
-                attribute: pathToAttribute(error.path),
-              }),
-            }
-        }
-        break
-
-      case z.ZodIssueCode.invalid_string:
-        switch (error.validation) {
-          case 'email':
-            return {
-              message: t('validation:email', {
-                attribute: pathToAttribute(error.path),
-              }),
-            }
-        }
-        break
-
-      case z.ZodIssueCode.too_small:
-        switch (error.type) {
-          case 'string':
-            return {
-              message: t('validation:min.string', {
-                attribute: pathToAttribute(error.path),
-                min: error.minimum.toString(),
-              }),
-            }
-        }
-    }
-
-    return { message: ctx.defaultError }
-  }
-
-  function pathToAttribute(path: (string | number)[]): string {
-    const attribute = path[0].toString()
-
-    return attributeMap[attribute] ?? attribute.replace('_', ' ')
-  }
-
-  const attributeMap: Record<string, string> = {}
-
-  z.setErrorMap(customErrorMap)
+  z.config({
+    customError: customErrorMap,
+  })
 
   return { passwordConfirmationMessage, setFormServerErrors }
 }

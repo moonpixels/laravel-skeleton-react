@@ -26,6 +26,9 @@ jobs:
       - name: Setup project
         uses: ./.github/workflows/setup-project
 
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
       - name: Compile assets
         run: npm run build
 
