@@ -123,6 +123,25 @@ export function formatValueForDisplay({
     return selectedOption ? t(selectedOption.labelTransKey) : appliedValue
   }
 
+  if (option.type === 'multiselect') {
+    const selectedValues = appliedValue.split(',').filter(Boolean)
+
+    if (selectedValues.length === 0) {
+      return ''
+    }
+
+    if (selectedValues.length === 1) {
+      const selectedOption = option.options?.find(
+        (o) => o.value === selectedValues[0]
+      )
+      return selectedOption
+        ? t(selectedOption.labelTransKey)
+        : selectedValues[0]
+    }
+
+    return t('itemsSelected', { count: selectedValues.length })
+  }
+
   if (option.type === 'date') {
     if (appliedClause.type === 'between') {
       const [from, to] = appliedValue.split(',', 2)
