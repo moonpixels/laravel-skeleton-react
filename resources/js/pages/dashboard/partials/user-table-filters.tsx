@@ -47,19 +47,7 @@ export const filterOptions: DataTableFilterOption[] = [
     id: 'language',
     labelTransKey: 'language',
     type: 'multiselect',
-    options: [
-      { value: 'en_GB', labelTransKey: 'english' },
-      { value: 'fr_FR', labelTransKey: 'french' },
-      { value: 'de_DE', labelTransKey: 'german' },
-      { value: 'es_ES', labelTransKey: 'spanish' },
-      { value: 'it_IT', labelTransKey: 'italian' },
-      { value: 'ja_JP', labelTransKey: 'japanese' },
-      { value: 'ko_KR', labelTransKey: 'korean' },
-      { value: 'pt_BR', labelTransKey: 'brazilianPortuguese' },
-      { value: 'ru_RU', labelTransKey: 'russian' },
-      { value: 'zh_CN', labelTransKey: 'chineseSimplified' },
-      { value: 'zh_TW', labelTransKey: 'chineseTraditional' },
-    ],
+    options: [{ value: 'en_GB', labelTransKey: 'english' }],
     clause: [
       {
         type: 'equal',
