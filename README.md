@@ -17,26 +17,33 @@ This skeleton provides several enhancements over a standard Laravel application:
 - **MinIO** integration for S3-compatible object storage
 - **Two-factor authentication** support via Google2FA
 - **Advanced image processing** with Intervention Image and Imagick
+- **Laravel Boost** MCP server integration for enhanced development workflow
+- **Custom support packages** for common functionality (Localisation, ImageProcessor, TwoFactorAuthentication)
 
 ### Frontend Features
 
 - **React 19** with TypeScript for the frontend
-- **Inertia.js** for connecting Laravel with React without building an API
-- **Tailwind CSS 4** for styling
-- **Radix UI** components for accessible UI elements
+- **Inertia.js v2** for connecting Laravel with React without building an API
+- **Tailwind CSS 4** for styling with modern utility classes
+- **Radix UI** components for accessible UI elements (shadcn/ui patterns)
 - **React Hook Form** for form handling with Zod validation
 - **Laravel Echo** for real-time features
+- **TanStack Table** for advanced data table functionality
+- **Internationalization** with i18next and browser language detection
+- **Comprehensive component library** with consistent design patterns
 
 ### Development Tools
 
 - **PHPStan** for static analysis of PHP code
 - **Laravel Pint** for PHP code styling
 - **Rector** for automatic PHP code refactoring
-- **Pest** for PHP testing with coverage reports
+- **Pest v4** for PHP testing with coverage reports and browser testing
 - **ESLint** for JavaScript/TypeScript linting
 - **Prettier** for JavaScript/TypeScript code formatting
 - **Vite** for fast frontend builds
 - **Laravel Debugbar** and **Laravel Telescope** for debugging
+- **Laravel Boost** MCP server with powerful development tools
+- **Comprehensive CI/CD** with GitHub Actions workflows
 
 ## Local Installation
 
@@ -133,6 +140,30 @@ name in your `.env` file:
 
 ## Development Workflow
 
+### Laravel Boost Integration
+
+This project includes Laravel Boost, a powerful MCP (Model Context Protocol) server that provides enhanced development tools:
+
+- **Documentation Search**: Version-specific documentation for Laravel ecosystem packages
+- **Code Execution**: Execute PHP code in Laravel context (like tinker)
+- **Database Tools**: Read-only SQL queries and schema inspection
+- **Debugging**: Browser logs, application logs, and error tracking
+- **URL Generation**: Correct URLs for Laravel Herd environment
+
+Laravel Boost automatically provides context about your installed packages and their versions, ensuring you get accurate, version-specific guidance.
+
+### Browser Testing with Pest v4
+
+This project leverages Pest v4's powerful browser testing capabilities.
+
+Browser tests can:
+
+- Interact with real browsers (Chrome, Firefox, Safari)
+- Test different viewports and devices
+- Capture screenshots for debugging
+- Assert JavaScript functionality
+- Test real user workflows
+
 ### Backend Code Quality Tools
 
 There are several composer scripts available for maintaining code quality:
@@ -166,6 +197,46 @@ composer checks
 > You should always run `composer checks` before pushing your code. This will ensure that your code is clean and passes
 > all checks that are enforced by the project CI/CD pipeline.
 
+### Component Library
+
+The project includes a comprehensive component library built on Radix UI primitives:
+
+- **Base Components**: `@/components/ui/` - Button, Dialog, DropdownMenu, Table, etc.
+- **Composite Components**: `@/components/` - DataTable, PageHeader, UserDropdown, etc.
+- **Layout Components**: `@/layouts/` - AuthenticatedLayout, GuestLayout, DefaultLayout
+- **Page Components**: `@/pages/` - Inertia.js page components
+
+All components follow consistent patterns with TypeScript, Tailwind CSS v4, and accessibility best practices.
+
+### Internationalization
+
+The application supports multiple languages with i18next:
+
+- **Frontend**: React components use `useTranslation()` hook
+- **Backend**: Laravel localization with custom Localisation package
+- **Files**: Translation files in `resources/locales/` and `lang/`
+- **Detection**: Automatic browser language detection
+
+### Custom Support Packages
+
+The project includes several custom support packages:
+
+- **TwoFactorAuthentication**: Google2FA integration with recovery codes
+- **ImageProcessor**: Intervention Image wrapper with multiple formats
+- **Localisation**: Enhanced Laravel localization with validation rules
+- **SpatieQueryBuilder**: Custom filters for advanced querying
+
+### Architecture Patterns
+
+The codebase follows consistent architectural patterns:
+
+- **Actions**: Single-purpose business logic classes (`app/Actions/`)
+- **DTOs**: Data transfer objects for structured data passing (`app/DTOs/`)
+- **Form Requests**: Validation logic separated from controllers (`app/Http/Requests/`)
+- **Resources**: API response transformation (`app/Http/Resources/`)
+- **Value Objects**: Domain concept encapsulation
+- **Enums**: Type-safe constants and states
+
 ### Frontend Code Quality Tools
 
 There are also npm scripts available for maintaining frontend code quality:
@@ -183,6 +254,24 @@ npm run checks
 
 > You should always run `npm run checks` before pushing your code. This will ensure that your code is clean and passes
 > all checks that are enforced by the project CI/CD pipeline.
+
+### Data Tables
+
+The project includes a sophisticated data table implementation using TanStack Table:
+
+- **Features**: Sorting, filtering, pagination, row selection, bulk actions
+- **Server-side**: Laravel backend handles sorting and filtering with Spatie Query Builder
+- **Components**: Reusable DataTable component with customizable columns and filters
+- **Accessibility**: Full keyboard navigation and screen reader support
+
+### Queue Management
+
+Laravel Horizon provides comprehensive queue monitoring:
+
+- **Dashboard**: Available at `/horizon` in development
+- **Metrics**: Job throughput, failed jobs, wait times
+- **Monitoring**: Real-time queue status and worker management
+- **Configuration**: Redis-based queue processing
 
 ## Coding Practices
 
@@ -216,11 +305,72 @@ This project follows a set of coding practices and conventions to ensure code qu
 - **Async/Await**: Used for handling asynchronous operations
 - **Toast Notifications**: Used for user feedback
 - **Context API**: Used for global state management
+- **Form Validation**: Zod schemas with React Hook Form integration
+- **Error Boundaries**: Graceful error handling in React components
+
+## Testing Strategy
+
+The project employs a comprehensive testing strategy:
+
+### Unit Tests
+
+- **Location**: `tests/Unit/`
+- **Purpose**: Test individual classes and methods in isolation
+- **Coverage**: Models, Actions, DTOs, Support packages
+
+### Feature Tests
+
+- **Location**: `tests/Feature/`
+- **Purpose**: Test HTTP endpoints and application workflows
+- **Coverage**: Controllers, middleware, authentication, authorization
+
+### Browser Tests
+
+- **Location**: `tests/Browser/`
+- **Purpose**: Test complete user workflows in real browsers
+- **Coverage**: Authentication flows, form submissions, JavaScript interactions
+- **Tools**: Pest v4 browser testing with Playwright integration
+
+### Test Data
+
+- **Factories**: Model factories for consistent test data
+- **Seeders**: Database seeders for development and testing
+- **Datasets**: Pest datasets for parameterized testing
+
+## Debugging and Monitoring
+
+### Development Tools
+
+- **Laravel Telescope**: Request debugging, queries, exceptions, logs
+- **Laravel Debugbar**: Request profiling, database queries, view data
+- **Laravel Boost**: MCP tools for enhanced debugging workflow
+
+### Production Monitoring
+
+- **Laravel Horizon**: Queue monitoring and management
+- **Error Tracking**: Comprehensive error logging and reporting
+- **Performance Monitoring**: Query optimization and response time tracking
 
 ## Deployment
 
-The project includes a basic GitHub Actions workflow for CI/CD in the `.github/workflows` directory. You may need to
-customize this for your specific deployment needs.
+The project includes a comprehensive GitHub Actions workflow for CI/CD in the `.github/workflows` directory:
+
+### Continuous Integration
+
+- **Code Quality**: PHPStan, Pint, Rector, ESLint, Prettier
+- **Testing**: Pest tests with coverage reporting
+- **Security**: Dependency vulnerability scanning
+- **Standards**: Automated code formatting and style checking
+
+### Deployment Considerations
+
+- **Environment Variables**: Comprehensive `.env.example` with all required variables
+- **Asset Building**: Vite production builds with optimization
+- **Database Migrations**: Automated migration deployment
+- **Queue Workers**: Horizon configuration for production queues
+- **Storage**: MinIO/S3 configuration for file uploads
+
+You may need to customize the workflows for your specific deployment environment and requirements.
 
 ## License
 

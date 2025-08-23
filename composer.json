@@ -24,6 +24,7 @@
     "driftingly/rector-laravel": "^2.0.0",
     "fakerphp/faker": "^v1.23",
     "larastan/larastan": "^v3.0.2",
+    "laravel/boost": "^1.0",
     "laravel/pint": "^v1.14",
     "laravel/telescope": "^5.0",
     "mockery/mockery": "^1.6",

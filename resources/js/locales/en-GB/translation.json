@@ -81,6 +81,8 @@
   "github": "GitHub",
   "havingTrouble": "Having trouble?",
   "hideColumn": "Hide",
+  "itemsSelected_one": "{{count, number}} item selected",
+  "itemsSelected_other": "{{count, number}} items selected",
   "language": "Language",
   "light": "Light",
   "logIn": "Log in",
