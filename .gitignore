@@ -18,3 +18,4 @@ yarn-error.log
 /.vscode
 .DS_Store
 tests/Browser/Screenshots
+.claude/settings.local.json
