@@ -210,7 +210,7 @@ This project uses Laravel Boost MCP server with powerful development tools:
 
 ### Laravel Herd
 
-- **URL**: Project available at `https://laravel-skeleton-react.test`
+- **URL**: Project available at URL specified by `APP_URL` in `.env`
 - **No server commands needed**: Always available through Herd
 - **SSL**: Automatic HTTPS certificates
 - **Services**: Redis, MinIO automatically configured
