@@ -18,11 +18,7 @@
     },
     "filesystem": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "/Users/adam/Developer"
-      ]
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "./"]
     },
     "playwright": {
       "command": "npx",
