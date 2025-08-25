@@ -11,7 +11,8 @@ test('users can login', function (): void {
         ->fill('email', $user->email)
         ->fill('password', 'password')
         ->press('Log in')
-        ->assertRoute('dashboard');
+        ->assertSee('Welcome')
+        ->assertRoute('dashboard.index');
 });
 
 test('users with invalid credentials cannot login', function (): void {

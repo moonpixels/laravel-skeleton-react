@@ -1,4 +1,4 @@
-# CRUSH.md - Laravel React Skeleton
+# CLAUDE.md - Laravel React Skeleton
 
 ## Quick Commands
 

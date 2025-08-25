@@ -30,6 +30,7 @@
     "mockery/mockery": "^1.6",
     "nunomaduro/collision": "^v8.1",
     "pestphp/pest": "^v4.0.2",
+    "pestphp/pest-plugin-browser": "^4.0",
     "pestphp/pest-plugin-laravel": "^v4.0.0",
     "pestphp/pest-plugin-type-coverage": "^v4.0.2",
     "phpstan/phpstan": "^2.0.3",
