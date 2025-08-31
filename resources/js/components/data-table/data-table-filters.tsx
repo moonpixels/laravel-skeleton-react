@@ -1,13 +1,3 @@
-import {
-  Combobox,
-  ComboboxContent,
-  ComboboxGroup,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxList,
-  ComboboxTrigger,
-  ComboboxValue,
-} from '@/components/combobox'
 import { reloadData } from '@/components/data-table/data-table'
 import {
   findClauseFromColumnFilter,
@@ -19,6 +9,13 @@ import { Text } from '@/components/text'
 import { Button } from '@/components/ui/button'
 import { DatePicker } from '@/components/ui/date-picker'
 import { Input } from '@/components/ui/input'
+import {
+  MultiSelect,
+  MultiSelectContent,
+  MultiSelectItem,
+  MultiSelectTrigger,
+  MultiSelectValue,
+} from '@/components/ui/multiselect'
 import {
   Popover,
   PopoverContent,
@@ -414,61 +411,24 @@ function DataTableFiltersOption<TData>({
             )}
 
             {option.type === 'multiselect' && (
-              <Combobox
-                value={
-                  value.type === 'single' && value.value !== ''
-                    ? value.value.split(',')
-                    : []
-                }
-                onValueChange={(values) => {
-                  setValue({
-                    type: 'single',
-                    value: Array.isArray(values) ? values.join(',') : '',
-                  })
-                }}
-                multiple
+              <MultiSelect
+                onValueChange={handleSingleValueChange}
+                defaultValue={value.type === 'single' ? value.value : ''}
               >
-                <ComboboxTrigger>
-                  <ComboboxValue placeholder={t('selectOption')}>
-                    {(selectedValues) => {
-                      if (
-                        !Array.isArray(selectedValues) ||
-                        selectedValues.length === 0
-                      ) {
-                        return t('selectOption')
-                      }
-
-                      if (selectedValues.length === 1) {
-                        const selectedOption = option.options?.find(
-                          (opt) => opt.value === selectedValues[0]
-                        )
-                        return selectedOption
-                          ? t(selectedOption.labelTransKey)
-                          : selectedValues[0]
-                      }
-
-                      return t('itemsSelected', {
-                        count: selectedValues.length,
-                      })
-                    }}
-                  </ComboboxValue>
-                </ComboboxTrigger>
-                <ComboboxContent>
-                  <ComboboxInput placeholder={t('search')} />
-                  <ComboboxList>
-                    <ComboboxGroup>
-                      {option.options?.map((opt) => (
-                        <ComboboxItem
-                          key={opt.value.toString()}
-                          value={opt.value.toString()}
-                        >
-                          {t(opt.labelTransKey)}
-                        </ComboboxItem>
-                      ))}
-                    </ComboboxGroup>
-                  </ComboboxList>
-                </ComboboxContent>
-              </Combobox>
+                <MultiSelectTrigger>
+                  <MultiSelectValue placeholder={t('selectOption')} />
+                </MultiSelectTrigger>
+                <MultiSelectContent>
+                  {option.options?.map((opt) => (
+                    <MultiSelectItem
+                      key={opt.value.toString()}
+                      value={opt.value.toString()}
+                    >
+                      {t(opt.labelTransKey)}
+                    </MultiSelectItem>
+                  ))}
+                </MultiSelectContent>
+              </MultiSelect>
             )}
 
             {option.type === 'date' && (
