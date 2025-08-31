@@ -19,12 +19,27 @@ import { Text } from '@/components/text'
 import { Button } from '@/components/ui/button'
 import { DatePicker } from '@/components/ui/date-picker'
 import { Input } from '@/components/ui/input'
-import { Popover, PopoverContent, PopoverTrigger, } from '@/components/ui/popover'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from '@/components/ui/select'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { ColumnFilter, ColumnFiltersState } from '@tanstack/react-table'
 import { Table as ReactTable } from '@tanstack/table-core'
 import { format, formatISO } from 'date-fns'
-import { AmpersandIcon, CornerDownRightIcon, MinusCircleIcon, PlusCircleIcon, } from 'lucide-react'
+import {
+  AmpersandIcon,
+  CornerDownRightIcon,
+  MinusCircleIcon,
+  PlusCircleIcon,
+} from 'lucide-react'
 import { MouseEvent, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
