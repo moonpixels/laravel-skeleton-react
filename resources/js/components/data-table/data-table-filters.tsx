@@ -10,6 +10,13 @@ import { Button } from '@/components/ui/button'
 import { DatePicker } from '@/components/ui/date-picker'
 import { Input } from '@/components/ui/input'
 import {
+  MultiSelect,
+  MultiSelectContent,
+  MultiSelectItem,
+  MultiSelectTrigger,
+  MultiSelectValue,
+} from '@/components/ui/multiselect'
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -404,9 +411,63 @@ function DataTableFiltersOption<TData>({
             )}
 
             {option.type === 'multiselect' && (
-              <div>
-                <p>This is where multiselect will go</p>
-              </div>
+              <MultiSelect
+                multiple
+                value={
+                  value.type === 'single' && value.value
+                    ? value.value.split(',')
+                    : []
+                }
+                onValueChange={(selectedValues) => {
+                  handleSingleValueChange(
+                    (selectedValues as string[]).join(',')
+                  )
+                }}
+              >
+                <MultiSelectTrigger>
+                  <MultiSelectValue>
+                    {(selectedValues) => {
+                      const values = selectedValues as string[]
+                      if (!values || values.length === 0) {
+                        return (
+                          <span className="text-muted-foreground">
+                            {t('selectOption')}
+                          </span>
+                        )
+                      }
+
+                      const selectedOptions = option.options?.filter((opt) =>
+                        values.includes(opt.value)
+                      )
+
+                      if (!selectedOptions || selectedOptions.length === 0) {
+                        return (
+                          <span className="text-muted-foreground">
+                            {t('selectOption')}
+                          </span>
+                        )
+                      }
+
+                      const firstOption = t(selectedOptions[0].labelTransKey)
+                      const additionalCount = selectedOptions.length - 1
+
+                      return additionalCount > 0
+                        ? `${firstOption} (+${additionalCount} more)`
+                        : firstOption
+                    }}
+                  </MultiSelectValue>
+                </MultiSelectTrigger>
+                <MultiSelectContent>
+                  {option.options?.map((opt) => (
+                    <MultiSelectItem
+                      key={opt.value.toString()}
+                      value={opt.value.toString()}
+                    >
+                      {t(opt.labelTransKey)}
+                    </MultiSelectItem>
+                  ))}
+                </MultiSelectContent>
+              </MultiSelect>
             )}
 
             {option.type === 'date' && (
