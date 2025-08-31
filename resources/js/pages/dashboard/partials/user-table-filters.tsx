@@ -47,14 +47,7 @@ export const filterOptions: DataTableFilterOption[] = [
     id: 'language',
     labelTransKey: 'language',
     type: 'multiselect',
-    options: [
-      { value: 'en_GB', labelTransKey: 'english' },
-      { value: 'fr_FR', labelTransKey: 'french' },
-      { value: 'es_ES', labelTransKey: 'spanish' },
-      { value: 'de_DE', labelTransKey: 'german' },
-      { value: 'it_IT', labelTransKey: 'italian' },
-      { value: 'ja_JP', labelTransKey: 'japanese' },
-    ],
+    options: [{ value: 'en_GB', labelTransKey: 'english' }],
     clause: [
       {
         type: 'equal',

@@ -1,3 +1,13 @@
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxGroup,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxTrigger,
+  ComboboxValue,
+} from '@/components/combobox'
 import { reloadData } from '@/components/data-table/data-table'
 import {
   findClauseFromColumnFilter,
@@ -9,34 +19,12 @@ import { Text } from '@/components/text'
 import { Button } from '@/components/ui/button'
 import { DatePicker } from '@/components/ui/date-picker'
 import { Input } from '@/components/ui/input'
-import {
-  MultiSelect,
-  MultiSelectContent,
-  MultiSelectItem,
-  MultiSelectTrigger,
-  MultiSelectValue,
-} from '@/components/ui/multiselect'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { Popover, PopoverContent, PopoverTrigger, } from '@/components/ui/popover'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from '@/components/ui/select'
 import { ColumnFilter, ColumnFiltersState } from '@tanstack/react-table'
 import { Table as ReactTable } from '@tanstack/table-core'
 import { format, formatISO } from 'date-fns'
-import {
-  AmpersandIcon,
-  CornerDownRightIcon,
-  MinusCircleIcon,
-  PlusCircleIcon,
-} from 'lucide-react'
+import { AmpersandIcon, CornerDownRightIcon, MinusCircleIcon, PlusCircleIcon, } from 'lucide-react'
 import { MouseEvent, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -411,63 +399,61 @@ function DataTableFiltersOption<TData>({
             )}
 
             {option.type === 'multiselect' && (
-              <MultiSelect
-                multiple
+              <Combobox
                 value={
-                  value.type === 'single' && value.value
+                  value.type === 'single' && value.value !== ''
                     ? value.value.split(',')
                     : []
                 }
-                onValueChange={(selectedValues) => {
-                  handleSingleValueChange(
-                    (selectedValues as string[]).join(',')
-                  )
+                onValueChange={(values) => {
+                  setValue({
+                    type: 'single',
+                    value: Array.isArray(values) ? values.join(',') : '',
+                  })
                 }}
+                multiple
               >
-                <MultiSelectTrigger>
-                  <MultiSelectValue>
+                <ComboboxTrigger>
+                  <ComboboxValue placeholder={t('selectOption')}>
                     {(selectedValues) => {
-                      const values = selectedValues as string[]
-                      if (!values || values.length === 0) {
-                        return (
-                          <span className="text-muted-foreground">
-                            {t('selectOption')}
-                          </span>
-                        )
+                      if (
+                        !Array.isArray(selectedValues) ||
+                        selectedValues.length === 0
+                      ) {
+                        return t('selectOption')
                       }
 
-                      const selectedOptions = option.options?.filter((opt) =>
-                        values.includes(opt.value)
-                      )
-
-                      if (!selectedOptions || selectedOptions.length === 0) {
-                        return (
-                          <span className="text-muted-foreground">
-                            {t('selectOption')}
-                          </span>
+                      if (selectedValues.length === 1) {
+                        const selectedOption = option.options?.find(
+                          (opt) => opt.value === selectedValues[0]
                         )
+                        return selectedOption
+                          ? t(selectedOption.labelTransKey)
+                          : selectedValues[0]
                       }
 
-                      const firstOption = t(selectedOptions[0].labelTransKey)
-                      const additionalCount = selectedOptions.length - 1
-
-                      return additionalCount > 0
-                        ? `${firstOption} (+${additionalCount} more)`
-                        : firstOption
+                      return t('itemsSelected', {
+                        count: selectedValues.length,
+                      })
                     }}
-                  </MultiSelectValue>
-                </MultiSelectTrigger>
-                <MultiSelectContent>
-                  {option.options?.map((opt) => (
-                    <MultiSelectItem
-                      key={opt.value.toString()}
-                      value={opt.value.toString()}
-                    >
-                      {t(opt.labelTransKey)}
-                    </MultiSelectItem>
-                  ))}
-                </MultiSelectContent>
-              </MultiSelect>
+                  </ComboboxValue>
+                </ComboboxTrigger>
+                <ComboboxContent>
+                  <ComboboxInput placeholder={t('search')} />
+                  <ComboboxList>
+                    <ComboboxGroup>
+                      {option.options?.map((opt) => (
+                        <ComboboxItem
+                          key={opt.value.toString()}
+                          value={opt.value.toString()}
+                        >
+                          {t(opt.labelTransKey)}
+                        </ComboboxItem>
+                      ))}
+                    </ComboboxGroup>
+                  </ComboboxList>
+                </ComboboxContent>
+              </Combobox>
             )}
 
             {option.type === 'date' && (

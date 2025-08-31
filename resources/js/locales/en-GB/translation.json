@@ -58,11 +58,6 @@
   "enableTwoFactor": "Enable two-factor authentication",
   "enableTwoFactorDescription": "Scan the QR code below with your two-factor authentication app then enter the code shown.",
   "english": "English",
-  "french": "French",
-  "german": "German",
-  "italian": "Italian",
-  "japanese": "Japanese",
-  "spanish": "Spanish",
   "false": "False",
   "filterBy": "Filter by {{column}}",
   "filterClause": {

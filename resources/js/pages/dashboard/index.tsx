@@ -8,7 +8,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
-import MultiSelectExample from '@/components/ui/multiselect-example'
 import { useUser } from '@/contexts/user-context'
 import { AuthenticatedLayout } from '@/layouts/authenticated-layout'
 import { columns } from '@/pages/dashboard/partials/user-table-columns'
@@ -35,12 +34,6 @@ export default function Index({
   return (
     <AuthenticatedLayout title={t('dashboard')}>
       <PageHeader>{t('welcomeMessage', { name: user.first_name })}</PageHeader>
-
-      <div className="py-10">
-        <div className="max-w-xs">
-          <MultiSelectExample />
-        </div>
-      </div>
 
       <div className="py-10">
         <Heading as="h2" size="base" className="mb-4">

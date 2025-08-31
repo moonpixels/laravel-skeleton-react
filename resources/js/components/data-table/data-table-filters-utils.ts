@@ -41,13 +41,6 @@ export function validateFilterOptions(
         `The 'select' type filter '${option.labelTransKey}' must have options defined.`
       )
     }
-
-    // Check `multiselect` options are provided for multiselect type filters
-    if (option.type === 'multiselect' && !option.options?.length) {
-      throw new Error(
-        `The 'multiselect' type filter '${option.labelTransKey}' must have options defined.`
-      )
-    }
   })
 }
 
