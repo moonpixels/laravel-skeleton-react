@@ -36,7 +36,7 @@ return RectorConfig::configure()
         phpunitCodeQuality: true,
     )
     ->withSets([
-        LaravelLevelSetList::UP_TO_LARAVEL_110,
+        LaravelLevelSetList::UP_TO_LARAVEL_120,
     ])
     ->withSkip([
         EncapsedStringsToSprintfRector::class,

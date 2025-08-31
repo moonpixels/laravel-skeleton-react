@@ -16,7 +16,7 @@ final class ImageProcessorServiceProvider extends ServiceProvider
     #[Override]
     public function register(): void
     {
-        $this->app->bind(ImageProcessor::class, function (): ImageProcessor {
+        $this->app->bind(function (): ImageProcessor {
             $manager = new ImageManager(driver: new Driver);
 
             return new InterventionImageProcessor(manager: $manager);
