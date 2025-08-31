@@ -10,13 +10,6 @@ import { Button } from '@/components/ui/button'
 import { DatePicker } from '@/components/ui/date-picker'
 import { Input } from '@/components/ui/input'
 import {
-  MultiSelect,
-  MultiSelectContent,
-  MultiSelectItem,
-  MultiSelectTrigger,
-  MultiSelectValue,
-} from '@/components/ui/multiselect'
-import {
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -411,24 +404,9 @@ function DataTableFiltersOption<TData>({
             )}
 
             {option.type === 'multiselect' && (
-              <MultiSelect
-                onValueChange={handleSingleValueChange}
-                defaultValue={value.type === 'single' ? value.value : ''}
-              >
-                <MultiSelectTrigger>
-                  <MultiSelectValue placeholder={t('selectOption')} />
-                </MultiSelectTrigger>
-                <MultiSelectContent>
-                  {option.options?.map((opt) => (
-                    <MultiSelectItem
-                      key={opt.value.toString()}
-                      value={opt.value.toString()}
-                    >
-                      {t(opt.labelTransKey)}
-                    </MultiSelectItem>
-                  ))}
-                </MultiSelectContent>
-              </MultiSelect>
+              <div>
+                <p>This is where multiselect will go</p>
+              </div>
             )}
 
             {option.type === 'date' && (
