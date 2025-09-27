@@ -64,7 +64,7 @@ final class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * @return Builder<covariant $this>
+     * @return Builder<self>
      */
     public function prunable(): Builder
     {
