@@ -1,4 +1,4 @@
-# CRUSH.md - Laravel React Skeleton
+# AGENTS.md - Laravel React Skeleton
 
 ## Quick Commands
 
