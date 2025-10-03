@@ -204,7 +204,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/uri-components" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/pestphp/pest-plugin-browser" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/revolt/event-loop" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/phiki/phiki" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
