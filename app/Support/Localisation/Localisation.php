@@ -52,9 +52,7 @@ final readonly class Localisation
      */
     public function setLocale(string $locale): void
     {
-        if (! $this->isSupportedLocale($locale)) {
-            throw new InvalidArgumentException("Locale [{$locale}] is not supported.");
-        }
+        throw_unless($this->isSupportedLocale($locale), new InvalidArgumentException("Locale [{$locale}] is not supported."));
 
         app()->setLocale($locale);
     }

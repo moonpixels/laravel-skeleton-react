@@ -36,7 +36,7 @@ final class LoginRequest extends FormRequest
 
         RateLimiter::clear($this->throttleKey());
 
-        $user = User::where('email', $this->input('email'))->first();
+        $user = User::query()->where('email', $this->input('email'))->first();
 
         if ($user?->hasTwoFactorAuthenticationEnabled()) {
             return $this->redirectUserToTwoFactorLogin($user);
