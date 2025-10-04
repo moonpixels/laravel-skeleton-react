@@ -18,9 +18,7 @@ final class TwoFactorAuthenticatedSessionController extends Controller
      */
     public function create(TwoFactorLoginRequest $request): Response
     {
-        if (! $request->hasChallengedUser()) {
-            throw new HttpResponseException(redirect()->route('login'));
-        }
+        throw_unless($request->hasChallengedUser(), new HttpResponseException(redirect()->route('login')));
 
         return Inertia::render('auth/two-factor');
     }

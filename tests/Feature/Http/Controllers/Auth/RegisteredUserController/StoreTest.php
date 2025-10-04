@@ -12,7 +12,7 @@ test('new users can register', function (): void {
 
     $this->assertAuthenticated();
 
-    $user = User::sole();
+    $user = User::query()->sole();
 
     expect($user)
         ->name->toBe('Test User')
@@ -27,7 +27,7 @@ test('users are registered with the default locale when no locale is provided', 
         ->assertValid()
         ->assertRedirect(route('dashboard.index'));
 
-    $user = User::sole();
+    $user = User::query()->sole();
 
     expect($user->language)->toBe(config('app.locale'));
 });
@@ -37,7 +37,7 @@ test('users are registered with the default locale when an invalid locale is pro
         ->assertValid()
         ->assertRedirect(route('dashboard.index'));
 
-    $user = User::sole();
+    $user = User::query()->sole();
 
     expect($user->language)->toBe(config('app.locale'));
 });

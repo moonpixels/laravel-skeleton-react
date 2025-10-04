@@ -40,9 +40,7 @@ final class TwoFactorLoginRequest extends FormRequest
      */
     public function authenticate(): RedirectResponse
     {
-        if (! ($user = $this->getChallengedUser()) instanceof User) {
-            throw new HttpResponseException(redirect()->route('login'));
-        }
+        throw_unless(($user = $this->getChallengedUser()) instanceof User, new HttpResponseException(redirect()->route('login')));
 
         $this->ensureIsNotRateLimited();
 
@@ -69,7 +67,7 @@ final class TwoFactorLoginRequest extends FormRequest
             return $this->challengedUser;
         }
 
-        $user = User::find($this->session()->get('login.id'));
+        $user = User::query()->find($this->session()->get('login.id'));
 
         if ($user instanceof User) {
             return $this->challengedUser = $user;

@@ -18,7 +18,7 @@ final readonly class RegisterUserAction
 
     public function handle(RegisterData $data): User
     {
-        $user = User::create([
+        $user = User::query()->create([
             'name' => $data->name,
             'email' => $data->email,
             'language' => $this->getLanguage($data->language),
