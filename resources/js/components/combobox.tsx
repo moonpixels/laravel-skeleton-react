@@ -101,8 +101,9 @@ function Combobox<Multiple extends boolean = false>({
   )
 }
 
-interface ComboboxTriggerProps
-  extends React.ComponentPropsWithoutRef<typeof Button> {
+interface ComboboxTriggerProps extends React.ComponentPropsWithoutRef<
+  typeof Button
+> {
   children?: React.ReactNode
 }
 
@@ -153,8 +154,9 @@ function ComboboxValue({
   )
 }
 
-interface ComboboxContentProps
-  extends React.ComponentPropsWithoutRef<typeof PopoverContent> {
+interface ComboboxContentProps extends React.ComponentPropsWithoutRef<
+  typeof PopoverContent
+> {
   children: React.ReactNode
   className?: string
 }
@@ -178,8 +180,10 @@ function ComboboxInput(
   return <CommandInput {...props} />
 }
 
-interface ComboboxItemProps
-  extends Omit<React.ComponentPropsWithoutRef<typeof CommandItem>, 'value'> {
+interface ComboboxItemProps extends Omit<
+  React.ComponentPropsWithoutRef<typeof CommandItem>,
+  'value'
+> {
   value: string
   children: React.ReactNode
 }

@@ -97,6 +97,6 @@ final class LoginRequest extends FormRequest
             'login.remember' => $this->boolean('remember'),
         ]);
 
-        return redirect()->route('two-factor.login');
+        return to_route('two-factor.login');
     }
 }

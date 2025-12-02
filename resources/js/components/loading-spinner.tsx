@@ -14,8 +14,9 @@ const loadingSpinnerVariants = cva('animate-spin text-inherit', {
   },
 })
 
-interface LoadingSpinnerProps
-  extends VariantProps<typeof loadingSpinnerVariants> {
+interface LoadingSpinnerProps extends VariantProps<
+  typeof loadingSpinnerVariants
+> {
   className?: string
 }
 

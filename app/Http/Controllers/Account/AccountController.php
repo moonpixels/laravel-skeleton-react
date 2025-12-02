@@ -42,7 +42,7 @@ final class AccountController extends Controller
         if (! $action->handle($user)) {
             auth('web')->login($user);
 
-            return redirect()->route('account.edit');
+            return to_route('account.edit');
         }
 
         $request->session()->invalidate();

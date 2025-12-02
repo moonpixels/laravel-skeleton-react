@@ -15,7 +15,6 @@ return RectorConfig::configure()
         __DIR__.'/bootstrap/app.php',
         __DIR__.'/config',
         __DIR__.'/database',
-        __DIR__.'/public',
         __DIR__.'/routes',
         __DIR__.'/tests',
     ])
@@ -29,7 +28,6 @@ return RectorConfig::configure()
         privatization: true,
         instanceOf: true,
         earlyReturn: true,
-        strictBooleans: true,
         carbon: true,
         rectorPreset: true,
         phpunitCodeQuality: true,
