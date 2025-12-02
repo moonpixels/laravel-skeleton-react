@@ -40,7 +40,7 @@ final class TwoFactorLoginRequest extends FormRequest
      */
     public function authenticate(): RedirectResponse
     {
-        throw_unless(($user = $this->getChallengedUser()) instanceof User, new HttpResponseException(redirect()->route('login')));
+        throw_unless(($user = $this->getChallengedUser()) instanceof User, HttpResponseException::class, to_route('login'));
 
         $this->ensureIsNotRateLimited();
 

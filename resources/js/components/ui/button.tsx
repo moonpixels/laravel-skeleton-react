@@ -53,8 +53,7 @@ const loadingSpinnerVariants = cva('ml-2 -mr-2', {
 })
 
 export interface ButtonProps
-  extends React.ComponentProps<'button'>,
-    VariantProps<typeof buttonVariants> {
+  extends React.ComponentProps<'button'>, VariantProps<typeof buttonVariants> {
   asChild?: boolean
   loading?: boolean
 }

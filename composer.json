@@ -4,11 +4,11 @@
   "description": "The Moon Pixels skeleton application for the Laravel framework.",
   "license": "proprietary",
   "require": {
-    "php": "^8.4",
+    "php": "^8.5",
     "ext-imagick": "*",
     "bacon/bacon-qr-code": "^3.0",
     "guzzlehttp/guzzle": "^7.8",
-    "inertiajs/inertia-laravel": "v2.0.10",
+    "inertiajs/inertia-laravel": "^v2.0.11",
     "intervention/image": "^3.9",
     "laravel/framework": "^12.0",
     "laravel/horizon": "^v5.23",

@@ -30,8 +30,9 @@ const textVariants = cva('', {
   },
 })
 
-interface TextProps
-  extends PropsWithChildren<VariantProps<typeof textVariants>> {
+interface TextProps extends PropsWithChildren<
+  VariantProps<typeof textVariants>
+> {
   as?: ElementType
   asChild?: boolean
   className?: string

@@ -7,9 +7,10 @@ use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\AccountPreferencesController;
 use App\Http\Controllers\Account\AccountSecurityController;
 use App\Http\Controllers\DashboardController;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => redirect()->route('login'));
+Route::get('/', fn (): RedirectResponse => to_route('login'));
 
 Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::controller(AccountAvatarController::class)->group(function (): void {
