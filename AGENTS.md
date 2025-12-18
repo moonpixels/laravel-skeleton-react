@@ -185,7 +185,7 @@ This project uses Laravel Boost MCP server with powerful development tools:
 ## PHP Code Style
 
 - Always use `declare(strict_types=1);` at top of PHP files
-- Use PHP 8.4+ constructor property promotion: `public function __construct(public GitHub $github) {}`
+- Use PHP 8.5+ constructor property promotion: `public function __construct(public GitHub $github) {}`
 - Always use explicit return type declarations for methods
 - Use `final` classes by default (enforced by Pint)
 - Import all classes, constants, and functions at top of file

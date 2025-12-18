@@ -9,7 +9,7 @@ This skeleton provides several enhancements over a standard Laravel application:
 
 ### Backend Features
 
-- **Laravel 12.0** with PHP 8.4 support
+- **Laravel 12.0** with PHP 8.5 support
 - **PostgreSQL** database integration
 - **Redis** for caching, session management, and queue processing
 - **Laravel Horizon** for queue monitoring and management
