@@ -42,3 +42,14 @@ jobs:
 
       - name: Run tests
         run: composer test
+
+      - name: Upload browser test artifacts
+        uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: browser-test-artifacts-${{ github.run_id }}
+          path: |
+            tests/Browser/Screenshots/
+            storage/logs/
+          retention-days: 7
+          include-hidden-files: false
