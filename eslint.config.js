@@ -2,7 +2,6 @@ import eslint from '@eslint/js'
 import prettierRecommended from 'eslint-plugin-prettier/recommended'
 import reactPlugin from 'eslint-plugin-react'
 import reactHookPlugin from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 
@@ -16,7 +15,6 @@ export default defineConfig([
   tseslint.configs.stylisticTypeChecked,
   reactPlugin.configs.flat.recommended,
   reactHookPlugin.configs.flat.recommended,
-  reactRefresh.configs.vite,
   prettierRecommended,
   {
     languageOptions: {
