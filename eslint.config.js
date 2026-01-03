@@ -2,6 +2,7 @@ import eslint from '@eslint/js'
 import prettierRecommended from 'eslint-plugin-prettier/recommended'
 import reactPlugin from 'eslint-plugin-react'
 import reactHookPlugin from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 
 export default [
@@ -9,6 +10,7 @@ export default [
   ...tseslint.configs.recommended,
   ...tseslint.configs.stylisticTypeChecked,
   reactPlugin.configs.flat.recommended,
+  reactRefresh.configs.recommended,
   prettierRecommended,
   {
     plugins: {
