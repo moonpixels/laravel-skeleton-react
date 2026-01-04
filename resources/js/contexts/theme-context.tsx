@@ -3,7 +3,7 @@ import {
   PropsWithChildren,
   useContext,
   useEffect,
-  useState,
+  useMemo,
 } from 'react'
 import { useLocalStorage } from 'react-use'
 
@@ -23,27 +23,22 @@ export function ThemeProvider({ children, ...props }: PropsWithChildren) {
     'system'
   )
 
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false)
+  const effectiveTheme = useMemo(() => {
+    if (storedTheme === 'system' || !storedTheme) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light'
+    }
+    return storedTheme
+  }, [storedTheme])
+
+  const isDarkMode = effectiveTheme === 'dark'
 
   useEffect(() => {
     const root = window.document.documentElement
-
     root.classList.remove('light', 'dark')
-
-    if (storedTheme === 'system' || !storedTheme) {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
-        .matches
-        ? 'dark'
-        : 'light'
-
-      root.classList.add(systemTheme)
-      setIsDarkMode(systemTheme === 'dark')
-      return
-    }
-
-    root.classList.add(storedTheme)
-    setIsDarkMode(storedTheme === 'dark')
-  }, [storedTheme])
+    root.classList.add(effectiveTheme)
+  }, [effectiveTheme])
 
   function setTheme(theme: Theme) {
     setStoredTheme(theme)
