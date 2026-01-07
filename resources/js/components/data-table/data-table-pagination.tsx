@@ -8,8 +8,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination'
-import { PaginationMeta } from '@/types'
-import { Table as ReactTable } from '@tanstack/table-core'
+import type { PaginationMeta } from '@/types'
+import type { Table as ReactTable } from '@tanstack/table-core'
 import { DotIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 

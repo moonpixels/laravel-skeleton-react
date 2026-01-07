@@ -1,6 +1,6 @@
 import { Checkbox } from '@/components/ui/checkbox'
-import { Row } from '@tanstack/react-table'
-import { Table as ReactTable } from '@tanstack/table-core'
+import type { Row } from '@tanstack/react-table'
+import type { Table as ReactTable } from '@tanstack/table-core'
 import { useTranslation } from 'react-i18next'
 
 export function DataTableSelectHeader<TData>({

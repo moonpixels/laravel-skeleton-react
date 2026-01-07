@@ -1,5 +1,6 @@
 import { cn } from '@/utils/utils'
-import { cva, VariantProps } from 'class-variance-authority'
+import type { VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
 
 const loadingSpinnerVariants = cva('animate-spin text-inherit', {
   variants: {

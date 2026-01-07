@@ -1,6 +1,7 @@
-import { User } from '@/types/models'
+import type { User } from '@/types/models'
 import { usePage } from '@inertiajs/react'
-import { createContext, PropsWithChildren, useContext } from 'react'
+import type { PropsWithChildren } from 'react'
+import { createContext, useContext } from 'react'
 
 interface UserState {
   user: User

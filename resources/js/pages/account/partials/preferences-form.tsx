@@ -18,12 +18,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Theme, useTheme } from '@/contexts/theme-context'
+import type { Theme } from '@/contexts/theme-context'
+import { useTheme } from '@/contexts/theme-context'
 import { useFormValidation } from '@/hooks/use-form-validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router, usePage } from '@inertiajs/react'
 import { Globe, MonitorIcon, MoonIcon, SunIcon } from 'lucide-react'
-import { ElementType } from 'react'
+import type { ElementType } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'

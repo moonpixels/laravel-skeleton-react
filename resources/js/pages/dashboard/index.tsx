@@ -12,9 +12,13 @@ import { useUser } from '@/contexts/user-context'
 import { AuthenticatedLayout } from '@/layouts/authenticated-layout'
 import { columns } from '@/pages/dashboard/partials/user-table-columns'
 import { filterOptions } from '@/pages/dashboard/partials/user-table-filters'
-import { PaginatedData } from '@/types'
-import { User } from '@/types/models'
-import { ColumnFiltersState, SortingState, Table } from '@tanstack/react-table'
+import type { PaginatedData } from '@/types'
+import type { User } from '@/types/models'
+import type {
+  ColumnFiltersState,
+  SortingState,
+  Table,
+} from '@tanstack/react-table'
 import { FileSpreadsheetIcon, TrashIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 

@@ -1,10 +1,10 @@
-import {
+import type {
   DataTableFilterClause,
   DataTableFilterOption,
   FilterValue,
 } from '@/components/data-table/data-table-filters'
-import { ColumnFilter } from '@tanstack/react-table'
-import { i18n, TFunction } from 'i18next'
+import type { ColumnFilter } from '@tanstack/react-table'
+import type { i18n, TFunction } from 'i18next'
 
 export function validateFilterOptions(
   filterOptions: DataTableFilterOption[]

@@ -1,7 +1,8 @@
 import { cn } from '@/utils/utils'
 import { Slot } from '@radix-ui/react-slot'
-import { cva, VariantProps } from 'class-variance-authority'
-import { ElementType, PropsWithChildren } from 'react'
+import type { VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
+import type { ElementType, PropsWithChildren } from 'react'
 
 const headingVariants = cva('leading-none tracking-tight', {
   variants: {

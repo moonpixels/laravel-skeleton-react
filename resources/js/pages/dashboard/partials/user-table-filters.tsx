@@ -1,4 +1,4 @@
-import { DataTableFilterOption } from '@/components/data-table/data-table-filters'
+import type { DataTableFilterOption } from '@/components/data-table/data-table-filters'
 
 export const filterOptions: DataTableFilterOption[] = [
   {
