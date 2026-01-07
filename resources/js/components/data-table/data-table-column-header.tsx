@@ -8,8 +8,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/utils/utils'
-import { Column } from '@tanstack/react-table'
-import { Table as ReactTable } from '@tanstack/table-core'
+import type { Column } from '@tanstack/react-table'
+import type { Table as ReactTable } from '@tanstack/table-core'
 import {
   ArrowDownIcon,
   ArrowUpIcon,

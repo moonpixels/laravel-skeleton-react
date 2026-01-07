@@ -31,8 +31,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { ColumnFilter, ColumnFiltersState } from '@tanstack/react-table'
-import { Table as ReactTable } from '@tanstack/table-core'
+import type { ColumnFilter, ColumnFiltersState } from '@tanstack/react-table'
+import type { Table as ReactTable } from '@tanstack/table-core'
 import { format, formatISO } from 'date-fns'
 import {
   AmpersandIcon,
@@ -40,7 +40,8 @@ import {
   MinusCircleIcon,
   PlusCircleIcon,
 } from 'lucide-react'
-import { MouseEvent, useMemo, useState } from 'react'
+import type { MouseEvent } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 type DataTableFilterClauseType =

@@ -12,9 +12,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useCopy } from '@/hooks/use-copy'
-import { User } from '@/types/models'
+import type { User } from '@/types/models'
 import { initials } from '@/utils/strings'
-import { ColumnDef } from '@tanstack/react-table'
+import type { ColumnDef } from '@tanstack/react-table'
 import {
   CheckIcon,
   ClipboardIcon,

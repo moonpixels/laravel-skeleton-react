@@ -1,8 +1,6 @@
 import { DataTableColumnsDropdown } from '@/components/data-table/data-table-columns-dropdown'
-import {
-  DataTableFilterOption,
-  DataTableFilters,
-} from '@/components/data-table/data-table-filters'
+import type { DataTableFilterOption } from '@/components/data-table/data-table-filters'
+import { DataTableFilters } from '@/components/data-table/data-table-filters'
 import { DataTablePagination } from '@/components/data-table/data-table-pagination'
 import { DataTableSearchInput } from '@/components/data-table/data-table-search-input'
 import {
@@ -13,23 +11,26 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { PaginationMeta } from '@/types'
+import type { PaginationMeta } from '@/types'
 import { router } from '@inertiajs/react'
-import {
+import type {
   ColumnDef,
   ColumnFiltersState,
-  flexRender,
-  getCoreRowModel,
   PaginationState,
   Table as ReactTable,
   RowData,
   SortingState,
   TableOptions,
+} from '@tanstack/react-table'
+import {
+  flexRender,
+  getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table'
 import { debounce, merge, union } from 'es-toolkit'
 import { ScanSearchIcon } from 'lucide-react'
-import { ReactElement, useEffect, useMemo } from 'react'
+import type { ReactElement } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 declare module '@tanstack/table-core' {

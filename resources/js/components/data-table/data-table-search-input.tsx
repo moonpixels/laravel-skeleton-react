@@ -1,7 +1,8 @@
 import { reloadData } from '@/components/data-table/data-table'
 import { Input } from '@/components/ui/input'
-import { Table as ReactTable } from '@tanstack/table-core'
-import { ChangeEvent, useState } from 'react'
+import type { Table as ReactTable } from '@tanstack/table-core'
+import type { ChangeEvent } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export function DataTableSearchInput<TData>({
