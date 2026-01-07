@@ -10,238 +10,175 @@
 
 ## Laravel Boost Tools (MCP)
 
-This project uses Laravel Boost MCP server with powerful development tools:
+Available Laravel-specific development tools:
 
-- **`search-docs`** - Search version-specific Laravel ecosystem documentation (Laravel, Inertia, Pest, Tailwind, etc.)
-- **`tinker`** - Execute PHP code in Laravel application context (like `php artisan tinker`)
-- **`database-query`** - Run read-only SQL queries against the configured database
-- **`browser-logs`** - Read browser console logs, errors, and exceptions for frontend debugging
-- **`get-absolute-url`** - Generate correct URLs for Laravel Herd environment
-- **`application-info`** - Get comprehensive app info (PHP version, packages, models)
-- **`list-routes`** - List all available routes with filters
-- **`list-artisan-commands`** - List all available Artisan commands
+- **`search-docs`** - Search Laravel ecosystem documentation (Laravel, Inertia, Pest, Tailwind)
+- **`tinker`** - Execute PHP code in Laravel context
+- **`database-query`** - Run read-only SQL queries
+- **`browser-logs`** - Read browser console logs for frontend debugging
+- **`get-absolute-url`** - Generate correct URLs for Laravel Herd
+- **`application-info`** - Get app info (PHP version, packages, models)
+- **`list-routes`** - List all routes with filters
 - **`read-log-entries`** - Read application log entries
-- **`last-error`** - Get details of the last backend error/exception
+- **`last-error`** - Get last backend error details
 
-## Build/Test Commands
+## Project Overview
 
-- `composer run test` - Run all tests with Pest (parallel, compact output)
-- `php artisan test --filter=testName` - Run specific test by name
-- `php artisan test tests/Feature/ExampleTest.php` - Run specific test file
-- `php artisan test --coverage` - Run tests with coverage report
-- `composer run pint` - Format PHP code with Laravel Pint
-- `composer run stan` - Run PHPStan static analysis (3GB memory limit)
-- `composer run rector` - Run Rector code refactoring
-- `composer run coverage` - Run tests with 90% minimum coverage
-- `composer run type-coverage` - Check 100% type coverage
-- `composer run checks` - Run all quality checks (rector, pint, stan, coverage, type-coverage, test)
-- `npm run lint` - Lint TypeScript/React code with ESLint
-- `npm run format` - Format code with Prettier
-- `npm run checks` - Run frontend linting and formatting
-- `npm run dev` - Start Vite dev server with HMR
-- `npm run build` - Build frontend assets for production
+This is a Laravel 12 + React 19 + Inertia.js application using:
 
-## Testing Patterns
+- **Backend**: PHP 8.5, Laravel 12, PostgreSQL
+- **Frontend**: React 19, TypeScript, Inertia.js, Tailwind CSS v4, shadcn/ui
+- **Testing**: Pest v4 with browser testing (Playwright)
+- **Quality**: Pint, PHPStan/Larastan, Rector
+- **Environment**: Laravel Herd (auto HTTPS, Redis, MinIO)
 
-### Test Creation
+## Project Structure
 
-- **Feature Tests**: `php artisan make:test --pest FeatureName` (most common)
-- **Unit Tests**: `php artisan make:test --pest --unit UnitName`
-- **Browser Tests**: `php artisan make:test --pest --browser BrowserName` (Pest v4)
-- Tests auto-use `RefreshDatabase` trait and factories
+```
+app/
+├── Actions/{Domain}/        # Business logic operations
+├── DTOs/{Domain}/          # Data transfer objects
+├── Http/
+│   ├── Controllers/        # Route handlers
+│   ├── Requests/          # Form validation
+│   └── Resources/         # API response formatting
+├── Models/                # Eloquent models
+├── Enums/{Domain}/        # Enum types
+└── Providers/             # Service providers
 
-### Test Execution
+resources/
+├── js/
+│   ├── components/        # React components
+│   ├── pages/            # Inertia pages
+│   └── layouts/          # Layout components
+└── locales/              # i18n translations
 
-- **All tests**: `php artisan test`
-- **Specific test**: `php artisan test --filter=testName`
-- **Test file**: `php artisan test tests/Feature/ExampleTest.php`
-- **Parallel**: Tests run in parallel by default for speed
-- **Coverage**: `composer run coverage` (90% minimum required)
+tests/
+├── Feature/              # Feature tests
+├── Unit/                # Unit tests
+└── Browser/             # Browser tests (Pest + Playwright)
+```
 
-### Browser Testing (Pest v4)
+## Available Skills
 
-- Browser tests in `tests/Browser/`
-- Use `visit('/path')` to navigate
-- Interact with page: `click()`, `type()`, `fill()`, `select()`
-- Assert content: `assertSee()`, `assertNoJavascriptErrors()`
-- Laravel features work: `Event::fake()`, `assertAuthenticated()`, factories
-- Take screenshots: `screenshot()` for debugging
+Load skills on-demand using the skill tool when working on specific tasks.
 
-### Test Data
+### Laravel Backend Skills
 
-- Use factories: `User::factory()->create()`, `User::factory()->make()`
-- Check factory states before creating custom data
-- Use `fake()` or `$this->faker` for random data (follow existing patterns)
-- Datasets for validation testing: `->with(['email1', 'email2'])`
+**Architecture Patterns:**
 
-## Architecture Patterns
+- `laravel-actions` - Creating Action classes for business logic
+- `laravel-dtos` - Creating DTOs for data transfer
+- `laravel-form-requests` - Creating Form Requests for validation
+- `laravel-resources` - Creating API Resources for responses
+- `laravel-models` - Creating or modifying Eloquent models
+- `laravel-enums` - Creating or using enums
+- `laravel-service-container` - Dependency injection patterns
+- `laravel-middleware` - Creating middleware
+- `laravel-providers` - Service provider patterns
 
-### Actions (Business Logic)
+**Testing:**
 
-- Location: `app/Actions/`
-- Single-purpose classes for business operations
-- Example: `UpdateUserAction`, `RegisterUserAction`
-- Use constructor injection for dependencies
-- Return DTOs or models, not arrays
+- `laravel-testing-feature` - Creating feature tests (most common)
+- `laravel-testing-unit` - Creating unit tests for isolated logic
+- `laravel-testing-browser` - Creating browser tests with Playwright
+- `laravel-testing-factories` - Using factories for test data
 
-### DTOs (Data Transfer Objects)
+**Code Quality:**
 
-- Location: `app/DTOs/`
-- Structured data passing between layers
-- Example: `UpdateUserData`, `RegisterData`
-- Use readonly properties and constructor promotion
+- `laravel-pint` - Auto-formatting with Pint
+- `laravel-phpstan` - Static analysis with PHPStan/Larastan
+- `laravel-rector` - Automated refactoring with Rector
 
-### Form Requests (Validation)
+### React/TypeScript Frontend Skills
 
-- Location: `app/Http/Requests/`
-- All validation in Form Request classes, not controllers
-- Include custom error messages
-- Check siblings for array vs string validation rule patterns
+- `react-components` - Creating React components with TypeScript
+- `react-radix-ui` - Using shadcn/ui components (Radix UI + Tailwind)
+- `react-inertia` - Working with Inertia.js pages and navigation
+- `react-forms` - Creating forms with React Hook Form + Zod
+- `typescript-style` - TypeScript coding standards
 
-### Resources (API Responses)
+### Environment & Debugging Skills
 
-- Location: `app/Http/Resources/`
-- Transform models for API/frontend consumption
-- Use for consistent data formatting
+- `laravel-herd` - Laravel Herd environment (HTTPS, services)
+- `laravel-vite` - Vite asset building and HMR
+- `laravel-debugging` - Debugging with Horizon, Telescope, logs
+- `laravel-i18n` - Internationalization (i18next + Laravel)
 
-### Models
+## Skill Loading Best Practice
 
-- Use `final` classes by default
-- Constructor property promotion: `public function __construct(public GitHub $github) {}`
-- Explicit return types: `public function users(): HasMany`
-- Casts in `casts()` method, not `$casts` property
-- Relationships with proper return type hints
+Load skills on-demand based on the task at hand. The AI will automatically load relevant skills when you mention specific concepts or use custom commands.
 
-## Component Patterns
+**Examples:**
 
-### UI Components (Radix UI + shadcn/ui)
+✅ "Create a RegisterUserAction" → Loads `laravel-actions`
+✅ "Add validation to the login form" → Loads `laravel-form-requests`
+✅ "Create a browser test for checkout" → Loads `laravel-testing-browser`
+✅ "Build a UserProfile component" → Loads `react-components`, `typescript-style`
 
-- **Location**: `@/components/ui/` (base components)
-- **Pattern**: Radix UI primitives with Tailwind styling
-- **Variants**: Use `class-variance-authority` for component variants
-- **Examples**: `Button`, `Dialog`, `DropdownMenu`, `Table`
-- **Composition**: Build complex components from primitives
+## Custom Commands
 
-### Page Components
+Use `/` to access custom commands:
 
-- **Location**: `@/pages/` (Inertia page components)
-- **Layout**: Use layout components (`AuthenticatedLayout`, `GuestLayout`)
-- **Props**: Typed with TypeScript interfaces
-- **Navigation**: Use `<Link>` or `router.visit()`, never regular `<a>` tags
+**Testing:**
 
-### Layout Components
+- `/test` - Run all tests in parallel
+- `/test-coverage` - Run with 90% coverage requirement
+- `/test-filter TestName` - Run specific test
+- `/test-browser FeatureName` - Create & run browser test
 
-- **Location**: `@/layouts/`
-- **Default**: `DefaultLayout` wraps all pages
-- **Authenticated**: `AuthenticatedLayout` for logged-in users
-- **Guest**: `GuestLayout` for auth pages
+**Quality:**
 
-### Import Patterns
+- `/quality` - Run all quality checks (rector, pint, stan, coverage, tests)
+- `/fix-style` - Auto-fix code style with Pint
+- `/analyze` - Run PHPStan static analysis
 
-- **Alias**: `@/` for `resources/js/`
-- **Components**: `import { Button } from '@/components/ui/button'`
-- **Utils**: `import { cn } from '@/utils/utils'`
-- **Types**: `import { User } from '@/types/models'`
+**Build:**
 
-## Database & Debugging
+- `/build` - Build production assets with Vite
+- `/fresh` - Fresh database with seeders
 
-### Database Tools
+**Development:**
 
-- **Migrations**: `php artisan migrate:fresh --seed`
-- **Tinker**: Use Laravel Boost `tinker` tool or `php artisan tinker`
-- **Query**: Use Laravel Boost `database-query` tool for read-only queries
-- **Schema**: Use Laravel Boost `database-schema` tool
+- `/component Name` - Create React component with TypeScript
+- `/action ActionName` - Create Action class
+- `/endpoint ResourceName` - Create complete API endpoint
 
-### Debugging Tools
+## Specialized Agents
 
-- **Horizon**: Queue monitoring at `/horizon`
-- **Telescope**: Debug dashboard at `/telescope` (dev only)
-- **Debugbar**: Laravel Debugbar for request debugging
-- **Browser Logs**: Use Laravel Boost `browser-logs` tool
-- **App Logs**: Use Laravel Boost `read-log-entries` tool
-- **Last Error**: Use Laravel Boost `last-error` tool
+Use `@agent-name` to invoke specialized workflow agents:
 
-### Queue Management
-
-- **Horizon**: Monitor queues, failed jobs, metrics
-- **Commands**: `php artisan queue:work`, `php artisan queue:restart`
-- **Jobs**: Implement `ShouldQueue` interface for background processing
-
-## Internationalization (i18n)
-
-### Frontend (React)
-
-- **Setup**: i18next with browser language detection
-- **Usage**: `const { t } = useTranslation()`
-- **Files**: `resources/locales/en-GB/translation.json`
-- **Validation**: `resources/locales/en-GB/validation.json`
-
-### Backend (Laravel)
-
-- **Usage**: `__('key')`, `trans('key')`, or `@lang('key')`
-- **Files**: `lang/en_GB/` directory
-- **Custom**: Use Localisation support package
-
-## PHP Code Style
-
-- Always use `declare(strict_types=1);` at top of PHP files
-- Use PHP 8.5+ constructor property promotion: `public function __construct(public GitHub $github) {}`
-- Always use explicit return type declarations for methods
-- Use `final` classes by default (enforced by Pint)
-- Import all classes, constants, and functions at top of file
-- Use strict comparison operators (`===`, `!==`)
-- Follow Laravel conventions: Eloquent models, Form Requests for validation, API Resources
-- PHPDoc for complex generics and array shapes only
-- Private over protected members for encapsulation
-
-## TypeScript/React Code Style
-
-- Use TypeScript with strict typing enabled
-- Import React components with named imports: `import { Component } from '@/components/component'`
-- Use Inertia.js for navigation: `<Link>` components and `router.visit()`
-- Follow existing component patterns in `resources/js/components/`
-- Use Tailwind CSS v4 classes for styling (no deprecated utilities)
-- Use `@/` path alias for imports from `resources/js/`
-- Prefer functional components with hooks over class components
-- Use React Hook Form with Zod validation for forms
-- Use `cn()` utility for conditional class names
-
-## Environment & Deployment
-
-### Laravel Herd
-
-- **URL**: Project available at URL specified by `APP_URL` in `.env`
-- **No server commands needed**: Always available through Herd
-- **SSL**: Automatic HTTPS certificates
-- **Services**: Redis, MinIO automatically configured
-
-### Asset Building
-
-- **Development**: `npm run dev` for HMR
-- **Production**: `npm run build` for optimized assets
-- **Vite Error**: If manifest error, run `npm run build` or restart dev server
-
-### Services
-
-- **MinIO**: S3-compatible storage at `https://minio.herd.test`
-- **Redis**: Caching, sessions, queues
-- **PostgreSQL**: Primary database
+- `@test-fixer` - Runs tests and fixes failures iteratively
+- `@quality-auditor` - Runs quality checks and fixes issues
+- `@migration-builder` - Creates database migrations safely
+- `@api-designer` - Designs complete API endpoints
+- `@component-builder` - Creates React components with TypeScript
+- `@docs-writer` - Writes technical documentation
 
 ## Troubleshooting
 
 ### Common Issues
 
-- **Vite manifest error**: Run `npm run build` or `npm run dev`
-- **Frontend not updating**: Check if dev server is running
-- **Tests failing**: Run `composer run pint` to fix formatting
-- **Type errors**: Run `composer run stan` for static analysis
-- **Queue not processing**: Check Horizon dashboard
+- **Vite manifest error**: Run `npm run build` or restart `npm run dev`
+- **Tests failing**: Run `/fix-style` to auto-format code
+- **Type errors**: Run `/analyze` for detailed type checking
+- **Frontend not updating**: Check if `npm run dev` is running
+- **Queue not processing**: Check `/horizon` dashboard
 
 ### Debug Workflow
 
-1. Check browser logs with Laravel Boost `browser-logs` tool
-2. Check application logs with `read-log-entries` tool
-3. Use `tinker` tool to test PHP code
-4. Use `database-query` tool to inspect data
-5. Check `/telescope` for request debugging
-6. Use browser tests to verify frontend behavior
+1. Check browser logs: Laravel Boost `browser-logs` tool
+2. Check app logs: Laravel Boost `read-log-entries` tool
+3. Check last error: Laravel Boost `last-error` tool
+4. Test PHP code: Laravel Boost `tinker` tool
+5. Inspect database: Laravel Boost `database-query` tool
+6. Check Telescope: `/telescope` dashboard
+
+## Important Notes
+
+- Laravel Herd provides automatic HTTPS at URL in `APP_URL` (.env)
+- No need to run `php artisan serve` - always available via Herd
+- Redis, MinIO automatically configured and running
+- Browser tests use Playwright under the hood (via Pest)
+- All code must pass: Rector, Pint, PHPStan, 90% coverage, 100% type coverage
+- Formatters run automatically on save: Pint for PHP, Prettier for JS/TS/JSON
