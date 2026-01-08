@@ -1,10 +1,11 @@
 # Laravel React Skeleton - Agentic Coding Skills
 
-This directory contains **32 specialized skills** for Laravel + React + Inertia.js development, following the agentic coding skills guide.
+This directory contains **33 specialized skills** for Laravel + React + Inertia.js development, following the agentic coding skills guide.
 
 ## Overview
 
 Skills are automatically loaded by OpenCode when semantically matched to user requests. Each skill provides:
+
 - Core conventions and patterns
 - Real code examples from the codebase
 - Anti-patterns to avoid
@@ -15,6 +16,7 @@ Skills are automatically loaded by OpenCode when semantically matched to user re
 ### Laravel Backend (18 skills)
 
 **Architecture & Patterns:**
+
 - `creating-actions` - Business logic Action classes
 - `creating-dtos` - Data transfer objects
 - `creating-enums` - Type-safe enums
@@ -29,6 +31,7 @@ Skills are automatically loaded by OpenCode when semantically matched to user re
 - `creating-support-classes` - Custom utilities
 
 **Database & Configuration:**
+
 - `creating-factories` - Model factories with state methods
 - `creating-migrations` - Database schema migrations
 - `creating-seeders` - Database seeding
@@ -59,9 +62,14 @@ Skills are automatically loaded by OpenCode when semantically matched to user re
 - `ensuring-laravel-quality` - Rector, Pint, PHPStan, coverage
 - `ensuring-frontend-quality` - ESLint, Prettier, TypeScript
 
+### Meta (1 skill)
+
+- `creating-agentic-skills` - Creating new skills with proper structure and conventions
+
 ## Key Conventions
 
 ### Laravel Backend
+
 - `declare(strict_types=1);` on all PHP files
 - `final readonly` classes for Actions/DTOs
 - Full type hints on everything
@@ -71,6 +79,7 @@ Skills are automatically loaded by OpenCode when semantically matched to user re
 - Form Requests convert to DTOs via `toDTO()`
 
 ### React Frontend
+
 - React 19 function components (no `FC` type)
 - TypeScript strict mode
 - `import type` for type imports
@@ -81,6 +90,7 @@ Skills are automatically loaded by OpenCode when semantically matched to user re
 - Tailwind CSS v4 + shadcn/ui
 
 ### Testing
+
 - Pest v4 syntax: `test('description', function() {})`
 - Helper functions at bottom of files
 - AAA pattern (Arrange-Act-Assert)
@@ -114,7 +124,6 @@ Each skill follows this pattern:
 name: creating-actions
 description: Create Laravel Action classes... Use when creating Actions, implementing business logic, or when user mentions Action classes...
 ---
-
 # Creating Laravel Actions
 
 ## When to Use This Skill
