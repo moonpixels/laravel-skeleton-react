@@ -141,8 +141,6 @@ Every command file follows this pattern:
 ---
 description: Brief description shown in TUI
 agent: build # Optional: which agent runs this
-model: anthropic/claude-sonnet # Optional: override model
-subtask: false # Optional: invoke as subagent
 ---
 
 Your prompt template goes here.
@@ -150,6 +148,8 @@ Can use $ARGUMENTS for user input.
 Can use !`shell command` for dynamic content.
 Can use @filename for file references.
 ```
+
+**Note:** Additional options like `model` (override model) and `subtask` (subagent invocation) are available but should only be included when the user specifically requests them or when absolutely necessary for the command's purpose.
 
 ### Command Configuration Options
 
@@ -164,9 +164,11 @@ Can use @filename for file references.
 - Options: `build`, `plan`, or custom agent name
 - Defaults to current agent if not specified
 
-**`model`** (optional):
+**`model`** (optional - only use when user explicitly requests it):
 
 - Override the default model for this command
+- **Only include when:** User specifically asks for a particular model
+- **Default behavior:** Omit this field; command uses user's configured default model
 - Format: `provider/model-id`
 - Example: `anthropic/claude-sonnet-4-20250514`
 
@@ -249,7 +251,6 @@ File content is automatically included in the prompt.
 ---
 description: Run all tests with coverage report
 agent: build
-model: anthropic/claude-sonnet-4-20250514
 ---
 
 Run the full test suite with coverage reporting:
@@ -407,7 +408,6 @@ Every agent file follows this pattern:
 ---
 description: What the agent does and when to use it
 mode: subagent # primary, subagent, or all
-model: anthropic/claude-sonnet # Optional: override model
 temperature: 0.1 # Optional: 0.0-1.0
 hidden: false # Optional: hide from @autocomplete
 tools: # Optional: tool restrictions
@@ -425,6 +425,8 @@ System prompt for the agent.
 Define its role, capabilities, and behavior.
 ```
 
+**Note:** Additional options like `model` (override model) are available but should only be included when the user specifically requests a particular model for this agent.
+
 ### Agent Configuration Options
 
 **`description`** (required):
@@ -440,10 +442,12 @@ Define its role, capabilities, and behavior.
 - `all`: Can be used as both primary and subagent
 - Defaults to `all` if not specified
 
-**`model`** (optional):
+**`model`** (optional - only use when user explicitly requests it):
 
-- Override the default model
-- Example: Use faster model for planning agents
+- Override the default model for this agent
+- **Only include when:** User specifically asks for a particular model
+- **Default behavior:** Omit this field; agent uses the model of the primary agent that invoked it (for subagents) or user's configured default (for primary agents)
+- Example: Use faster model for planning agents if user requests it
 
 **`temperature`** (optional):
 
@@ -849,7 +853,6 @@ For a Laravel + React + Inertia.js project, consider these commands:
 ---
 description: Run all tests with coverage report
 agent: build
-model: anthropic/claude-sonnet-4-20250514
 ---
 
 Run the full test suite with coverage:
@@ -1095,6 +1098,20 @@ Run tests, fix them, run quality checks, build assets, and deploy
 
 _Issue: Too many concerns in one command_
 
+**Unnecessarily specifying model:**
+
+```markdown
+---
+description: Create a React component
+agent: build
+model: anthropic/claude-sonnet-4-20250514 # ❌ Not needed unless user requested it
+---
+
+Create a React component named $ARGUMENTS
+```
+
+_Issue: Overrides user's default model without user requesting it. Only specify model when user explicitly asks for it._
+
 ### ✅ Do This Instead
 
 **Clear command description:**
@@ -1135,6 +1152,20 @@ tools:
 ---
 ```
 
+**Omit model field by default:**
+
+```markdown
+---
+description: Create a React component
+agent: build
+# No model specified - uses user's configured default model
+---
+
+Create a React component named $ARGUMENTS
+```
+
+_Note: Only add `model:` field if user specifically requests a particular model._
+
 **Focused single-purpose command:**
 
 ```markdown
@@ -1152,6 +1183,7 @@ tools:
 
 - [ ] Clear, descriptive `description` field
 - [ ] Appropriate agent selected (or defaults to current)
+- [ ] Model field only included if user specifically requested it
 - [ ] Arguments handled with `$ARGUMENTS` or `$1`, `$2`, etc.
 - [ ] Shell commands use `` !`command` `` syntax correctly
 - [ ] Error cases are handled in prompt
@@ -1176,6 +1208,7 @@ tools:
 
 - Keep commands focused on a single workflow
 - Use descriptive names that match user intent
+- Omit `model` field unless user specifically requests it
 - Include error handling in prompt instructions
 - Test with various argument patterns
 - Document expected usage in AGENTS.md

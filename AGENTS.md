@@ -105,6 +105,12 @@ Load skills on-demand using the skill tool when working on specific tasks.
 - `laravel-debugging` - Debugging with Horizon, Telescope, logs
 - `laravel-i18n` - Internationalization (i18next + Laravel)
 
+### Agentic Development Skills
+
+- `creating-agentic-skills` - Creating new skills for OpenCode
+- `creating-agentic-commands` - Creating custom slash commands and agents
+- `creating-agentic-config` - Creating or updating AGENTS.md configuration files
+
 ## Skill Loading Best Practice
 
 Load skills on-demand based on the task at hand. The AI will automatically load relevant skills when you mention specific concepts or use custom commands.
