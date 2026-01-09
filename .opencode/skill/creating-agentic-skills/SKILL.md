@@ -1,6 +1,6 @@
 ---
 name: creating-agentic-skills
-description: Creating agentic coding skills for OpenCode/Claude Code with proper structure, descriptions, and conventions. Use when creating skills, adding new skills, documenting workflows, or when user mentions creating skills, skill development, SKILL.md files, or skill documentation.
+description: Creating agentic coding skills for OpenCode with proper structure, descriptions, and conventions. Use when creating skills, adding new skills, documenting workflows, or when user mentions creating skills, skill development, SKILL.md files, or skill documentation.
 ---
 
 # Creating Agentic Coding Skills
@@ -18,7 +18,7 @@ Use this skill when:
 
 ## Understanding Agentic Skills
 
-Skills transform general-purpose coding agents into specialized tools by packaging domain expertise into discoverable, reusable instruction sets. Both Claude Code and OpenCode use **progressive disclosure** to load context only when needed.
+Skills transform general-purpose coding agents into specialized tools by packaging domain expertise into discoverable, reusable instruction sets. Agentic coders use **progressive disclosure** to load context only when needed.
 
 ### How Skills Work
 

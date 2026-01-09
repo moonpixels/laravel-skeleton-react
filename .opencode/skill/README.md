@@ -1,6 +1,6 @@
 # Laravel React Skeleton - Agentic Coding Skills
 
-This directory contains **33 specialized skills** for Laravel + React + Inertia.js development, following the agentic coding skills guide.
+This directory contains **34 specialized skills** for Laravel + React + Inertia.js development, following the agentic coding skills guide.
 
 ## Overview
 
@@ -62,9 +62,10 @@ Skills are automatically loaded by OpenCode when semantically matched to user re
 - `ensuring-laravel-quality` - Rector, Pint, PHPStan, coverage
 - `ensuring-frontend-quality` - ESLint, Prettier, TypeScript
 
-### Meta (1 skill)
+### Meta (2 skills)
 
 - `creating-agentic-skills` - Creating new skills with proper structure and conventions
+- `creating-agentic-commands` - Creating custom slash commands for workflow automation
 
 ## Key Conventions
 
