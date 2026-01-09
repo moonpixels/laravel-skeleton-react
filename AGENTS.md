@@ -94,7 +94,7 @@ Load skills on-demand for specific tasks:
 
 **Quality**: `ensuring-laravel-quality`, `ensuring-frontend-quality`
 
-**Meta**: `creating-agentic-skills`, `creating-agentic-commands`
+**Meta**: `creating-agentic-skills`, `creating-agentic-commands`, `creating-agentic-subagents`
 
 ## For More Context
 
