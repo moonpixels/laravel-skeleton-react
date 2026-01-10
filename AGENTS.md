@@ -96,8 +96,23 @@ Load skills on-demand for specific tasks:
 
 **Meta**: `creating-agentic-skills`, `creating-agentic-commands`, `creating-agentic-subagents`
 
+## Specialized Agents
+
+Invoke specialized subagents with `@` for focused workflows:
+
+**@quality-auditor**: Runs all quality checks (Rector, Pint, PHPStan, tests, coverage) and fixes issues iteratively. Use before committing or when ensuring code quality.
+
+**@code-reviewer**: Reviews code for quality, security, and best practices without making changes. Use for code review feedback before implementation.
+
+**@test-fixer**: Runs tests iteratively and fixes failures until all tests pass with adequate coverage. Use when debugging test failures.
+
+**@feature-builder**: Builds complete features following domain-driven patterns (Actions, DTOs, FormRequests, thin Controllers). Use when implementing new functionality.
+
+**@security-auditor**: Performs security audits identifying vulnerabilities and risks. Use for security reviews before deployment.
+
 ## For More Context
 
 - Skill files in `.opencode/skill/` provide detailed patterns for specific tasks
+- Agent files in `.opencode/agent/` contain specialized subagent configurations
 - Load skills automatically by mentioning task types (e.g., "create an Action")
 - README.md contains comprehensive setup and feature documentation
