@@ -54,7 +54,8 @@ export default function Dashboard() {
 
 **Key Requirements:**
 
-- Use **default export** for page components
+- Use function declarations for pages (NOT arrow functions assigned to const)
+- Use **default export** for page components (exception to named export rule)
 - Wrap content in a Layout component
 - Use `useTranslation()` for i18n
 - Type props with `PageProps` from Inertia
@@ -370,6 +371,13 @@ export default function Register() {
 ### ❌ Don't Do This
 
 ```tsx
+// Don't use arrow functions assigned to const for pages
+const Dashboard = () => {
+  // ❌ Use function declaration
+  return <div>Content</div>
+}
+export default Dashboard
+
 // Don't use named exports for pages
 export function Dashboard() {} // ❌ Must use default export
 

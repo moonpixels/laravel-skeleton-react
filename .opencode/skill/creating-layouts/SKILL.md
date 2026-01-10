@@ -67,6 +67,7 @@ export function MainLayout({
 
 **Key Requirements:**
 
+- Use function declarations for layouts (NOT arrow functions assigned to const)
 - Always use `PropsWithChildren<Props>`
 - Include `<AppHead title={title} />` for page metadata
 - Accept optional `title` prop
@@ -314,6 +315,12 @@ export function AdminLayout({
 ### ❌ Don't Do This
 
 ```tsx
+// Don't use arrow functions assigned to const
+export const MainLayout = ({ children }: PropsWithChildren) => {
+  // ❌ Use function declaration
+  return <div>{children}</div>
+}
+
 // Don't forget AppHead
 export function Layout({ children }: PropsWithChildren) {
   return <div>{children}</div> // ❌ Missing AppHead

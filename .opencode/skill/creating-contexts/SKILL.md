@@ -73,6 +73,7 @@ export function useTheme() {
 
 **Key Requirements:**
 
+- Use function declarations for providers and hooks (NOT arrow functions assigned to const)
 - Create context with `createContext<StateType | undefined>(undefined)`
 - Export a `{Name}Provider` component
 - Export a `use{Name}()` custom hook
@@ -324,6 +325,13 @@ export function useNotifications() {
 ### ❌ Don't Do This
 
 ```tsx
+// Don't use arrow functions assigned to const
+export const ThemeProvider = ({ children }: PropsWithChildren) => {
+  // ❌ Use function declaration
+  const [theme, setTheme] = useState('light')
+  return <ThemeContext.Provider value={{ theme }}>{children}</ThemeContext.Provider>
+}
+
 // Don't forget error handling in hook
 export function useTheme() {
   return useContext(ThemeContext) // ❌ No error check

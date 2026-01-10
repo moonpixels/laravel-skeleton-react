@@ -63,12 +63,52 @@ export function useWindowSize() {
 **Key Requirements:**
 
 - Prefix hook name with `use`
+- Use function declarations for hooks (NOT arrow functions assigned to const)
 - Always return a value (object, array, primitive, or function)
 - Use TypeScript for parameter and return types
 - Clean up side effects in `useEffect` return function
 - Named export (not default export)
 
-### 2. Hook Return Types
+### 2. Function Declaration Style
+
+**Always use function declarations for hooks:**
+
+```ts
+// ✅ Correct: Function declaration
+export function useToggle(initialValue: boolean = false) {
+  const [value, setValue] = useState(initialValue)
+
+  function toggle() {
+    setValue((prev) => !prev)
+  }
+
+  return { value, toggle }
+}
+```
+
+**Use function declarations for helper functions within hooks:**
+
+```ts
+export function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value)
+
+  useEffect(() => {
+    // ✅ Function declaration for helpers
+    function updateValue() {
+      setDebouncedValue(value)
+    }
+
+    const handler = setTimeout(updateValue, delay)
+    return () => clearTimeout(handler)
+  }, [value, delay])
+
+  return debouncedValue
+}
+```
+
+This pattern makes it clear what is a function versus a variable, improving code readability and maintainability.
+
+### 3. Hook Return Types
 
 **Return object with named properties:**
 
@@ -120,7 +160,7 @@ export function useLocalStorage<T>(
 }
 ```
 
-### 3. Hooks with Dependencies
+### 4. Hooks with Dependencies
 
 Accept parameters and use in dependencies:
 
@@ -144,7 +184,7 @@ export function useDebounce<T>(value: T, delay: number): T {
 }
 ```
 
-### 4. Hooks Using Other Hooks
+### 5. Hooks Using Other Hooks
 
 Compose custom hooks together:
 
@@ -331,6 +371,13 @@ function UserProfile({ userId }: { userId: number }) {
 ### ❌ Don't Do This
 
 ```ts
+// Don't use arrow functions assigned to const
+export const useToggle = (initialValue: boolean = false) => {
+  // ❌ Use function declaration
+  const [value, setValue] = useState(initialValue)
+  return { value, toggle: () => setValue(!value) }
+}
+
 // Don't return void from hooks
 export function useLogger(message: string): void {
   console.log(message) // ❌ Should return something

@@ -73,12 +73,41 @@ export function Card({
 **Key Requirements:**
 
 - Use function components (NOT `React.FC` or `FunctionComponent`)
+- Use function declarations for components (NOT arrow functions assigned to const)
 - Use `PropsWithChildren<T>` for components accepting children
 - Export components with named exports (NOT default exports)
 - TypeScript props interface above the component
 - Use optional chaining and optional props with defaults
 
-### 2. Props Interface Patterns
+### 2. Function Declaration Style
+
+**Always use function declarations for components:**
+
+```tsx
+// ✅ Correct: Function declaration
+export function Button({ label }: ButtonProps) {
+  return <button>{label}</button>
+}
+```
+
+**Use function declarations for helper functions within components:**
+
+```tsx
+export function ProductCard({ product }: ProductCardProps) {
+  // ✅ Function declaration for helpers
+  function calculateDiscount(price: number, discount: number): number {
+    return price * (1 - discount)
+  }
+
+  const finalPrice = calculateDiscount(product.price, product.discount)
+
+  return <div>{finalPrice}</div>
+}
+```
+
+This pattern makes it clear what is a function versus a variable, improving code readability and maintainability.
+
+### 3. Props Interface Patterns
 
 **Simple props:**
 
@@ -124,7 +153,7 @@ export function Container({
 }
 ```
 
-### 3. Styling with Tailwind
+### 4. Styling with Tailwind
 
 Use Tailwind CSS v4 utility classes:
 
@@ -171,7 +200,7 @@ export function Badge({
 }
 ```
 
-### 4. Using shadcn/ui Components
+### 5. Using shadcn/ui Components
 
 Import and compose shadcn/ui components:
 
@@ -299,6 +328,11 @@ export function AuthForm({
 // Don't use React.FC
 export const Button: React.FC<ButtonProps> = ({ children }) => {
   return <button>{children}</button>
+}
+
+// Don't use arrow functions assigned to const
+export const Card = ({ children }: PropsWithChildren) => {
+  return <div>{children}</div>
 }
 
 // Don't use default exports (except for pages)

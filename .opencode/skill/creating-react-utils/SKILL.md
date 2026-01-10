@@ -50,13 +50,52 @@ export function formatCurrency(
 
 **Key Requirements:**
 
+- Use function declarations (NOT arrow functions assigned to const)
 - Use named exports (not default exports)
 - Always type parameters and return values
 - Keep functions pure (no side effects)
 - Use descriptive function names
 - Group related utilities in the same file
 
-### 2. Class Name Utilities
+### 2. Function Declaration Style
+
+**Always use function declarations for utility functions:**
+
+```ts
+// ✅ Correct: Function declaration
+export function formatCurrency(
+  amount: number,
+  currency: string = 'USD'
+): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+  }).format(amount)
+}
+```
+
+**Even for simple utilities:**
+
+```ts
+// ✅ Function declaration
+export function capitalize(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
+}
+
+// ✅ Function declaration for helper functions
+function normalizeString(text: string): string {
+  return text.trim().toLowerCase()
+}
+
+export function slugify(text: string): string {
+  const normalized = normalizeString(text)
+  return normalized.replace(/\s+/g, '-')
+}
+```
+
+This pattern makes it clear what is a function versus a variable, improving code readability and maintainability.
+
+### 3. Class Name Utilities
 
 The `cn()` utility from shadcn/ui merges Tailwind classes:
 
@@ -90,7 +129,7 @@ export function Button({ className, variant }: ButtonProps) {
 }
 ```
 
-### 3. Data Transformation Utilities
+### 4. Data Transformation Utilities
 
 Create utilities for common data transformations:
 
@@ -114,7 +153,7 @@ export function slugify(text: string): string {
 }
 ```
 
-### 4. Type Guards and Validators
+### 5. Type Guards and Validators
 
 Create type-safe validation utilities:
 
@@ -320,6 +359,12 @@ export function isExternalUrl(url: string): boolean {
 ### ❌ Don't Do This
 
 ```ts
+// Don't use arrow functions assigned to const
+export const formatCurrency = (amount: number): string => {
+  // ❌ Use function declaration
+  return `$${amount}`
+}
+
 // Don't use any types
 export function format(value: any): any {
   // ❌ No type safety
