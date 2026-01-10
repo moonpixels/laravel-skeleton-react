@@ -213,6 +213,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { useTranslation } from 'react-i18next'
 
 interface StatsCardProps {
   title: string
@@ -227,6 +228,8 @@ export function StatsCard({
   description,
   onViewDetails,
 }: StatsCardProps) {
+  const { t } = useTranslation()
+
   return (
     <Card>
       <CardHeader>
@@ -236,13 +239,49 @@ export function StatsCard({
       <CardContent>
         <div className="text-3xl font-bold">{value}</div>
         <Button onClick={onViewDetails} variant="outline" className="mt-4">
-          View Details
+          {t('viewDetails')}
         </Button>
       </CardContent>
     </Card>
   )
 }
 ```
+
+### 6. Localization
+
+**All user-facing text must use `useTranslation()` for i18n:**
+
+```tsx
+import { useTranslation } from 'react-i18next'
+
+interface WelcomeMessageProps {
+  userName: string
+}
+
+export function WelcomeMessage({ userName }: WelcomeMessageProps) {
+  const { t } = useTranslation()
+
+  return (
+    <div>
+      <h1>{t('welcome')}</h1>
+      <p>{t('greeting', { name: userName })}</p>
+    </div>
+  )
+}
+```
+
+**When to use translations:**
+
+- Button labels, link text, headings
+- Error messages, success messages, notifications
+- Form labels, placeholders, helper text
+- Any text visible to users
+
+**When NOT to use translations:**
+
+- Developer-only content (console logs, error boundaries)
+- Data passed as props (already translated)
+- Technical identifiers (IDs, keys, enums)
 
 ## Examples
 
@@ -359,6 +398,16 @@ export function Button({ label, onClick }) {
 export function Card() {
   return <div style={{ padding: '16px' }}>...</div>
 }
+
+// Don't hardcode user-facing text
+export function SubmitButton() {
+  return <button>Submit</button> // ❌ Use t('submit')
+}
+
+// Don't forget to import useTranslation
+export function WelcomeMessage() {
+  return <h1>Welcome</h1> // ❌ Use t('welcome')
+}
 ```
 
 ### ✅ Do This Instead
@@ -395,6 +444,18 @@ export function Button({ label, onClick }: ButtonProps) {}
 export function Card({ children }: PropsWithChildren) {
   return <div className="rounded-lg p-4">{children}</div>
 }
+
+// Use translations for user-facing text
+export function SubmitButton() {
+  const { t } = useTranslation()
+  return <button>{t('submit')}</button>
+}
+
+// Always import useTranslation for text
+export function WelcomeMessage() {
+  const { t } = useTranslation()
+  return <h1>{t('welcome')}</h1>
+}
 ```
 
 ## Importing Components
@@ -420,6 +481,7 @@ import { cn } from '@/lib/utils'
 ## Quality Standards
 
 - All components must be fully typed (no `any`)
+- **All user-facing text must use `useTranslation()` for i18n**
 - Use ESLint and Prettier for formatting
 - Prefer composition over prop drilling
 - Keep components focused and single-purpose

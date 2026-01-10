@@ -458,6 +458,7 @@ export function useForm<T>() {
 - All hooks must have TypeScript types for parameters and return values
 - Use ESLint React hooks rules (exhaustive-deps)
 - Clean up side effects (event listeners, timers, subscriptions)
+- **When hooks return user-facing messages, use `useTranslation()` for i18n support**
 - Document hook purpose and usage with JSDoc comments
 - Keep hooks focused and single-purpose
 - Test hooks with Pest browser tests or React Testing Library

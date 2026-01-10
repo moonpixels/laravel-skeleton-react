@@ -1,25 +1,56 @@
 ---
 name: writing-browser-tests
-description: Writing browser tests for end-to-end user workflows and JavaScript interactions using Pest v4 with Playwright. Use when creating interactive features, JavaScript-heavy pages, multi-step workflows, or when verifying complete user journeys through the application.
+description: Writing browser tests for end-to-end user workflows and JavaScript interactions using Pest v4 with Playwright. Use MINIMALLY - only for core areas, happy paths, and functionality that CANNOT be tested with feature tests. Browser tests replace QA smoke testing, not feature tests.
 ---
 
 # Writing Browser Tests
 
+## Testing Philosophy
+
+**Browser tests should be used minimally.** They are slow, complex, and should not duplicate feature test coverage. Think of browser tests as automated QA smoke tests.
+
+### Testing Hierarchy
+
+1. **Feature Tests (PRIMARY)** - Default for all business logic and HTTP endpoints
+2. **Unit Tests (SUPPLEMENTARY)** - For complex, concentrated areas
+3. **Browser Tests (MINIMAL)** - Only for core areas and JS interactions (you're here)
+
+**Critical Rule: DO NOT write browser tests for functionality already covered by feature tests.** Feature tests are fast and comprehensive. Browser tests are for what feature tests cannot test.
+
 ## When to Use This Skill
 
-Use this skill **proactively** when:
+Use this skill **sparingly and selectively** when:
 
-- Creating interactive UI components with JavaScript
-- Implementing multi-step user workflows (checkout, registration, onboarding)
-- Creating features that rely on client-side JavaScript
-- Testing React/Inertia page interactions
-- Verifying form submissions with client-side validation
-- Testing modals, dropdowns, or dynamic UI elements
-- Testing real-time features or WebSocket interactions
-- User mentions "browser test", "E2E test", or "end-to-end test"
-- **Any user-facing feature that requires JavaScript or complex interactions**
+- Testing **core critical workflows** that must work end-to-end (login, registration, checkout)
+- Testing **happy path user journeys** that verify the app works in a real browser
+- Testing functionality that **CANNOT** be tested with feature tests:
+  - Client-side JavaScript interactions
+  - Real browser rendering behavior
+  - Complex React component interactions that require a real DOM
+  - WebSocket/real-time features with client-side updates
+  - File uploads with JavaScript preview/manipulation
+  - Drag-and-drop functionality
+  - Canvas/SVG interactions
+- User explicitly mentions "browser test", "E2E test", "smoke test", or "end-to-end test"
 
-Browser tests should be written **for critical user paths** and features that cannot be adequately tested with feature tests alone. They use Playwright under the hood for real browser automation.
+**Important:** Browser tests are:
+
+- **Slow** - 10-100x slower than feature tests
+- **Complex** - More brittle, harder to debug
+- **Expensive** - Require more maintenance
+
+## What NOT to Use Browser Tests For
+
+**❌ DO NOT use browser tests for:**
+
+- Testing validation rules (use feature tests)
+- Testing authentication/authorization logic (use feature tests)
+- Testing API endpoints (use feature tests)
+- Testing business logic (use feature tests or unit tests)
+- Testing database operations (use feature tests)
+- Anything that can be adequately tested with feature tests
+
+**Browser tests replace manual QA smoke testing, not automated feature testing.**
 
 ## File Structure
 
@@ -463,31 +494,110 @@ visit(route('checkout'))
 - Code formatted with Pint
 - Tests must be independent and idempotent
 - Use `RefreshDatabase` trait (configured in Pest.php)
-- Browser tests should test critical user paths only
-- Prefer feature tests for simple HTTP flows
-- Use browser tests for JavaScript-heavy interactions
-- Keep browser tests focused (one workflow per test)
+- **MINIMAL BROWSER TESTS** - Should have far fewer browser tests than feature tests
+- **NO DUPLICATION** - Never test with browser tests what feature tests already cover
+- Browser tests test **critical user paths only** (happy paths for smoke testing)
+- Prefer feature tests for **all** HTTP flows and business logic
+- Use browser tests **only** for JavaScript-heavy interactions that cannot be tested otherwise
+- Keep browser tests focused (one happy path workflow per test)
+- **Before writing a browser test, write feature tests for the same functionality first**
 
-## Browser Tests vs Feature Tests
+## Browser Tests vs Feature Tests vs Unit Tests
 
-**Use Browser Tests When:**
+### Use Browser Tests (MINIMAL - You Are Here)
 
-- Testing JavaScript interactions
-- Testing multi-step user workflows
-- Testing real-time UI updates
-- Testing file uploads with preview
-- Testing modals, tooltips, dropdowns
-- Testing drag-and-drop functionality
-- Testing any feature requiring real browser
+**Only use browser tests for what feature tests cannot test.** Use when:
 
-**Use Feature Tests When:**
+- Testing **critical workflows** (login, registration, checkout) in a real browser
+- Testing **happy path smoke tests** that verify core functionality works end-to-end
+- Testing functionality that **requires JavaScript or real browser:**
+  - Client-side validation that runs before server
+  - Complex React component interactions
+  - Real-time UI updates (WebSockets)
+  - File uploads with JavaScript preview
+  - Modals, tooltips, dropdowns with complex JS behavior
+  - Drag-and-drop functionality
+  - Canvas/SVG interactions
 
-- Testing HTTP endpoints
+**Key Question:** Can this be tested with a feature test? If yes, use a feature test instead.
+
+### Use Feature Tests (PRIMARY - Prefer This)
+
+**Feature tests are fast and comprehensive.** Use for:
+
+- Testing HTTP endpoints (always)
 - Testing validation rules
 - Testing authentication/authorization
 - Testing API responses
 - Testing database operations
-- No JavaScript required
+- Testing form submissions
+- Testing business logic
+- **Most application functionality**
+
+### Use Unit Tests (SUPPLEMENTARY)
+
+**Unit tests are for complex isolated logic.** Use for:
+
+- Particularly complex business rules
+- Intricate algorithms
+- Isolated domain logic with many edge cases
+
+## Common Mistakes
+
+### ❌ Don't Do This
+
+```php
+// Don't test validation with browser tests (use feature tests instead)
+test('form validation works', function (): void {
+    visit(route('register'))
+        ->press('Submit')
+        ->assertSee('The email field is required');
+});
+
+// Don't test simple form submissions (use feature tests instead)
+test('users can update profile', function (): void {
+    $user = User::factory()->create();
+    loginAs($user);
+
+    visit(route('profile.edit'))
+        ->fill('name', 'New Name')
+        ->press('Save')
+        ->assertSee('Profile updated');
+});
+```
+
+### ✅ Do This Instead
+
+```php
+// Feature test - Fast and comprehensive
+test('registration requires email', function (): void {
+    $this->post(route('register'), [])
+        ->assertInvalid(['email']);
+});
+
+// Feature test - Fast and tests the same thing
+test('users can update profile', function (): void {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->patch(route('profile.update'), ['name' => 'New Name'])
+        ->assertValid()
+        ->assertRedirect();
+
+    expect($user->fresh()->name)->toBe('New Name');
+});
+
+// Browser test - Only for what feature tests can't test
+test('profile image preview updates when file selected', function (): void {
+    $user = User::factory()->create();
+    loginAs($user);
+
+    visit(route('profile.edit'))
+        ->attach('avatar', storage_path('testing/avatar.jpg'))
+        ->waitFor('.image-preview') // JavaScript-driven preview
+        ->assertPresent('.image-preview img'); // Real DOM interaction
+});
+```
 
 ## Running Tests
 
@@ -535,21 +645,34 @@ dump(script('return document.body.innerHTML'))
 
 ## Best Practices
 
-1. **Test critical paths only** - Browser tests are slower than feature tests
-2. **Use factories** - Always use factories to create test data
-3. **Wait for dynamic content** - Use `waitForText()` or `waitFor()` for AJAX
-4. **Keep tests focused** - One workflow per test, avoid testing too much
-5. **Use helper functions** - Extract common actions like `loginAs()`
-6. **Assert intermediate steps** - Don't just assert the final state
-7. **Prefer feature tests** - Use browser tests only when necessary
-8. **Clean up** - Use `RefreshDatabase` to ensure clean state
+1. **MINIMAL USAGE** - Browser tests are slow and complex. Use sparingly for smoke tests.
+2. **DON'T DUPLICATE** - Never test with browser tests what feature tests can test
+3. **SMOKE TEST MENTALITY** - Think "Would a QA tester manually check this?" not "Does this logic work?"
+4. **Critical paths only** - Login, registration, checkout happy paths
+5. **JavaScript-only features** - Only test features that require real browser/JavaScript
+6. **Use factories** - Always use factories to create test data
+7. **Wait for dynamic content** - Use `waitForText()` or `waitFor()` for AJAX
+8. **Use helper functions** - Extract common actions like `loginAs()`
+9. **Prefer feature tests** - Always prefer feature tests when possible
+10. **Clean up** - Use `RefreshDatabase` to ensure clean state
 
-## Integration with Feature Tests
+### The Golden Rule
 
-Browser tests verify complete workflows, feature tests verify business logic:
+**Before writing a browser test, ask: "Can I test this with a feature test?"**
+
+If yes, write a feature test instead. Browser tests are for:
+
+- Core workflow smoke tests (happy paths only)
+- Functionality that literally cannot be tested without a real browser
+
+## Relationship with Feature Tests
+
+**Feature tests are primary. Browser tests are supplementary smoke tests.**
+
+### Example: Proper Test Distribution
 
 ```php
-// Feature test - Fast, tests business logic
+// ✅ Feature tests (PRIMARY) - Test all the logic
 test('order total is calculated correctly', function (): void {
     $user = User::factory()->create();
     $product = Product::factory()->create(['price' => 1000]);
@@ -564,21 +687,36 @@ test('order total is calculated correctly', function (): void {
     expect(Order::query()->sole()->total)->toBe(2000);
 });
 
-// Browser test - Slower, tests full user experience
-test('users can complete checkout and see confirmation', function (): void {
+test('order requires valid payment method', function (): void {
+    // ... feature test for validation
+});
+
+test('order updates inventory', function (): void {
+    // ... feature test for inventory logic
+});
+
+// ✅ Browser test (MINIMAL) - Just the happy path smoke test
+// This assumes all the logic is already tested via feature tests above
+test('users can complete checkout happy path', function (): void {
     $user = User::factory()->create();
     $product = Product::factory()->create(['price' => 1000]);
 
     loginAs($user);
 
+    // Only testing the critical path works end-to-end in a real browser
     visit(route('products.show', $product))
-        ->press('Add to Cart')
+        ->press('Add to Cart') // Assumes JS cart interaction
         ->click('Checkout')
         ->fill('address', '123 Main St')
         ->press('Place Order')
-        ->waitForText('Order confirmed')
+        ->waitForText('Order confirmed') // JS-driven confirmation
         ->assertSee('Order #');
 });
 ```
 
-Write feature tests for business logic, write browser tests for user experience.
+**Guideline:**
+
+- Feature tests: Test ALL the logic comprehensively (validation, edge cases, business rules)
+- Browser tests: Test ONE happy path to verify it works in a real browser
+
+You should have many feature tests and very few browser tests.

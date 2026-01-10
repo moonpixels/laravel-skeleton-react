@@ -73,6 +73,7 @@ export function MainLayout({
 - Accept optional `title` prop
 - Render `{children}` where page content should appear
 - Use semantic HTML (`<main>`, `<header>`, `<footer>`)
+- **Use `useTranslation()` for all user-facing text**
 
 ### 2. AppHead Component
 
@@ -223,6 +224,7 @@ import { DashboardNav } from '@/components/dashboard-nav'
 import { UserMenu } from '@/components/user-menu'
 import { usePage } from '@inertiajs/react'
 import type { PropsWithChildren } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface DashboardLayoutProps {
   title?: string
@@ -235,6 +237,7 @@ export function DashboardLayout({
   children,
 }: PropsWithChildren<DashboardLayoutProps>) {
   const { user } = usePage().props
+  const { t } = useTranslation()
 
   const maxWidthClasses = {
     sm: 'max-w-screen-sm',
@@ -252,7 +255,7 @@ export function DashboardLayout({
         <header className="border-b bg-white shadow-sm">
           <div className="mx-auto max-w-screen-xl px-4 py-4">
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold">Dashboard</h1>
+              <h1 className="text-2xl font-bold">{t('dashboard')}</h1>
               <UserMenu user={user} />
             </div>
           </div>
@@ -341,6 +344,16 @@ export function Layout({ children }: PropsWithChildren) {
   )
 }
 
+// Don't hardcode user-facing text
+export function Layout({ children }: PropsWithChildren) {
+  return (
+    <div>
+      <h1>Welcome</h1> {/* ❌ Use t('welcome') */}
+      {children}
+    </div>
+  )
+}
+
 // Don't use default exports for layouts
 export default function AuthenticatedLayout() {} // ❌ Use named export
 
@@ -391,6 +404,17 @@ export function Layout({
   )
 }
 
+// Use translations for user-facing text
+export function Layout({ children }: PropsWithChildren) {
+  const { t } = useTranslation()
+  return (
+    <div>
+      <h1>{t('welcome')}</h1>
+      {children}
+    </div>
+  )
+}
+
 // Use named exports
 export function AuthenticatedLayout() {}
 
@@ -426,6 +450,7 @@ export default function Dashboard() {
 - All layouts must include `AppHead`
 - Use `PropsWithChildren<Props>` for TypeScript
 - Accept optional `title` prop
+- **Use `useTranslation()` for all user-facing text in layouts**
 - Use semantic HTML elements
 - Keep layouts focused and reusable
 - Don't include page-specific logic in layouts

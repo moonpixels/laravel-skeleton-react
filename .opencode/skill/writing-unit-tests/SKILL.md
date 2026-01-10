@@ -1,25 +1,39 @@
 ---
 name: writing-unit-tests
-description: Writing unit tests for isolated business logic, Actions, DTOs, Services, and domain code using Pest v4. Use when creating Actions, Services, Support classes, or any isolated business logic that doesn't require HTTP context or full application state.
+description: Writing unit tests for isolated business logic, Actions, DTOs, Services, and domain code using Pest v4. SUPPLEMENTARY to feature tests - use for complex, concentrated areas of the codebase that benefit from focused isolated testing. Feature tests should be your primary approach.
 ---
 
 # Writing Unit Tests
 
+## Testing Philosophy
+
+**Unit tests are supplementary to feature tests.** Feature tests are the primary testing approach for all business logic. Unit tests should be "sprinkled in" for particularly complex areas that benefit from isolated, focused testing.
+
+### Testing Hierarchy
+
+1. **Feature Tests (PRIMARY)** - Default for all business logic and HTTP endpoints
+2. **Unit Tests (SUPPLEMENTARY)** - For complex, concentrated areas (you're here)
+3. **Browser Tests (MINIMAL)** - Only for core areas and functionality that cannot be tested with feature tests
+
 ## When to Use This Skill
 
-Use this skill **proactively** when:
+Use this skill **selectively** when you have particularly complex logic that benefits from isolated testing:
 
-- Creating or modifying Action classes
-- Creating or modifying DTO classes
-- Creating or modifying Service classes in `app/Support/`
-- Creating or modifying Helper functions
-- Creating or modifying Model methods (business logic)
-- Creating or modifying Enum classes
-- Implementing isolated business logic without HTTP dependencies
-- User mentions "unit test", "test Action", or "test business logic"
-- **Any business logic is added to codebase that can be tested in isolation**
+- **Complex** Action classes with intricate business rules that warrant focused testing
+- **Complex** Service classes in `app/Support/` with sophisticated algorithms
+- **Complex** Helper functions with edge cases that need thorough coverage
+- **Complex** Model methods (business logic, scopes, accessors, mutators) with intricate rules
+- Isolated domain logic where mocking dependencies provides clearer test cases
+- User explicitly mentions "unit test", "test in isolation", or "mock dependencies"
 
-Unit tests should be written **at the same time** as the code being tested. They verify isolated behavior without database, HTTP, or external dependencies when possible.
+**Important:** Unit tests supplement, not replace, feature tests. Most Actions, DTOs, Services, and domain code should first be tested via feature tests. Add unit tests when:
+
+- The logic is particularly complex and benefits from focused testing
+- You need to test many edge cases or permutations
+- Mocking dependencies makes the test clearer than a full integration test
+- The complexity warrants additional test coverage beyond feature tests
+
+**Default Approach:** Write feature tests first. Add unit tests for complex areas that need additional isolated testing coverage.
 
 ## File Structure
 
@@ -484,25 +498,41 @@ function createAction(): MyAction
 - Every public method should have unit tests
 - Test edge cases, not just happy paths
 
-## Unit vs Feature Tests
+## Unit Tests vs Feature Tests vs Browser Tests
 
-**Use Unit Tests When:**
+### When to Choose Unit Tests (You Are Here)
 
-- Testing business logic in isolation
-- Testing Actions without HTTP context
-- Testing Services, Helpers, or Support classes
-- Testing Model methods (scopes, accessors, mutators)
-- No HTTP request/response needed
-- Can mock external dependencies
+**Unit tests are for complex, concentrated logic that benefits from isolated testing.** Use when:
 
-**Use Feature Tests When:**
+- The logic is particularly complex with many edge cases
+- You're testing intricate algorithms or business rules
+- Mocking dependencies provides clearer, more focused test cases
+- You want to supplement feature test coverage with focused isolation tests
+- Testing many permutations of inputs/outputs
 
-- Testing HTTP endpoints
+**Example:** A complex pricing calculation service with many rules, discounts, and edge cases. Feature tests verify it works end-to-end, unit tests verify each calculation rule in isolation.
+
+### When to Use Feature Tests (Primary Approach)
+
+**Feature tests should be your default.** Use for:
+
+- Testing HTTP endpoints (always)
 - Testing full request/response cycle
 - Testing authentication/authorization
 - Testing validation rules
-- Testing redirects or session data
-- Testing complete user workflows
+- Testing Actions called from controllers
+- **Most business logic in the application**
+
+Feature tests are fast and test the full integration. Start here, add unit tests for complex areas.
+
+### When to Use Browser Tests (Minimal Usage)
+
+**Browser tests are for critical user journeys and JavaScript interactions.** Use sparingly for:
+
+- Core workflows (login, registration, checkout)
+- Happy path user journeys
+- Functionality that cannot be tested with feature tests
+- **NOT for business logic already covered by feature tests**
 
 ## Running Tests
 
@@ -522,25 +552,13 @@ php artisan test --filter="it can get the ISO 15897 locale"
 
 ## Integration with Feature Tests
 
-Unit tests verify isolated behavior, feature tests verify integration:
+**Feature tests are primary, unit tests are supplementary.** Most code should be tested via feature tests first. Add unit tests for complex areas that warrant additional focused coverage.
+
+### Example: Supplementing Feature Tests with Unit Tests
 
 ```php
-// Unit test - Tests Action in isolation
-test('it can register user with correct locale', function (): void {
-    $localisation = createLocalisation();
-    $action = new RegisterUserAction($localisation);
-
-    $user = $action->handle(RegisterData::from([
-        'name' => 'Test',
-        'email' => 'test@example.com',
-        'language' => 'fr',
-        'password' => 'password',
-    ]));
-
-    expect($user->language)->toBe('fr_FR');
-});
-
-// Feature test - Tests full HTTP flow
+// Feature test (PRIMARY) - Tests full HTTP flow
+// This should ALWAYS be written first
 test('new users can register with locale', function (): void {
     $this->post(route('register'), [
         'name' => 'Test',
@@ -552,4 +570,24 @@ test('new users can register with locale', function (): void {
 
     expect(User::query()->sole()->language)->toBe('fr_FR');
 });
+
+// Unit test (SUPPLEMENTARY) - Tests Action in isolation
+// Only add this if the locale handling logic is particularly complex
+// and warrants additional focused testing beyond the feature test
+test('it can register user with correct locale normalization', function (): void {
+    $localisation = createLocalisation();
+    $action = new RegisterUserAction($localisation);
+
+    // Test complex edge cases that are harder to test via HTTP
+    $user = $action->handle(RegisterData::from([
+        'name' => 'Test',
+        'email' => 'test@example.com',
+        'language' => 'fr', // Tests normalization from 'fr' to 'fr_FR'
+        'password' => 'password',
+    ]));
+
+    expect($user->language)->toBe('fr_FR');
+});
 ```
+
+**Guideline:** If you're only writing the feature test, that's often sufficient. Only add unit tests when the complexity justifies additional focused coverage.

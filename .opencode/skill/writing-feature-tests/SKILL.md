@@ -1,13 +1,25 @@
 ---
 name: writing-feature-tests
-description: Writing feature tests for HTTP endpoints, controllers, and full request/response cycles using Pest v4. Use when any business logic is added to codebase, when creating Actions, Controllers, Form Requests, or modifying application behavior that affects HTTP endpoints.
+description: Writing feature tests for HTTP endpoints, controllers, and full request/response cycles using Pest v4. Use when ANY business logic is added to codebase. Feature tests are the PRIMARY testing approach - use for all Controllers, Actions, Form Requests, and application behavior. This is your default testing strategy.
 ---
 
 # Writing Feature Tests
 
+## Testing Philosophy
+
+**Feature tests are your primary testing approach.** Write feature tests for ALL logic that gets added to the app.
+
+### Testing Hierarchy
+
+1. **Feature Tests (PRIMARY)** - Default for all business logic and HTTP endpoints
+2. **Unit Tests (SUPPLEMENTARY)** - Sprinkle in for complex, concentrated areas that benefit from isolated testing
+3. **Browser Tests (MINIMAL)** - Only for core areas, happy paths, and functionality that cannot be tested with feature tests
+
+Feature tests are fast, comprehensive, and test the full request/response cycle. Always start with feature tests.
+
 ## When to Use This Skill
 
-Use this skill **proactively** when:
+Use this skill **proactively and by default** when:
 
 - Creating or modifying Controllers
 - Creating or modifying Actions that are called from HTTP endpoints
@@ -17,8 +29,11 @@ Use this skill **proactively** when:
 - Making any changes to HTTP request/response behavior
 - User mentions "feature test", "HTTP test", or "endpoint test"
 - **Any business logic is added to codebase that affects user-facing functionality**
+- **When in doubt, write a feature test first**
 
 Feature tests should be written **at the same time** as the code being tested, not after. This ensures code quality and prevents regressions.
+
+**Default Approach:** If you're adding logic to the app, you're writing a feature test. Only consider unit or browser tests if feature tests cannot adequately test the functionality.
 
 ## File Structure
 
@@ -409,6 +424,46 @@ $this->post(route('register'), getData())
 - Use `LazilyRefreshDatabase` trait (configured in Pest.php)
 - Every controller method must have at least one feature test
 - Critical paths must have multiple test cases (happy path + edge cases)
+
+## Feature Tests vs Unit Tests vs Browser Tests
+
+### Use Feature Tests (PRIMARY - Default Choice)
+
+**Feature tests are your go-to testing approach.** Use them for:
+
+- Testing HTTP endpoints (always)
+- Testing full request/response cycle
+- Testing authentication/authorization
+- Testing validation rules
+- Testing redirects or session data
+- Testing Actions called from controllers
+- Testing complete user workflows
+- **ANY business logic added to the application**
+
+Feature tests are fast, comprehensive, and provide confidence in your application's behavior. **When in doubt, write a feature test.**
+
+### Use Unit Tests (SUPPLEMENTARY - Sprinkle In)
+
+Unit tests supplement feature tests for **complex, concentrated areas** that benefit from isolated testing:
+
+- Complex business logic in Actions that warrants focused testing
+- Services, Helpers, or Support classes with intricate algorithms
+- Model methods with complex business rules (scopes, accessors, mutators)
+- Isolated domain logic that doesn't require HTTP context
+- Areas where mocking dependencies provides clearer test cases
+
+**Don't default to unit tests.** Use them to add focused testing coverage for particularly complex areas that are already covered by feature tests but warrant additional isolated testing.
+
+### Use Browser Tests (MINIMAL - Smoke Tests Only)
+
+Browser tests are the **slowest and most complex** testing approach. Use them sparingly:
+
+- Core areas of the application (login, registration, critical workflows)
+- Happy path user journeys that demonstrate the app works end-to-end
+- Functionality that **cannot** be tested with feature tests (JavaScript interactions, real browser behavior, client-side validation)
+- **NOT for things already covered by feature tests**
+
+Browser tests replace manual QA smoke testing. They verify the app works in a real browser but should not duplicate feature test coverage.
 
 ## Integration with Actions
 

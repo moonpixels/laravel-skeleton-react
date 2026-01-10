@@ -407,5 +407,6 @@ createInertiaApp({
 - Throw errors when hooks are used outside providers
 - Keep context state minimal and focused
 - Use `usePage()` for Inertia shared props
+- **When context provides user-facing messages, use `useTranslation()` for i18n support**
 - Document required providers in component comments
 - Test context providers with Pest browser tests
