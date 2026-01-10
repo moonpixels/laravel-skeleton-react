@@ -1,11 +1,11 @@
 ---
 name: creating-inertia-pages
-description: Creating Inertia.js page components with TypeScript, forms, and navigation. Use when creating pages, implementing routes, handling forms, or when user mentions pages, Inertia pages, router, or page navigation.
+description: Create Inertia.js page components with TypeScript, forms, and navigation. Use when creating pages, implementing routes, handling forms, or when user mentions pages, Inertia pages, router, or page navigation.
 ---
 
-# Creating Inertia.js Pages
+# Create Inertia.js Pages
 
-Inertia.js page components with TypeScript, forms, and navigation.
+Create Inertia.js page components with TypeScript, forms, and navigation. Pages receive props from Laravel controllers, handle form submissions via the `useForm` hook, and navigate using the Inertia router without full page reloads.
 
 ## File Structure
 

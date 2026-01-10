@@ -3,9 +3,9 @@ name: managing-localisation
 description: Create and manage Laravel translation files using PHP arrays for internationalization. Use when creating translation files, adding translations, managing i18n, or when user mentions translation files, localization, i18n, or language files.
 ---
 
-# Managing Laravel Localisation Files
+# Manage Laravel Localisation Files
 
-Laravel translation files using PHP arrays for internationalization.
+Create and manage Laravel translation files using PHP arrays for internationalization. Translation files are organized by locale and category, accessed via the `__()` helper or `@lang` Blade directive throughout the application.
 
 ## File Structure
 

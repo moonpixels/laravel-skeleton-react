@@ -3,9 +3,9 @@ name: creating-controllers
 description: Create thin Laravel controllers that delegate to Actions for business logic. Use when creating controllers, handling HTTP requests, routing logic, or when user mentions controllers, HTTP handlers, or request handling.
 ---
 
-# Creating Laravel Controllers
+# Create Laravel Controllers
 
-Thin controllers that delegate business logic to Actions, following RESTful conventions.
+Create thin controllers that delegate business logic to Actions, following RESTful conventions. Controllers handle HTTP concerns like request validation, response formatting, and authorization, while Actions contain the actual business logic.
 
 ## File Structure
 

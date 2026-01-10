@@ -3,9 +3,9 @@ name: creating-service-providers
 description: Create Laravel Service Provider classes for binding services, registering singletons, and application bootstrapping. Use when creating service providers, binding interfaces, registering services, or when user mentions service providers, dependency injection, service container, or application bootstrapping.
 ---
 
-# Creating Laravel Service Providers
+# Create Laravel Service Providers
 
-Service Providers for binding services, registering singletons, and bootstrapping.
+Create Service Providers for binding services to the container, registering singletons, and bootstrapping application components. Service Providers are the central place to configure application services and extend Laravel's functionality.
 
 ## File Structure
 

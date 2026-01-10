@@ -3,9 +3,9 @@ name: creating-agentic-subagents
 description: Create specialized agent configurations (subagents and primary agents) for OpenCode following research-backed best practices. Use when creating agents, configuring subagents, implementing multi-agent workflows, or when user mentions creating agents, subagents, agent configuration, specialized agents, multi-agent systems, or agent orchestration.
 ---
 
-# Creating Agentic Subagents
+# Create Agentic Subagents
 
-Specialized agent configurations (subagents and primary agents) for OpenCode.
+Create specialized agent configurations (subagents and primary agents) for OpenCode. Primary agents are main assistants users switch between with Tab, while subagents are specialists invoked via @mention for focused tasks with isolated context.
 
 ## Understanding Agents in OpenCode
 
@@ -21,12 +21,6 @@ OpenCode provides two types of agents:
 - Can invoke subagents for specialized tasks
 - Examples: `build` (default, full access), `plan` (restricted, for analysis)
 
-**Use primary agents when:**
-
-- Creating a fundamentally different mode of operation
-- Need an alternative to Build/Plan that users switch to frequently
-- Building domain-specific primary workflows (rare)
-
 ### Subagents
 
 **Subagents** are specialized assistants invoked for focused tasks:
@@ -37,14 +31,6 @@ OpenCode provides two types of agents:
 - Can use different models or temperatures
 - Return compressed results to parent agent
 - Examples: `general` (research), `explore` (fast codebase analysis)
-
-**Use subagents when:**
-
-- Need specialized behavior for specific tasks
-- Want to restrict tool access (read-only reviewers)
-- Context isolation is valuable (keep main conversation clean)
-- Different model/temperature would help (fast exploration, focused review)
-- Building reusable specialists (code review, test fixing, security audits)
 
 ### Decision Tree
 
@@ -271,23 +257,6 @@ Before finalizing an agent:
 - [ ] Exit criteria defined
 - [ ] Output format specified
 - [ ] Agent documented in AGENTS.md
-
-## When NOT to Create Agents
-
-Before creating an agent, ask:
-
-1. **Can this be a simple prompt?** Many tasks only need good prompting.
-2. **Can this be a command?** If it's a prompt shortcut, use `/command`.
-3. **Will this be used frequently?** One-off tasks don't need agents.
-4. **Does specialization add value?** Generic agents often work fine.
-5. **Is the 15× cost justified?** Multi-agent workflows are expensive.
-
-**Create agents only when:**
-
-- Need specialized behavior that can't be prompted
-- Need tool restrictions for safety
-- Context isolation provides clear value
-- Will be reused across many tasks
 
 ## References
 

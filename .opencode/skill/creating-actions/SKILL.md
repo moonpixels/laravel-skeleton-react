@@ -3,9 +3,9 @@ name: creating-actions
 description: Create Laravel Action classes for business logic operations following domain-driven design. Use when creating Actions, implementing business logic, handling user operations, or when user mentions Action classes, domain operations, business rules, or service classes.
 ---
 
-# Creating Laravel Actions
+# Create Laravel Actions
 
-Actions encapsulate business logic in single-purpose classes, keeping controllers thin.
+Create Action classes that encapsulate business logic in single-purpose, testable units. Actions receive typed DTOs, perform domain operations, and return results, keeping controllers thin and business rules centralized and reusable.
 
 ## File Structure
 

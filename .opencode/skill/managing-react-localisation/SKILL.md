@@ -1,11 +1,11 @@
 ---
 name: managing-react-localisation
-description: Managing i18next translations and localisation in React with TypeScript. Use when adding translations, creating language files, implementing i18n, or when user mentions translations, localisation, i18next, languages, or multi-language support.
+description: Manage i18next translations and localisation in React with TypeScript. Use when adding translations, creating language files, implementing i18n, or when user mentions translations, localisation, i18next, languages, or multi-language support.
 ---
 
-# Managing React Localisation
+# Manage React Localisation
 
-i18next translations and localisation in React with TypeScript.
+Manage i18next translations and localisation for React applications with TypeScript. Organize translation files by locale and namespace, use the `useTranslation` hook for component access, and follow consistent key naming patterns for maintainability.
 
 ## File Structure
 

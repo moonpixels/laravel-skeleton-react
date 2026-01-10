@@ -3,9 +3,9 @@ name: creating-agentic-skills
 description: Create Agent Skills that extend AI agent capabilities with specialized knowledge, workflows, and tools. Use when creating new skills, updating existing skills, converting repeated patterns into skills, documenting domain-specific workflows, or when user mentions skills, SKILL.md files, skill development, or skill documentation.
 ---
 
-# Creating Agent Skills
+# Create Agent Skills
 
-Skills are folders of instructions, scripts, and resources that agents discover and load dynamically. They transform general-purpose agents into specialized tools by packaging procedural knowledge into composable, reusable capabilities.
+Create skills as folders of instructions, scripts, and resources that agents discover and load dynamically. Skills transform general-purpose agents into specialized tools by packaging procedural knowledge into composable, reusable capabilities.
 
 ## Directory Structure
 

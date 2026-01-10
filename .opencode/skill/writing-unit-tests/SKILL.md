@@ -1,30 +1,17 @@
 ---
 name: writing-unit-tests
-description: Writing unit tests for isolated business logic, Actions, DTOs, Services, and domain code using Pest v4. SUPPLEMENTARY to feature tests - use for complex, concentrated areas of the codebase that benefit from focused isolated testing. Feature tests should be your primary approach.
+description: Write unit tests for isolated business logic, Actions, DTOs, Services, and domain code using Pest v4. SUPPLEMENTARY to feature tests - use for complex, concentrated areas of the codebase that benefit from focused isolated testing. Feature tests should be your primary approach.
 ---
 
-# Writing Unit Tests
+# Write Unit Tests
 
-**Unit tests are supplementary to feature tests.** Feature tests are the primary testing approach. Unit tests should be "sprinkled in" for particularly complex areas that benefit from isolated, focused testing.
+Unit tests are supplementary to feature tests for testing isolated business logic. Use them selectively for complex, concentrated areas like Action classes, Service classes, or helper functions that benefit from focused, isolated testing with mocked dependencies.
 
 ## Testing Hierarchy
 
 1. **Feature Tests (PRIMARY)** - Default for all business logic and HTTP endpoints
 2. **Unit Tests (SUPPLEMENTARY)** - For complex, concentrated areas (you're here)
 3. **Browser Tests (MINIMAL)** - Only for core areas and JS interactions
-
-## When to Use Unit Tests
-
-Use **selectively** when you have particularly complex logic:
-
-- **Complex** Action classes with intricate business rules
-- **Complex** Service classes in `app/Support/` with sophisticated algorithms
-- **Complex** Helper functions with edge cases needing thorough coverage
-- **Complex** Model methods with intricate rules
-- Isolated domain logic where mocking dependencies provides clearer test cases
-- Testing many permutations of inputs/outputs
-
-**Default Approach:** Write feature tests first. Add unit tests for complex areas that need additional isolated testing.
 
 ## File Structure
 

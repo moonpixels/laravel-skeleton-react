@@ -3,9 +3,9 @@ name: creating-helpers
 description: Create global PHP helper functions for common utility operations. Use when creating helper functions, utility functions, or when user mentions helpers, global functions, or utility methods.
 ---
 
-# Creating Laravel Helpers
+# Create Laravel Helpers
 
-Global utility functions for simple operations used across the application.
+Create global PHP helper functions for common utility operations. Helpers are simple, pure functions for formatting, string manipulation, and convenience wrappers. For complex logic with dependencies or side effects, use Action classes instead.
 
 ## File Structure
 
@@ -143,37 +143,14 @@ function user_initials(User $user): string {
 function user_name(User $user): string {}
 ```
 
-## When to Use Actions Instead
+## Helpers vs Actions
 
-Use Actions (not helpers) when:
-
-- Logic requires dependency injection
-- Operation has side effects (DB writes, API calls)
-- Complex business logic (more than 10 lines)
-- Testing requires mocking dependencies
-
-**Helper:**
-
-```php
-function format_phone(string $phone): string
-{
-    return preg_replace('/(\d{3})(\d{3})(\d{4})/', '$1-$2-$3', $phone);
-}
-```
-
-**Action:**
-
-```php
-final readonly class SendWelcomeEmailAction
-{
-    public function __construct(private Mailer $mailer) {}
-
-    public function handle(User $user): void
-    {
-        $this->mailer->send(new WelcomeEmail($user));
-    }
-}
-```
+| Use Helper                     | Use Action                        |
+| ------------------------------ | --------------------------------- |
+| Pure formatting/transformation | Requires dependency injection     |
+| No side effects                | Has side effects (DB, API, email) |
+| Under 10 lines                 | Complex business logic            |
+| No mocking needed              | Testing requires mocks            |
 
 ## Quality Standards
 

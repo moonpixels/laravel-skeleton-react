@@ -1,11 +1,11 @@
 ---
 name: creating-hooks
-description: Creating custom React hooks with TypeScript for reusable logic and side effects. Use when creating hooks, extracting component logic, managing side effects, or when user mentions custom hooks, reusable logic, or use- prefix functions.
+description: Create custom React hooks with TypeScript for reusable logic and side effects. Use when creating hooks, extracting component logic, managing side effects, or when user mentions custom hooks, reusable logic, or use- prefix functions.
 ---
 
-# Creating Custom React Hooks
+# Create Custom React Hooks
 
-Custom hooks encapsulate reusable logic and side effects with TypeScript.
+Create custom hooks that encapsulate reusable logic and side effects with TypeScript. Hooks extract common patterns from components, providing clean abstractions for data fetching, form handling, and browser API interactions.
 
 ## File Structure
 

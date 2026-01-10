@@ -1,11 +1,11 @@
 ---
 name: creating-contexts
-description: Creating React Context providers with TypeScript for sharing state across components. Use when creating contexts, managing global state, sharing user data, theme state, or when user mentions context, provider, global state, or shared state.
+description: Create React Context providers with TypeScript for sharing state across components. Use when creating contexts, managing global state, sharing user data, theme state, or when user mentions context, provider, global state, or shared state.
 ---
 
-# Creating React Contexts
+# Create React Contexts
 
-React Context providers with TypeScript for sharing state across components.
+Create React Context providers with TypeScript for sharing state across component trees. Contexts eliminate prop drilling for global concerns like user data, themes, and settings, accessed via custom hooks with built-in type safety.
 
 ## File Structure
 

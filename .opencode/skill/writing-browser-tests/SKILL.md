@@ -1,42 +1,17 @@
 ---
 name: writing-browser-tests
-description: Writing browser tests for end-to-end user workflows and JavaScript interactions using Pest v4 with Playwright. Use MINIMALLY - only for core areas, happy paths, and functionality that CANNOT be tested with feature tests. Browser tests replace QA smoke testing, not feature tests.
+description: Write browser tests for end-to-end user workflows and JavaScript interactions using Pest v4 with Playwright. Use MINIMALLY - only for core areas, happy paths, and functionality that CANNOT be tested with feature tests. Browser tests replace QA smoke testing, not feature tests.
 ---
 
-# Writing Browser Tests
+# Write Browser Tests
 
-**Browser tests should be used minimally.** They are slow, complex, and should not duplicate feature test coverage. Think of browser tests as automated QA smoke tests.
+Browser tests should be used minimally as automated QA smoke tests. They are slow, complex, and must never duplicate feature test coverage. Use them only for core critical workflows and functionality that requires a real browser (JavaScript interactions, WebSocket updates, drag-and-drop).
 
 ## Testing Hierarchy
 
 1. **Feature Tests (PRIMARY)** - Default for all business logic and HTTP endpoints
 2. **Unit Tests (SUPPLEMENTARY)** - For complex, concentrated areas
 3. **Browser Tests (MINIMAL)** - Only for core areas and JS interactions (you're here)
-
-**Critical Rule: DO NOT write browser tests for functionality already covered by feature tests.**
-
-## When to Use Browser Tests
-
-Use **sparingly and selectively** when:
-
-- Testing **core critical workflows** (login, registration, checkout)
-- Testing **happy path user journeys** that verify the app works end-to-end
-- Testing functionality that **CANNOT** be tested with feature tests:
-  - Client-side JavaScript interactions
-  - Real browser rendering behavior
-  - Complex React component interactions requiring a real DOM
-  - WebSocket/real-time features with client-side updates
-  - File uploads with JavaScript preview/manipulation
-  - Drag-and-drop, canvas, or SVG interactions
-
-## What NOT to Test with Browser Tests
-
-- Validation rules (use feature tests)
-- Authentication/authorization logic (use feature tests)
-- API endpoints (use feature tests)
-- Business logic (use feature tests or unit tests)
-- Database operations (use feature tests)
-- **Anything that can be adequately tested with feature tests**
 
 ## File Structure
 

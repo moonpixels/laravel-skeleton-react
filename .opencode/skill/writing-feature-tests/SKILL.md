@@ -1,32 +1,17 @@
 ---
 name: writing-feature-tests
-description: Writing feature tests for HTTP endpoints, controllers, and full request/response cycles using Pest v4. Use when ANY business logic is added to codebase. Feature tests are the PRIMARY testing approach - use for all Controllers, Actions, Form Requests, and application behavior. This is your default testing strategy.
+description: Write feature tests for HTTP endpoints, controllers, and full request/response cycles using Pest v4. Use when ANY business logic is added to codebase. Feature tests are the PRIMARY testing approach - use for all Controllers, Actions, Form Requests, and application behavior. This is your default testing strategy.
 ---
 
-# Writing Feature Tests
+# Write Feature Tests
 
-**Feature tests are your primary testing approach.** Write feature tests for ALL logic that gets added to the app.
+Feature tests are your primary testing approach for all business logic. Write feature tests for ALL logic added to the app, testing the full HTTP request/response cycle. They are fast, comprehensive, and should always be your default starting point.
 
 ## Testing Hierarchy
 
 1. **Feature Tests (PRIMARY)** - Default for all business logic and HTTP endpoints (you're here)
 2. **Unit Tests (SUPPLEMENTARY)** - Sprinkle in for complex, concentrated areas
 3. **Browser Tests (MINIMAL)** - Only for core areas and JS interactions
-
-Feature tests are fast, comprehensive, and test the full request/response cycle. Always start here.
-
-## When to Use Feature Tests
-
-Use **proactively and by default** when:
-
-- Creating or modifying Controllers
-- Creating or modifying Actions called from HTTP endpoints
-- Creating or modifying Form Requests
-- Adding new routes or API endpoints
-- Implementing authentication or authorization
-- **Any business logic is added that affects user-facing functionality**
-
-**Default Approach:** If you're adding logic to the app, you're writing a feature test.
 
 ## File Structure
 

@@ -1,11 +1,11 @@
 ---
 name: creating-react-utils
-description: Creating utility functions and helper modules for React applications with TypeScript. Use when creating utilities, helper functions, common logic, or when user mentions utils, helpers, or shared functions.
+description: Create utility functions and helper modules for React applications with TypeScript. Use when creating utilities, helper functions, common logic, or when user mentions utils, helpers, or shared functions.
 ---
 
-# Creating React Utility Functions
+# Create React Utility Functions
 
-Utility functions and helper modules for React applications with TypeScript.
+Create utility functions and helper modules for React applications with TypeScript. Utils provide reusable logic for formatting, validation, and common operations, organized in the `lib/` directory with full type safety.
 
 ## File Structure
 

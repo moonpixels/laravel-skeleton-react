@@ -3,9 +3,9 @@ name: defining-routes
 description: Define Laravel routes following RESTful conventions with proper grouping, middleware, and naming. Use when defining routes, creating endpoints, routing requests, or when user mentions routes, routing, endpoints, or route definition.
 ---
 
-# Defining Laravel Routes
+# Define Laravel Routes
 
-RESTful routes with proper grouping, middleware, and naming conventions.
+Define RESTful routes with proper grouping, middleware, and naming conventions. Routes connect HTTP requests to controllers, organized by purpose in separate files for web, API, and authentication endpoints.
 
 ## File Structure
 

@@ -3,9 +3,9 @@ name: creating-middleware
 description: Create Laravel HTTP middleware for request/response processing. Use when creating middleware, filtering requests, modifying responses, or when user mentions middleware, request filters, or HTTP processing.
 ---
 
-# Creating Laravel Middleware
+# Create Laravel Middleware
 
-HTTP middleware for request/response processing, filtering, and modification.
+Create HTTP middleware for request/response processing, filtering, and modification. Middleware intercepts requests before they reach controllers, enabling cross-cutting concerns like authentication, locale setting, and response transformation.
 
 ## File Structure
 

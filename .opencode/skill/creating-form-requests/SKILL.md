@@ -3,9 +3,9 @@ name: creating-form-requests
 description: Create Laravel Form Request classes for validation with toDTO() conversion methods. Use when creating form requests, validating input, handling validation rules, or when user mentions form requests, validation, request validation, or input validation.
 ---
 
-# Creating Laravel Form Requests
+# Create Laravel Form Requests
 
-Form Requests handle validation and convert input to type-safe DTOs.
+Create Form Request classes that handle validation and convert input to type-safe DTOs. Form Requests centralize validation rules, authorization checks, and data transformation, keeping controllers thin and validation reusable.
 
 ## File Structure
 

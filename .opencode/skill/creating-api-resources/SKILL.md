@@ -3,9 +3,9 @@ name: creating-api-resources
 description: Create Laravel JSON API Resource classes for formatting HTTP responses with type safety. Use when creating API resources, formatting JSON responses, transforming models to JSON, or when user mentions API resources, JSON responses, resource transformers, or response formatting.
 ---
 
-# Creating Laravel API Resources
+# Create Laravel API Resources
 
-JSON API Resource classes for formatting HTTP responses with type safety.
+Create JSON API Resource classes that transform Eloquent models into consistent HTTP responses. Resources provide type-safe formatting for both single models and collections, with built-in support for pagination and conditional attribute inclusion.
 
 ## Quick Reference
 

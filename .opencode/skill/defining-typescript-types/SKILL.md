@@ -1,11 +1,11 @@
 ---
 name: defining-typescript-types
-description: Defining TypeScript types and interfaces for React components, Inertia props, and Laravel models. Use when creating types, defining interfaces, typing props, or when user mentions TypeScript types, interfaces, models, or type definitions.
+description: Define TypeScript types and interfaces for React components, Inertia props, and Laravel models. Use when creating types, defining interfaces, typing props, or when user mentions TypeScript types, interfaces, models, or type definitions.
 ---
 
-# Defining TypeScript Types
+# Define TypeScript Types
 
-TypeScript types and interfaces for React components, Inertia props, and Laravel models.
+Define TypeScript types and interfaces for React components, Inertia page props, and Laravel model representations. Organize types by purpose in dedicated files, ensuring frontend type definitions stay synchronized with backend API responses.
 
 ## File Structure
 

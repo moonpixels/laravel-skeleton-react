@@ -3,9 +3,9 @@ name: ensuring-frontend-quality
 description: Run frontend quality checks including ESLint, Prettier, and TypeScript compilation. Use when ensuring frontend code quality, before committing, running checks, or when user mentions quality, checks, ESLint, Prettier, TypeScript, or npm run checks.
 ---
 
-# Ensuring Frontend Quality
+# Ensure Frontend Quality
 
-Frontend quality checks including ESLint, Prettier, and TypeScript compilation.
+Run frontend quality checks including ESLint for linting, Prettier for formatting, and TypeScript compilation for type safety. Execute `npm run checks` before committing to ensure all code meets project standards and catches issues early.
 
 ## Quality Tools
 

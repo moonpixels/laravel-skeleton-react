@@ -3,9 +3,9 @@ name: creating-support-classes
 description: Create custom support classes, utilities, and domain-specific services in the Support directory. Use when creating support classes, custom utilities, domain services, or when user mentions support classes, utilities, custom services, or helper services.
 ---
 
-# Creating Support Classes
+# Create Support Classes
 
-Custom support classes, utilities, and domain-specific services.
+Create custom support classes, utilities, and domain-specific services in the `app/Support/` directory. Support classes encapsulate reusable functionality that doesn't fit standard Laravel conventions, organized by domain with contracts, facades, and service providers.
 
 ## File Structure
 

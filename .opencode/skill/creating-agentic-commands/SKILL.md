@@ -3,9 +3,9 @@ name: creating-agentic-commands
 description: Create custom slash commands and configure specialized agents for workflow automation in OpenCode. Use when creating commands, configuring agents, automating workflows, or when user mentions slash commands, custom commands, /command patterns, @agent patterns, subagents, agent configuration, or workflow automation.
 ---
 
-# Creating Agentic Commands
+# Create Agentic Commands
 
-Custom slash commands for workflow automation in OpenCode.
+Create custom slash commands for workflow automation in OpenCode. Commands are prompt shortcuts that execute predefined prompts with arguments, shell output injection, and file references. For specialized AI assistants with tool restrictions, see `creating-agentic-subagents`.
 
 ## Understanding Commands vs Agents
 
@@ -19,22 +19,9 @@ Slash commands like `/test`, `/component`, `/quality` are **prompt shortcuts** t
 - Can trigger subagent invocations for isolated tasks
 - Live in `.opencode/command/` as markdown files
 
-**Use commands when:**
-
-- You have a repeated prompt pattern
-- You need to run shell commands before prompting
-- You want to inject dynamic content (git diff, test results)
-- You're automating a specific workflow
-
 ### Agents
 
 Agents like `@test-fixer`, `@code-reviewer` are **specialized AI assistants**. For comprehensive agent creation, see the `creating-agentic-subagents` skill.
-
-**Use agents when:**
-
-- You need a specialized AI personality
-- You want to restrict tool access (read-only, no edits)
-- You need different behavior (planning vs building)
 
 ### Decision Tree
 
@@ -137,104 +124,17 @@ Review the component in @src/components/Button.tsx.
 Check for performance issues.
 ```
 
-## Core Command Patterns
+## Command Patterns
 
-### Pattern 1: Simple Automation
+| Pattern             | Description                 | Key Feature                        |
+| ------------------- | --------------------------- | ---------------------------------- |
+| Simple Automation   | Run tests, builds           | Shell output with `` !`command` `` |
+| Code Generation     | Create components, actions  | `$ARGUMENTS` for user input        |
+| Multi-Step Workflow | Quality checks, deploys     | `subtask: true` for isolation      |
+| Argument Handling   | Filter tests, target files  | `$1`, `$2` for positional args     |
+| Subagent Invocation | Code review, security audit | `agent: code-reviewer`             |
 
-```markdown
----
-description: Run all tests with coverage report
-agent: build
----
-
-Run the full test suite with coverage:
-
-!`composer test -- --coverage`
-
-Analyze the results:
-
-1. If all tests pass, confirm success
-2. If tests fail, identify failures and suggest fixes
-3. Check if coverage meets 90% threshold
-```
-
-### Pattern 2: Code Generation
-
-```markdown
----
-description: Create a new React component with TypeScript
-agent: build
----
-
-Create a React component named $ARGUMENTS following these requirements:
-
-1. Use React 19 function component syntax (no FC type)
-2. Include TypeScript with proper typing
-3. Place in resources/js/components/$ARGUMENTS.tsx
-
-After creating, explain how to use it.
-```
-
-Usage: `/component UserProfile`
-
-### Pattern 3: Multi-Step Workflow
-
-```markdown
----
-description: Run all quality checks and fix issues
-agent: build
-subtask: true
----
-
-Execute the complete quality workflow:
-
-1. Run Rector: !`composer rector`
-2. Run Pint: !`composer pint`
-3. Run PHPStan: !`composer stan`
-4. Run frontend checks: !`npm run checks`
-5. Run tests: !`composer test -- --coverage`
-
-For each step, fix issues and re-run until clean.
-```
-
-### Pattern 4: Workflow with Arguments
-
-```markdown
----
-description: Run specific test by name
-agent: build
----
-
-Run the specific test: $ARGUMENTS
-
-!`php artisan test --filter=$ARGUMENTS`
-
-Analyze the results and suggest fixes if applicable.
-```
-
-Usage: `/test-filter RegisterUserActionTest`
-
-### Pattern 5: Subagent Invocation
-
-```markdown
----
-description: Comprehensive code review
-agent: code-reviewer
-subtask: true
----
-
-Review all recent changes:
-
-!`git diff HEAD~1`
-
-Analyze code quality, security, and performance.
-```
-
-When `subtask: true`:
-
-- Creates isolated session
-- Doesn't pollute main context
-- Navigate with Leader+Left/Right
+See `references/examples.md` for complete implementations of each pattern.
 
 ## Built-in Commands
 

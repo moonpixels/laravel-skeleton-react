@@ -3,9 +3,9 @@ name: creating-agentic-config
 description: Create or update AGENTS.md configuration files for AI coding assistants following research-backed best practices. Use when initializing projects, improving agent context, creating AGENTS.md files, or when user mentions project initialization, agent configuration, context files, or /init command.
 ---
 
-# Creating Agentic Configuration Files
+# Create Agentic Configuration Files
 
-AGENTS.md configuration files for AI coding assistants following research-backed best practices.
+Create AGENTS.md configuration files that provide AI coding assistants with project context. Follow research-backed best practices: keep under 100 lines, include only universal instructions, and use progressive disclosure to reference external documentation for task-specific guidance.
 
 ## Critical Research-Backed Principles
 
