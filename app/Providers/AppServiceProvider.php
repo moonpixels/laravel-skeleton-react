@@ -8,6 +8,7 @@ use App\Mixins\RequestMixin;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -42,6 +43,7 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureDates();
         $this->configureMixins();
         $this->configurePagination();
+        $this->configureResources();
     }
 
     private function configureCommands(): void
@@ -82,5 +84,10 @@ final class AppServiceProvider extends ServiceProvider
 
             return $paginator;
         });
+    }
+
+    private function configureResources(): void
+    {
+        JsonResource::withoutWrapping();
     }
 }

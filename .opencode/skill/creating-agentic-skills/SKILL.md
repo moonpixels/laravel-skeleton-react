@@ -277,7 +277,7 @@ final readonly class {Name}Action
 
 ## Quality Standards
 
-- PHPStan level 9
+- PHPStan level 8
 - 100% type coverage
 - Covered by feature tests
 ```

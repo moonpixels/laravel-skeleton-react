@@ -272,7 +272,7 @@ Brief one-sentence description of what this application does.
 - **Backend**: PHP 8.5, Laravel 12, PostgreSQL
 - **Frontend**: React 19, TypeScript, Inertia.js, Tailwind CSS v4
 - **Testing**: Pest v4 with browser testing (Playwright)
-- **Quality**: Rector, Pint, PHPStan/Larastan (level 9)
+- **Quality**: Rector, Pint, PHPStan/Larastan (level 8)
 - **Environment**: Laravel Herd (auto HTTPS, Redis, MinIO)
 
 ## Key Directories
@@ -298,7 +298,7 @@ Brief one-sentence description of what this application does.
 - **React Components**: Function components with TypeScript, no `FC` type, use `import type`
 - **State Management**: React Context for global state, TanStack Query for server state
 - **Testing Strategy**: Feature tests for all HTTP endpoints, browser tests for complex UI flows
-- **Type Safety**: 100% type coverage required (PHPStan level 9, TypeScript strict)
+- **Type Safety**: 100% type coverage required (PHPStan level 8, TypeScript strict)
 
 ## Before Committing
 
@@ -306,7 +306,7 @@ All code must pass:
 
 - Rector (automated refactoring)
 - Pint (code formatting)
-- PHPStan level 9 (static analysis)
+- PHPStan level 8 (static analysis)
 - 90% code coverage minimum
 - 100% type coverage
 - ESLint + Prettier (frontend)
