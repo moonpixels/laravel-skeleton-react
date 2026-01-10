@@ -1,580 +1,297 @@
 ---
 name: creating-agentic-skills
-description: Creating agentic coding skills for OpenCode with proper structure, descriptions, and conventions. Use when creating skills, adding new skills, documenting workflows, or when user mentions creating skills, skill development, SKILL.md files, or skill documentation.
+description: Create Agent Skills that extend AI agent capabilities with specialized knowledge, workflows, and tools. Use when creating new skills, updating existing skills, converting repeated patterns into skills, documenting domain-specific workflows, or when user mentions skills, SKILL.md files, skill development, or skill documentation.
 ---
 
-# Creating Agentic Coding Skills
+# Creating Agent Skills
 
-## When to Use This Skill
+Skills are folders of instructions, scripts, and resources that agents discover and load dynamically. They transform general-purpose agents into specialized tools by packaging procedural knowledge into composable, reusable capabilities.
 
-Use this skill when:
-
-- User requests "create a new skill"
-- Adding workflow documentation as a skill
-- Converting repeated patterns into skills
-- User mentions creating skills, SKILL.md files, or skill development
-- Documenting domain-specific conventions
-- Building reusable instruction sets
-
-## Understanding Agentic Skills
-
-Skills transform general-purpose coding agents into specialized tools by packaging domain expertise into discoverable, reusable instruction sets. Agentic coders use **progressive disclosure** to load context only when needed.
-
-### How Skills Work
-
-1. **Startup**: Agent loads only skill names and descriptions (~100 tokens each)
-2. **Matching**: User request semantically matches against descriptions
-3. **Loading**: Full SKILL.md is read when matched (~5000 tokens)
-4. **References**: Additional files load on-demand (unlimited)
-
-### Critical Insight
-
-**Description quality is the single most important factor.** There's no algorithmic routing - the agent uses pure LLM reasoning to match user requests against descriptions.
-
-## File Structure
-
-Skills live in `.opencode/skill/{name}/SKILL.md`:
+## Directory Structure
 
 ```
-.opencode/skill/
-├── creating-actions/
-│   ├── SKILL.md              # Required: Core instructions
-│   ├── references/           # Optional: Detailed docs
-│   │   └── examples.md
-│   ├── scripts/              # Optional: Deterministic operations
-│   │   └── generate.php
-│   └── assets/               # Optional: Templates, files
-│       └── template.php
-└── README.md
+skill-name/
+├── SKILL.md              # Required: instructions + metadata
+├── scripts/              # Optional: executable code
+├── references/           # Optional: documentation loaded as needed
+└── assets/               # Optional: templates, resources for output
 ```
 
-### Directory Structure
+Place skills in `.opencode/skill/{name}/SKILL.md` for project-local skills or `~/.config/opencode/skill/{name}/SKILL.md` for global skills.
 
-- **SKILL.md** - Required, keep under 500 lines
-- **references/** - Extended documentation loaded on-demand
-- **scripts/** - Executable code for deterministic operations
-- **assets/** - Templates, boilerplate, files for output
+### Directory Contents
 
-## SKILL.md Structure
+**SKILL.md** (required)
 
-### 1. YAML Frontmatter (Required)
+- YAML frontmatter with `name` and `description`
+- Markdown instructions and guidance
+- Keep under 500 lines; split into references/ when approaching this limit
+
+**scripts/** (optional)
+
+- Executable code for deterministic operations
+- Token efficient: executed without loading into context
+- Test scripts before including them
+
+**references/** (optional)
+
+- Documentation loaded into context as needed
+- Keep files focused and under 100 lines each
+- Include table of contents for longer files
+
+**assets/** (optional)
+
+- Files used in output (templates, images, boilerplate)
+- Not loaded into context; copied or modified during execution
+
+## SKILL.md Format
+
+### Frontmatter (Required)
 
 ```yaml
 ---
-name: creating-actions
-description: Create Laravel Action classes for business logic operations following domain-driven design. Use when creating Actions, implementing business logic, handling user operations, or when user mentions Action classes, domain operations, business rules, or service classes.
+name: skill-name
+description: What this skill does and when to use it.
 ---
 ```
 
-**Required fields:**
+**name** requirements:
 
-- `name`: Lowercase with hyphens, 1-64 chars, matches directory name
-- `description`: 1-1024 chars (optimal under 200)
+- 1-64 characters
+- Lowercase letters, numbers, and hyphens only
+- No leading/trailing hyphens, no consecutive hyphens
+- Must match the parent directory name
 
-**Naming convention:**
+**description** requirements:
 
-- Use **gerund form** (verb + -ing): `creating-actions`, `managing-models`, `defining-routes`
-- Lowercase only
-- Single hyphens between words
-- No leading/trailing hyphens
+- 1-1024 characters (aim for ~200)
+- Include what the skill does AND when to use it
+- Include trigger keywords users would naturally say
+- Write in third person ("Creates..." not "I can help...")
 
-### 2. Description Formula
+### Writing Effective Descriptions
+
+The description is the primary triggering mechanism. Agents read only the name and description at startup to decide when to load the full skill.
+
+**Formula:**
 
 ```
-[Action verbs describing capabilities]. Use when [trigger contexts] or when the user mentions [keywords/file types/task types].
+[What the skill does]. Use when [trigger contexts] or when user mentions [keywords].
 ```
 
-**Effective description components:**
-
-1. **Action verbs**: "Create", "Manage", "Define", "Write", "Ensure"
-2. **Capabilities**: What the skill does
-3. **Trigger contexts**: When to use it
-4. **Keywords**: Natural phrases users would say
-
-**Example - Effective:**
+**Effective example:**
 
 ```yaml
 description: Create Laravel Action classes for business logic operations following domain-driven design. Use when creating Actions, implementing business logic, handling user operations, or when user mentions Action classes, domain operations, business rules, or service classes.
 ```
 
-**Example - Ineffective:**
+**Ineffective examples:**
 
 ```yaml
-description: Helps with actions # ❌ Too vague, no triggers
+description: Helps with actions  # Too vague, no triggers
+description: Action classes for Laravel  # No "use when" triggers
+description: I help you create Actions  # Wrong person (use third person)
 ```
 
-### 3. Content Structure
+**Key triggers to include:**
 
-Every skill should include these sections:
+1. Action verbs: "Create", "Write", "Build", "Configure"
+2. Task contexts: "when creating...", "when implementing..."
+3. Natural keywords: phrases users would actually say
+4. File types: ".md files", "SKILL.md", relevant extensions
+
+### Body Content
+
+Write instructions in imperative form ("Create..." not "Creating..."). Structure the body with:
+
+1. **Brief overview** - What the skill enables (2-3 sentences max)
+2. **Core workflow** - Essential steps to accomplish the task
+3. **Key conventions** - Critical patterns with concise code examples
+4. **References** - Links to detailed documentation in references/
+
+Do NOT include:
+
+- "When to Use This Skill" sections (this belongs in description)
+- Verbose explanations of concepts the agent already knows
+- Duplicate information (put it in SKILL.md OR references/, not both)
+- README, CHANGELOG, or other auxiliary documentation
+
+## Progressive Disclosure
+
+Skills use three-level loading to manage context efficiently:
+
+| Level        | When Loaded      | Token Cost  | Content                        |
+| ------------ | ---------------- | ----------- | ------------------------------ |
+| Metadata     | Always (startup) | ~100 tokens | `name` and `description`       |
+| Instructions | When triggered   | <5k tokens  | SKILL.md body                  |
+| Resources    | As needed        | Unlimited   | references/, scripts/, assets/ |
+
+### When to Split Content
+
+Move content to references/ when:
+
+- SKILL.md approaches 500 lines
+- Content is needed only for specific scenarios
+- Multiple frameworks/variants exist (one file per variant)
+- Detailed examples would bloat the main file
+
+**Pattern: High-level guide with references**
 
 ```markdown
-# Creating {Feature}
+## Quick start
 
-## When to Use This Skill
+[Essential code example]
 
-- Bullet points of specific scenarios
-- When user requests X
-- When user mentions Y
+## Advanced features
 
-## File Structure
+- **Form filling**: See [references/forms.md](references/forms.md)
+- **API reference**: See [references/api.md](references/api.md)
+```
 
-- Where files live
-- Naming conventions
-- Directory organization
+**Pattern: Domain-specific organization**
 
-## Core Conventions
+```
+bigquery-skill/
+├── SKILL.md (overview + navigation)
+└── references/
+    ├── finance.md
+    ├── sales.md
+    └── product.md
+```
 
-- Key patterns with code examples
-- Required conventions
-- Important rules
+When user asks about sales, agent reads only sales.md.
 
-## Examples
+### Reference Guidelines
 
-- 2-3 real examples from codebase
-- Show complete, working code
-- Cover common use cases
+- Keep references one level deep from SKILL.md (no nested references)
+- Include table of contents for files over 100 lines
+- Use relative paths: `[forms.md](references/forms.md)`
+- Describe clearly when to read each reference file
+
+## Creating a Skill
+
+### Step 1: Identify Concrete Examples
+
+Before writing, identify 3-5 concrete examples of how the skill will be used:
+
+- What would a user say to trigger this skill?
+- What steps would you follow to complete the task?
+- What context does the agent need that it doesn't already have?
+
+### Step 2: Plan Reusable Resources
+
+For each example, identify:
+
+- **Scripts**: Code rewritten repeatedly or needing deterministic reliability
+- **References**: Documentation needed while working (schemas, APIs, policies)
+- **Assets**: Files used in output (templates, boilerplate)
+
+### Step 3: Write the Skill
+
+1. Create the directory: `.opencode/skill/{skill-name}/`
+2. Write SKILL.md with frontmatter and instructions
+3. Add scripts/, references/, assets/ as identified
+4. Test scripts to ensure they work
+
+### Step 4: Iterate Based on Usage
+
+After using the skill on real tasks:
+
+1. Notice where the agent struggles or makes mistakes
+2. Identify what context was missing or unclear
+3. Update SKILL.md or resources accordingly
+4. Keep refining until results are consistent
+
+## Splitting Large Skills
+
+When an existing skill exceeds 500 lines or becomes unwieldy:
+
+1. **Identify separable content**: Look for variant-specific details, extensive examples, or reference material
+2. **Create references/ files**: Move detailed content, keeping only essential workflow in SKILL.md
+3. **Add navigation**: Link to references from SKILL.md with clear descriptions of when to read each
+4. **Avoid duplication**: Content lives in ONE place only
+
+**Before (monolithic):**
+
+```markdown
+# Creating Components
+
+[500+ lines of everything]
+```
+
+**After (progressive disclosure):**
+
+```markdown
+# Creating Components
+
+[Core workflow ~150 lines]
+
+## References
+
+- [references/patterns.md](references/patterns.md) - Component patterns and variants
+- [references/examples.md](references/examples.md) - Complete working examples
+```
 
 ## Anti-Patterns
 
-### ❌ Don't Do This
+### Avoid These Mistakes
 
-- Show wrong patterns
-- Explain why they're wrong
+```yaml
+# Vague description without triggers
+description: Helps with PDF files
 
-### ✅ Do This Instead
+# "When to Use" in body instead of description
+## When to Use This Skill
+Use when creating PDFs...  # This should be in description!
 
-- Show correct patterns
-- Explain why they're better
+# Verbose explanations
+PDF (Portable Document Format) is a file format...  # Agent knows this
+
+# Deeply nested references
+See [advanced.md] which links to [details.md] which links to...
+
+# Duplicate content
+[Same information in SKILL.md AND references/guide.md]
+
+# Extraneous files
+README.md, INSTALLATION_GUIDE.md, CHANGELOG.md  # Don't create these
+```
+
+### Do This Instead
+
+```yaml
+# Specific description with triggers
+description: Extract text from PDFs, fill forms, merge documents. Use when working with PDF files or when user mentions PDFs, forms, or document extraction.
+
+# All trigger info in description, body has only instructions
+## Quick Start
+[Immediate actionable content]
+
+# Concise, actionable content
+Use pdfplumber to extract text:
+[code example]
+
+# One level deep references
+See [references/forms.md](references/forms.md) for form filling.
+
+# Single source of truth
+[Information in exactly one place]
+```
 
 ## Quality Standards
 
-- Testing requirements
-- Code quality requirements
-- Style requirements
-```
-
-## Creating Skills: Step-by-Step Process
-
-### Step 1: Identify the Need
-
-**Questions to ask:**
-
-- Is this a repeated pattern in the codebase?
-- Do we give the same instructions multiple times?
-- Is this a domain-specific workflow?
-- Would automation/guidance help here?
-
-### Step 2: Gather Information
-
-**Collect:**
-
-- Existing code examples from the codebase
-- Common patterns and conventions
-- Anti-patterns to avoid
-- Quality standards to enforce
-- Trigger phrases users might say
-
-### Step 3: Design the Skill
-
-**Plan:**
-
-- Choose a gerund name (creating-_, managing-_, etc.)
-- Draft description with action verbs + triggers + keywords
-- Identify core conventions (3-5 key patterns)
-- Select 2-3 real examples
-- List anti-patterns
-- Define quality standards
-
-### Step 4: Write the SKILL.md
-
-**Structure:**
-
-1. Write YAML frontmatter (name + description)
-2. "When to Use This Skill" section (5-10 bullets)
-3. "File Structure" with examples
-4. "Core Conventions" with code blocks
-5. "Examples" with real code (2-3 examples)
-6. "Anti-Patterns" (❌ Don't / ✅ Do)
-7. "Quality Standards" section
-
-**Keep it light (~200 lines) for baseline:**
-
-- Focus on core patterns
-- Real examples from codebase
-- Clear anti-patterns
-- Essential conventions
-
-### Step 5: Test the Skill
-
-**Test by:**
-
-- Using natural phrases that should trigger it
-- Ensuring it loads correctly
-- Verifying examples work
-- Checking it doesn't load for out-of-scope requests
-
-## Examples
-
-### Example 1: Laravel Action Skill
-
-```yaml
----
-name: creating-actions
-description: Create Laravel Action classes for business logic operations following domain-driven design. Use when creating Actions, implementing business logic, handling user operations, or when user mentions Action classes, domain operations, business rules, or service classes.
----
-
-# Creating Laravel Actions
-
-## When to Use This Skill
-
-Use this skill when:
-- User requests "create a [Name]Action"
-- Implementing business logic that doesn't belong in controllers
-- User mentions business rules or domain operations
-
-## File Structure
-
-Actions are organized by domain:
-
-\`\`\`
-app/Actions/{Domain}/{Name}Action.php
-\`\`\`
-
-## Core Conventions
-
-\`\`\`php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Actions\{Domain};
-
-final readonly class {Name}Action
-{
-    public function __construct(
-        private DependencyOne $dep
-    ) {}
-
-    public function handle({Name}Data $data): {ReturnType}
-    {
-        // Business logic
-        return $result;
-    }
-}
-\`\`\`
-
-## Examples
-
-[Real examples from codebase]
-
-## Anti-Patterns
-
-### ❌ Don't Do This
-[Wrong patterns]
-
-### ✅ Do This Instead
-[Correct patterns]
-
-## Quality Standards
-
-- PHPStan level 8
-- 100% type coverage
-- Covered by feature tests
-```
-
-### Example 2: React Component Skill
-
-```yaml
----
-name: creating-react-components
-description: Creating reusable React components with TypeScript, Tailwind CSS, and shadcn/ui. Use when creating components, building UI elements, implementing reusable widgets, or when user mentions components, UI, buttons, cards, forms, or reusable elements.
----
-
-# Creating React Components
-
-## When to Use This Skill
-
-Use this skill when:
-- User requests "create a [Name] component"
-- Building reusable UI elements
-- User mentions components, widgets, or UI elements
-
-## File Structure
-
-\`\`\`
-resources/js/components/{name}.tsx
-resources/js/components/ui/{name}.tsx      # shadcn/ui
-resources/js/components/icons/{name}.tsx   # Icons
-\`\`\`
-
-## Core Conventions
-
-\`\`\`tsx
-import type { PropsWithChildren } from 'react'
-
-export function ComponentName({
-  prop,
-  children,
-}: PropsWithChildren<{
-  prop: string
-}>) {
-  return (
-    <div className="space-y-4">
-      {children}
-    </div>
-  )
-}
-\`\`\`
-
-[Rest of skill content...]
-```
-
-### Example 3: Testing Skill
-
-```yaml
----
-name: writing-feature-tests
-description: Writing feature tests for HTTP endpoints, controllers, and full request/response cycles using Pest v4. Use when any business logic is added to codebase, when creating Actions, Controllers, Form Requests, or modifying application behavior that affects HTTP endpoints.
----
-
-# Writing Feature Tests
-
-## When to Use This Skill
-
-Use this skill when:
-- **Any business logic is added to the codebase**
-- Creating or modifying Controllers
-- Creating or modifying Actions
-- Adding new HTTP endpoints
-- User mentions feature tests, HTTP tests, or integration tests
-
-[Rest of skill content...]
-```
-
-## Best Practices
-
-### Description Writing
-
-**✅ Good descriptions:**
-
-```yaml
-# Specific, with triggers and keywords
-description: Create Laravel Action classes for business logic operations following domain-driven design. Use when creating Actions, implementing business logic, handling user operations, or when user mentions Action classes, domain operations, business rules, or service classes.
-```
-
-**❌ Bad descriptions:**
-
-```yaml
-# Too vague
-description: Helps with actions
-
-# No triggers
-description: Create Action classes
-
-# No keywords
-description: Business logic patterns
-```
-
-### Content Organization
-
-**Keep skills focused:**
-
-- One capability per skill
-- Split large topics into multiple skills
-- Keep SKILL.md under 500 lines
-- Move extensive docs to references/
-
-**Example split:**
-
-- `creating-actions` - How to create Actions
-- `writing-feature-tests` - How to test (separate skill)
-- `ensuring-laravel-quality` - Quality checks (separate skill)
-
-### Progressive Disclosure
-
-**Layer information:**
-
-1. **Always loaded**: Name + description (~100 tokens)
-2. **When triggered**: SKILL.md content (~5000 tokens)
-3. **As needed**: Reference files (unlimited)
-
-**Example:**
-
-```
-creating-actions/
-├── SKILL.md                    # Core conventions
-├── references/
-│   ├── advanced-patterns.md    # Advanced topics
-│   └── testing-actions.md      # Testing guide
-└── scripts/
-    └── generate-action.php     # Code generator
-```
-
-### Testing Emphasis
-
-For any skill involving code creation, emphasize proactive testing:
-
-```yaml
-description: Create Laravel Action classes... Use when any business logic is added to codebase, when creating Actions...
-```
-
-Key phrases:
-
-- "Use when any business logic is added"
-- "Use when creating or modifying [feature]"
-- "Write tests alongside implementation"
-
-## Quality Checklist for Skills
-
-Before finalizing a skill:
-
-- [ ] Name uses gerund form (creating-, managing-, etc.)
-- [ ] Name matches directory name exactly
-- [ ] Description under 200 characters (optimal)
-- [ ] Description includes action verbs
-- [ ] Description includes trigger contexts
-- [ ] Description includes natural keywords
-- [ ] "When to Use This Skill" section present
-- [ ] "File Structure" with examples
-- [ ] "Core Conventions" with code examples
-- [ ] 2-3 real examples from codebase
-- [ ] "Anti-Patterns" section (❌ / ✅)
-- [ ] "Quality Standards" section
-- [ ] Content under 500 lines (or use references/)
-- [ ] All code examples work and are tested
-
-## Anti-Patterns
-
-### ❌ Don't Do This
-
-```yaml
-# Vague name
-name: actions
-
-# No trigger keywords
-description: Action classes for Laravel
-
-# Missing "Use when" in description
-description: Create Action classes for business logic
-
-# No examples
-## Core Conventions
-[Text only, no code]
-
-# No anti-patterns section
-[Missing ❌ / ✅ comparisons]
-
-# Too long (use references/ instead)
-SKILL.md: 1000 lines
-```
-
-### ✅ Do This Instead
-
-```yaml
-# Gerund name
-name: creating-actions
-
-# Rich description with triggers
-description: Create Laravel Action classes for business logic operations following domain-driven design. Use when creating Actions, implementing business logic, or when user mentions Action classes, domain operations, business rules.
-
-# Clear "When to Use This Skill"
-## When to Use This Skill
-- User requests "create a [Name]Action"
-- Implementing business logic
-
-# Real code examples
-## Examples
-\`\`\`php
-<?php
-// Real working example from codebase
-\`\`\`
-
-# Anti-patterns included
-## Anti-Patterns
-### ❌ Don't Do This
-### ✅ Do This Instead
-
-# Right length with references
-SKILL.md: 200 lines
-references/advanced.md: Extended content
-```
-
-## Common Skill Types
-
-### Architecture Patterns
-
-- creating-actions
-- creating-dtos
-- creating-controllers
-- managing-models
-
-### Feature Implementation
-
-- creating-react-components
-- creating-inertia-pages
-- creating-hooks
-- creating-layouts
-
-### Testing
-
-- writing-feature-tests
-- writing-unit-tests
-- writing-browser-tests
-
-### Quality & Maintenance
-
-- ensuring-laravel-quality
-- ensuring-frontend-quality
-
-### Configuration & Setup
-
-- managing-config-files
-- managing-npm-packages
-- defining-routes
-
-## Maintaining Skills
-
-### When to Update Skills
-
-Update when:
-
-- Conventions change in the codebase
-- New patterns emerge
-- Anti-patterns are discovered
-- Tools/packages are updated
-- Examples become outdated
-
-### Versioning
-
-Consider including version info for major changes:
-
-```yaml
-# Optional metadata
-metadata:
-  version: '1.0.0'
-  updated: '2024-01-08'
-  laravel: '12.x'
-  react: '19.x'
-```
-
-### Deprecation
-
-When deprecating a skill:
-
-1. Update description to mention it's deprecated
-2. Point to replacement skill
-3. Keep file for historical reference
-
-## Summary
-
-Creating effective skills requires:
-
-1. **Focused scope** - One capability per skill
-2. **Semantic trigger alignment** - Descriptions match natural language
-3. **Real examples** - Working code from the codebase
-4. **Clear anti-patterns** - Show what NOT to do
-5. **Quality standards** - Enforce project conventions
-6. **Progressive disclosure** - Layer information appropriately
-7. **Iterative refinement** - Test and improve over time
-
-The most effective skills solve specific problems at the right abstraction level, with clear descriptions that match how users naturally phrase requests.
+Before finalizing a skill, verify:
+
+- [ ] Name is lowercase, hyphenated, matches directory
+- [ ] Description includes what + when + keywords
+- [ ] Description under 200 chars (up to 1024 if needed)
+- [ ] SKILL.md under 500 lines
+- [ ] No "When to Use" section in body
+- [ ] References are one level deep
+- [ ] No duplicate content between files
+- [ ] Scripts are tested and working
+- [ ] Content is concise (only what agent doesn't know)
+
+See [references/checklist.md](references/checklist.md) for the complete quality checklist.
+See [references/examples.md](references/examples.md) for full skill examples.
+See [assets/template.md](assets/template.md) for a starter template.
