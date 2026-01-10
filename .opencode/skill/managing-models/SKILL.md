@@ -5,15 +5,7 @@ description: Create and modify Eloquent models with PHPDoc properties, casts, re
 
 # Managing Laravel Eloquent Models
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a model" or "update a model"
-- Defining database models and their properties
-- Setting up model relationships
-- User mentions Eloquent models, database models, or model properties
-- Need type-safe model interactions
+Eloquent models with PHPDoc properties, casts, relationships, and virtual properties.
 
 ## File Structure
 

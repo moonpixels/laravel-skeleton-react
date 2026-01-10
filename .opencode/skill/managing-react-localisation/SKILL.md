@@ -5,15 +5,7 @@ description: Managing i18next translations and localisation in React with TypeSc
 
 # Managing React Localisation
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "add translations for [feature]"
-- Creating new translatable UI components
-- Adding new language support
-- User mentions translations, i18n, localisation, or multi-language
-- Handling locale-specific formatting (dates, numbers, currencies)
+i18next translations and localisation in React with TypeScript.
 
 ## File Structure
 

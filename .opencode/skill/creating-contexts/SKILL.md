@@ -5,15 +5,7 @@ description: Creating React Context providers with TypeScript for sharing state 
 
 # Creating React Contexts
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a [Name]Context" or "create a [Name]Provider"
-- Sharing state across multiple components without prop drilling
-- Managing global application state (user, theme, settings)
-- User mentions context API, providers, or shared state
-- Accessing Inertia shared props in nested components
+React Context providers with TypeScript for sharing state across components.
 
 ## File Structure
 

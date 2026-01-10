@@ -5,15 +5,7 @@ description: Define Laravel routes following RESTful conventions with proper gro
 
 # Defining Laravel Routes
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create routes" or "define routes"
-- Adding new endpoints to the application
-- Organizing route groups
-- User mentions routes, routing, or endpoints
-- Need to connect URLs to controllers
+RESTful routes with proper grouping, middleware, and naming conventions.
 
 ## File Structure
 

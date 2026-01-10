@@ -5,15 +5,7 @@ description: Create Laravel HTTP middleware for request/response processing. Use
 
 # Creating Laravel Middleware
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create middleware"
-- Need to process requests before reaching controllers
-- Modifying responses before sending to client
-- User mentions middleware, request filters, or HTTP guards
-- Authentication, authorization, or request modification needed
+HTTP middleware for request/response processing, filtering, and modification.
 
 ## File Structure
 

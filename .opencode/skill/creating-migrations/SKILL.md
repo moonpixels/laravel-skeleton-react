@@ -5,15 +5,7 @@ description: Create Laravel database migrations following conventions for schema
 
 # Creating Laravel Database Migrations
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a migration" or "add migration"
-- Creating or modifying database tables
-- Adding indexes or foreign keys
-- User mentions migrations, schema changes, or database structure
-- Need to version database changes
+Migrations version database schema changes with proper indexes and foreign keys.
 
 ## File Structure
 

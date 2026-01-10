@@ -5,15 +5,7 @@ description: Creating Inertia.js page components with TypeScript, forms, and nav
 
 # Creating Inertia.js Pages
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a [Name] page"
-- Implementing new routes with Inertia.js
-- Building forms that submit to Laravel controllers
-- User mentions pages, routes, navigation, or Inertia
-- Accessing route props passed from Laravel controllers
+Inertia.js page components with TypeScript, forms, and navigation.
 
 ## File Structure
 

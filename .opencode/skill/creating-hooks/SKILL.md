@@ -5,15 +5,7 @@ description: Creating custom React hooks with TypeScript for reusable logic and 
 
 # Creating Custom React Hooks
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a use[Name] hook"
-- Extracting reusable logic from components
-- Managing side effects (data fetching, subscriptions, timers)
-- User mentions custom hooks, reusable logic, or composable functions
-- Sharing stateful logic between multiple components
+Custom hooks encapsulate reusable logic and side effects with TypeScript.
 
 ## File Structure
 

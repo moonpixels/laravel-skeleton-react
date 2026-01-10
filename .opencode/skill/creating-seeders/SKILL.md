@@ -5,15 +5,7 @@ description: Create Laravel database seeder classes for populating databases wit
 
 # Creating Laravel Database Seeders
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a seeder" or "seed the database"
-- Populating database with test data
-- Creating default application data
-- User mentions seeders, database seeding, or sample data
-- Need consistent development environment data
+Database seeder classes for populating databases with test or default data.
 
 ## File Structure
 

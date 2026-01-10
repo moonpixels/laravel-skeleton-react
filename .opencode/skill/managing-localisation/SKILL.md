@@ -5,15 +5,7 @@ description: Create and manage Laravel translation files using PHP arrays for in
 
 # Managing Laravel Localisation Files
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create translation file" or "add translations"
-- Adding multi-language support
-- Managing translation strings
-- User mentions translation files, localization, i18n, or language files
-- Need consistent translation management
+Laravel translation files using PHP arrays for internationalization.
 
 ## File Structure
 

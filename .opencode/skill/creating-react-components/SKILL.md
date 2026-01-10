@@ -5,15 +5,7 @@ description: Creating reusable React components with TypeScript, Tailwind CSS, a
 
 # Creating React Components
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a [Name] component"
-- Building reusable UI elements for the application
-- Implementing custom components that wrap shadcn/ui components
-- User mentions components, UI widgets, or reusable elements
-- Refactoring duplicate JSX into reusable components
+Reusable React components with TypeScript, Tailwind CSS, and shadcn/ui patterns.
 
 ## File Structure
 

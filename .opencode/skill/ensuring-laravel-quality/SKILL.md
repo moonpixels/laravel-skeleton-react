@@ -5,16 +5,7 @@ description: Run Laravel quality checks including Rector, Pint, PHPStan, code co
 
 # Ensuring Laravel Quality
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "run quality checks" or "run checks"
-- Before committing code changes
-- After making significant code changes
-- User mentions Rector, Pint, PHPStan, coverage, or quality
-- Preparing code for pull requests
-- Ensuring code meets project standards
+Run comprehensive quality checks to ensure code meets project standards before committing.
 
 ## Quality Tools
 

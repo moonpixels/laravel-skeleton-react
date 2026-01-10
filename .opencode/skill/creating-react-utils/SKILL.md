@@ -5,15 +5,7 @@ description: Creating utility functions and helper modules for React application
 
 # Creating React Utility Functions
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a utility for [purpose]"
-- Extracting reusable logic that doesn't need React hooks
-- Implementing pure functions for data transformation
-- User mentions utilities, helpers, or shared functions
-- Creating formatters, validators, or parsers
+Utility functions and helper modules for React applications with TypeScript.
 
 ## File Structure
 

@@ -5,15 +5,7 @@ description: Create and manage Laravel configuration files with proper structure
 
 # Managing Laravel Config Files
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a config file" or "update config"
-- Defining application configuration settings
-- Managing environment-specific settings
-- User mentions config files, configuration, or settings
-- Need centralized application settings
+Laravel configuration files with proper structure and type safety.
 
 ## File Structure
 

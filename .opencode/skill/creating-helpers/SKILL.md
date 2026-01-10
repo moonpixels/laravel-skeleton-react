@@ -5,14 +5,7 @@ description: Create global PHP helper functions for common utility operations. U
 
 # Creating Laravel Helpers
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a helper function"
-- Need globally accessible utility functions
-- Simple operations used across the application
-- User mentions helpers, utility functions, or global functions
+Global utility functions for simple operations used across the application.
 
 ## File Structure
 

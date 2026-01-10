@@ -5,15 +5,7 @@ description: Creating React layout components for Inertia.js pages with TypeScri
 
 # Creating React Layouts
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a [Name]Layout"
-- Building page wrappers with shared navigation, headers, or footers
-- Implementing authenticated vs guest layouts
-- User mentions layouts, page wrappers, or shared UI structure
-- Setting up navigation, sidebars, or consistent page structure
+Layout components wrap Inertia.js pages with shared navigation and structure.
 
 ## File Structure
 

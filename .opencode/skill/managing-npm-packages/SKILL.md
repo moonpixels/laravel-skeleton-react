@@ -5,15 +5,7 @@ description: Managing npm packages, dependencies, and package.json configuration
 
 # Managing npm Packages
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "install [package-name]"
-- Adding new frontend dependencies
-- Updating or removing packages
-- User mentions npm, packages, dependencies, or node_modules
-- Configuring package scripts or managing package.json
+Managing npm packages, dependencies, and package.json configuration.
 
 ## File Structure
 

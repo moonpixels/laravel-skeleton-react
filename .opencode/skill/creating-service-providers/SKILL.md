@@ -5,15 +5,7 @@ description: Create Laravel Service Provider classes for binding services, regis
 
 # Creating Laravel Service Providers
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a service provider"
-- Binding interfaces to implementations
-- Registering singletons or services
-- User mentions service providers, dependency injection, or service container
-- Bootstrapping application services
+Service Providers for binding services, registering singletons, and bootstrapping.
 
 ## File Structure
 

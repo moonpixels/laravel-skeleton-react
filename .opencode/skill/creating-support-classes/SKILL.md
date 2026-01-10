@@ -5,15 +5,7 @@ description: Create custom support classes, utilities, and domain-specific servi
 
 # Creating Support Classes
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a support class" or "create a utility class"
-- Building custom domain-specific services
-- Creating reusable utilities that don't fit in Actions
-- User mentions support classes, utilities, or custom services
-- Need framework-independent business logic
+Custom support classes, utilities, and domain-specific services.
 
 ## File Structure
 

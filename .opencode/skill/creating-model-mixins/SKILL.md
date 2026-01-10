@@ -5,15 +5,7 @@ description: Create PHP trait mixins for reusable model behavior and request ext
 
 # Creating Model Mixins and Traits
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a mixin" or "create a trait"
-- Adding reusable behavior to models
-- Extending Laravel's Request class with custom methods
-- User mentions mixins, traits, or reusable behavior
-- Need to share functionality across multiple classes
+PHP trait mixins for reusable model behavior and request extensions.
 
 ## File Structure
 
