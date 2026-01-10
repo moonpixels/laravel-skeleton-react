@@ -3,17 +3,9 @@ name: creating-dtos
 description: Create Laravel Data Transfer Objects (DTOs) for safely passing data between layers. Use when creating DTOs, transferring data, passing validated data to Actions, or when user mentions DTOs, data objects, value objects, or data transfer.
 ---
 
-# Creating Laravel DTOs
+# Create Laravel DTOs
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a [Name]Data" or "create a DTO"
-- Transferring validated data from Form Requests to Actions
-- Passing structured data between application layers
-- User mentions DTOs, data objects, or value objects
-- Need type-safe data containers
+Create Data Transfer Objects (DTOs) that provide type-safe containers for passing validated data between application layers. DTOs ensure data integrity from Form Requests through Actions, with immutable properties and factory methods for construction.
 
 ## File Structure
 

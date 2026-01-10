@@ -3,17 +3,9 @@ name: managing-config-files
 description: Create and manage Laravel configuration files with proper structure and type safety. Use when creating config files, managing application settings, defining configuration, or when user mentions config files, configuration, settings, or app config.
 ---
 
-# Managing Laravel Config Files
+# Manage Laravel Config Files
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a config file" or "update config"
-- Defining application configuration settings
-- Managing environment-specific settings
-- User mentions config files, configuration, or settings
-- Need centralized application settings
+Create and manage Laravel configuration files with proper structure and type safety. Config files define application settings accessed via the `config()` helper, with environment-specific values loaded from `.env` files.
 
 ## File Structure
 

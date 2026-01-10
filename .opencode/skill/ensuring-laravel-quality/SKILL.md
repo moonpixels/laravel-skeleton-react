@@ -3,18 +3,9 @@ name: ensuring-laravel-quality
 description: Run Laravel quality checks including Rector, Pint, PHPStan, code coverage, and type coverage. Use when ensuring code quality, before committing, running quality checks, or when user mentions quality, checks, Rector, Pint, PHPStan, coverage, or composer checks.
 ---
 
-# Ensuring Laravel Quality
+# Ensure Laravel Quality
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "run quality checks" or "run checks"
-- Before committing code changes
-- After making significant code changes
-- User mentions Rector, Pint, PHPStan, coverage, or quality
-- Preparing code for pull requests
-- Ensuring code meets project standards
+Run comprehensive quality checks to ensure code meets project standards before committing. Execute `composer run checks` to run Rector, Pint, PHPStan level 8, tests with 90% coverage, and 100% type coverage in sequence.
 
 ## Quality Tools
 

@@ -3,17 +3,9 @@ name: creating-migrations
 description: Create Laravel database migrations following conventions for schema changes, indexes, and foreign keys. Use when creating migrations, modifying database schema, adding tables, or when user mentions migrations, database schema, schema changes, or database structure.
 ---
 
-# Creating Laravel Database Migrations
+# Create Laravel Database Migrations
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a migration" or "add migration"
-- Creating or modifying database tables
-- Adding indexes or foreign keys
-- User mentions migrations, schema changes, or database structure
-- Need to version database changes
+Create database migrations that version schema changes with proper indexes and foreign keys. Migrations run sequentially to evolve the database structure, using timestamped filenames for ordering and descriptive names for clarity.
 
 ## File Structure
 

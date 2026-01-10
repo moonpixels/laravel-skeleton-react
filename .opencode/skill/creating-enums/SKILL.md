@@ -3,17 +3,9 @@ name: creating-enums
 description: Create PHP backed enums for representing fixed sets of values with type safety. Use when creating enums, defining constants, representing states, or when user mentions enums, enum types, constant values, or state machines.
 ---
 
-# Creating Laravel Enums
+# Create Laravel Enums
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a [Name] enum"
-- Representing a fixed set of possible values (statuses, types, roles)
-- Type-safe constants are needed
-- User mentions enums, enum types, or state machines
-- Replacing string/int constants with type-safe alternatives
+Create PHP backed enums that represent fixed sets of possible values with full type safety. Enums provide compile-time validation for status codes, roles, and categories, with methods for labels, colors, and other presentation logic.
 
 ## File Structure
 

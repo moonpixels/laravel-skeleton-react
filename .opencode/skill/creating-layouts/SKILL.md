@@ -1,19 +1,11 @@
 ---
 name: creating-layouts
-description: Creating React layout components for Inertia.js pages with TypeScript and AppHead. Use when creating layouts, wrapping pages, implementing navigation, or when user mentions layouts, authenticated layout, guest layout, or page wrappers.
+description: Create React layout components for Inertia.js pages with TypeScript and AppHead. Use when creating layouts, wrapping pages, implementing navigation, or when user mentions layouts, authenticated layout, guest layout, or page wrappers.
 ---
 
-# Creating React Layouts
+# Create React Layouts
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a [Name]Layout"
-- Building page wrappers with shared navigation, headers, or footers
-- Implementing authenticated vs guest layouts
-- User mentions layouts, page wrappers, or shared UI structure
-- Setting up navigation, sidebars, or consistent page structure
+Create layout components that wrap Inertia.js pages with shared navigation and structure. Layouts provide consistent headers, sidebars, and footers across pages, assigned via the `layout` property on page components.
 
 ## File Structure
 

@@ -3,17 +3,9 @@ name: creating-factories
 description: Create Laravel model factories with type-safe state methods for generating test data. Use when creating factories, generating test data, seeding databases, or when user mentions factories, test data, fake data, or model factories.
 ---
 
-# Creating Laravel Model Factories
+# Create Laravel Model Factories
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a factory" or "create model factory"
-- Generating test data for models
-- Seeding databases with sample data
-- User mentions factories, test data, or fake data
-- Need consistent test data generation
+Create model factories with type-safe state methods for generating test data. Factories produce realistic model instances for testing, with composable state methods that configure specific scenarios like admin users or unpublished posts.
 
 ## File Structure
 

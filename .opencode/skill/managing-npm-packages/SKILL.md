@@ -1,19 +1,11 @@
 ---
 name: managing-npm-packages
-description: Managing npm packages, dependencies, and package.json configuration for React applications. Use when installing packages, updating dependencies, configuring scripts, or when user mentions npm, packages, dependencies, or package management.
+description: Manage npm packages, dependencies, and package.json configuration for React applications. Use when installing packages, updating dependencies, configuring scripts, or when user mentions npm, packages, dependencies, or package management.
 ---
 
-# Managing npm Packages
+# Manage npm Packages
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "install [package-name]"
-- Adding new frontend dependencies
-- Updating or removing packages
-- User mentions npm, packages, dependencies, or node_modules
-- Configuring package scripts or managing package.json
+Manage npm packages, dependencies, and package.json configuration for React applications. Install production dependencies for runtime code and dev dependencies for build tools, keeping the dependency tree clean and well-organized.
 
 ## File Structure
 

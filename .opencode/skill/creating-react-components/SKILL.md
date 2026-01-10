@@ -1,19 +1,11 @@
 ---
 name: creating-react-components
-description: Creating reusable React components with TypeScript, Tailwind CSS, and shadcn/ui. Use when creating components, building UI elements, implementing reusable widgets, or when user mentions components, UI, buttons, cards, forms, or reusable elements.
+description: Create reusable React components with TypeScript, Tailwind CSS, and shadcn/ui. Use when creating components, building UI elements, implementing reusable widgets, or when user mentions components, UI, buttons, cards, forms, or reusable elements.
 ---
 
-# Creating React Components
+# Create React Components
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a [Name] component"
-- Building reusable UI elements for the application
-- Implementing custom components that wrap shadcn/ui components
-- User mentions components, UI widgets, or reusable elements
-- Refactoring duplicate JSX into reusable components
+Create reusable React components with TypeScript, Tailwind CSS, and shadcn/ui patterns. Components are function-based with typed props interfaces, following composition patterns for flexibility and the project's naming conventions.
 
 ## File Structure
 

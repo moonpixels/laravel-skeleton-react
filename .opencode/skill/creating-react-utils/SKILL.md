@@ -1,19 +1,11 @@
 ---
 name: creating-react-utils
-description: Creating utility functions and helper modules for React applications with TypeScript. Use when creating utilities, helper functions, common logic, or when user mentions utils, helpers, or shared functions.
+description: Create utility functions and helper modules for React applications with TypeScript. Use when creating utilities, helper functions, common logic, or when user mentions utils, helpers, or shared functions.
 ---
 
-# Creating React Utility Functions
+# Create React Utility Functions
 
-## When to Use This Skill
-
-Use this skill when:
-
-- User requests "create a utility for [purpose]"
-- Extracting reusable logic that doesn't need React hooks
-- Implementing pure functions for data transformation
-- User mentions utilities, helpers, or shared functions
-- Creating formatters, validators, or parsers
+Create utility functions and helper modules for React applications with TypeScript. Utils provide reusable logic for formatting, validation, and common operations, organized in the `lib/` directory with full type safety.
 
 ## File Structure
 
