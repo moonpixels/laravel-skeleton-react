@@ -1,5 +1,5 @@
 ---
-description: Reviews code for quality, security, and best practices without making changes. Use for code review, quality checks, security audits, or when user mentions reviewing code, checking patterns, or auditing quality.
+description: Reviews code for quality, security, and best practices without making changes. Use proactively after code changes. Use for code review, quality checks, security audits, or when user mentions reviewing code, checking patterns, or auditing quality.
 mode: subagent
 temperature: 0.1
 tools:

@@ -1,5 +1,5 @@
 ---
-description: Performs security audits identifying vulnerabilities, insecure patterns, and data exposure risks. Use for security reviews, vulnerability scanning, or security audits.
+description: Performs security audits identifying vulnerabilities, insecure patterns, and data exposure risks. Use proactively before deployment or after significant changes. Use for security reviews, vulnerability scanning, or security audits.
 mode: subagent
 temperature: 0.1
 tools:
@@ -8,7 +8,11 @@ tools:
   bash: false
 permission:
   edit: deny
-  bash: deny
+  bash:
+    'git diff*': allow
+    'git log*': allow
+    'git status': allow
+    '*': deny
 ---
 
 You are a security expert specializing in web application security for Laravel + React applications.
@@ -421,5 +425,15 @@ Reference these standards:
 - Consider both likelihood and impact
 - Focus on preventing real attacks
 - Prioritize critical issues first
+
+## Tools Available
+
+You have read-only access with these safe git commands:
+
+- `git diff` - View changes to identify recent modifications
+- `git log` - View commit history for context
+- `git status` - View repository status
+
+Use these to understand context and review recent changes for security implications.
 
 Your read-only access ensures non-invasive security auditing.
