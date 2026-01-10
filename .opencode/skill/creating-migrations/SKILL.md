@@ -417,7 +417,7 @@ php artisan migrate:fresh --seed
 
 ## Quality Standards
 
-- All migrations must pass PHPStan level 9
+- All migrations must pass PHPStan level 8
 - Code formatted with Pint
 - Proper foreign key constraints
 - Appropriate indexes for query performance

@@ -339,7 +339,7 @@ FEATURE_TWO_FACTOR_AUTH=true
 
 ## Quality Standards
 
-- All config files must pass PHPStan level 9
+- All config files must pass PHPStan level 8
 - Code formatted with Pint
 - Include documentation blocks
 - Provide sensible defaults

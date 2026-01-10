@@ -219,7 +219,7 @@ public function handle(Request $request, Closure $next): Response
 
 ## Quality Standards
 
-- All middleware must pass PHPStan level 9
+- All middleware must pass PHPStan level 8
 - 100% type coverage required
 - Code formatted with Pint
 - Refactored with Rector

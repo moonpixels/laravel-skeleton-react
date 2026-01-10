@@ -260,7 +260,7 @@ public function __construct(
 
 ## Quality Standards
 
-- All DTOs must pass PHPStan level 9
+- All DTOs must pass PHPStan level 8
 - 100% type coverage required
 - Code formatted with Pint
 - Refactored with Rector

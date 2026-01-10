@@ -420,7 +420,7 @@ final class User extends Model
 
 ## Quality Standards
 
-- All models must pass PHPStan level 9
+- All models must pass PHPStan level 8
 - 100% type coverage required
 - Code formatted with Pint
 - Refactored with Rector

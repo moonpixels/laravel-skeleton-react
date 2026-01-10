@@ -57,13 +57,13 @@ use App\Models\User;
 test('descriptive test name in sentence case', function (): void {
     // Arrange
     $user = User::factory()->create();
-    
+
     // Act
     $response = $this->actingAs($user)->post(route('endpoint'), getData());
-    
+
     // Assert
     $response->assertValid()->assertRedirect();
-    
+
     expect($user->fresh())
         ->property->toBe('expected value');
 });
@@ -317,7 +317,7 @@ test('authenticated users can list their orders', function (): void {
 test('users can only see their own orders', function (): void {
     $user = User::factory()->create();
     $otherUser = User::factory()->create();
-    
+
     Order::factory()->for($otherUser)->create();
     Order::factory()->for($user)->create();
 
@@ -401,7 +401,7 @@ $this->post(route('register'), getData())
 
 ## Quality Standards
 
-- All feature tests must pass PHPStan level 9
+- All feature tests must pass PHPStan level 8
 - 100% type coverage required
 - Code formatted with Pint
 - 90% overall test coverage required

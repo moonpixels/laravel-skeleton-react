@@ -184,7 +184,7 @@ final readonly class SendWelcomeEmailAction
 
 ## Quality Standards
 
-- All helpers must pass PHPStan level 9
+- All helpers must pass PHPStan level 8
 - 100% type coverage required
 - Code formatted with Pint
 - Add PHPDoc describing purpose

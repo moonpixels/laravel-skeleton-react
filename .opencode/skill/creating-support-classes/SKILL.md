@@ -414,7 +414,7 @@ public function getUser(): ?User
 
 ## Quality Standards
 
-- All support classes must pass PHPStan level 9
+- All support classes must pass PHPStan level 8
 - 100% type coverage required
 - Code formatted with Pint
 - Refactored with Rector

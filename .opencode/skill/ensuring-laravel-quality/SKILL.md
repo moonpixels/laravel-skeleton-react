@@ -181,7 +181,7 @@ composer run type-coverage
    - PSR-12 compliant
 
 3. **Static Analysis:**
-   - Passes PHPStan level 9
+   - Passes PHPStan level 8
    - No ignored errors
    - Proper PHPDoc blocks
 

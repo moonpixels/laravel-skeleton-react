@@ -59,7 +59,7 @@ use App\Models\User;
 test('users can complete the workflow', function (): void {
     // Arrange
     $user = User::factory()->create();
-    
+
     // Act & Assert
     visit(route('feature.index'))
         ->fill('field', 'value')
@@ -458,7 +458,7 @@ visit(route('checkout'))
 
 ## Quality Standards
 
-- All browser tests must pass PHPStan level 9
+- All browser tests must pass PHPStan level 8
 - 100% type coverage required
 - Code formatted with Pint
 - Tests must be independent and idempotent

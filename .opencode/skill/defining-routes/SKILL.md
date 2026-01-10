@@ -372,7 +372,7 @@ Route::get('admin/dashboard', ...)
 
 ## Quality Standards
 
-- All route files must pass PHPStan level 9
+- All route files must pass PHPStan level 8
 - Code formatted with Pint
 - All routes must be named
 - Use RESTful conventions

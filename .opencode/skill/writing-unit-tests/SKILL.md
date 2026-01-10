@@ -61,10 +61,10 @@ test('it can perform expected behavior', function (): void {
     // Arrange
     $action = createAction();
     $data = MyData::from(['field' => 'value']);
-    
+
     // Act
     $result = $action->handle($data);
-    
+
     // Assert
     expect($result)
         ->toBeInstanceOf(ExpectedClass::class)
@@ -127,13 +127,13 @@ expect($user)
 ```php
 test('it throws exception for invalid input', function (): void {
     $action = createAction();
-    
+
     $action->handle(invalidData());
 })->throws(InvalidArgumentException::class);
 
 test('it throws exception with message', function (): void {
     $action = createAction();
-    
+
     $action->handle(invalidData());
 })->throws(InvalidArgumentException::class, 'Expected error message');
 ```
@@ -147,11 +147,11 @@ test('it calls dependency method', function (): void {
         ->once()
         ->with(Mockery::type(Email::class))
         ->andReturn(true);
-    
+
     $action = new SendEmailAction($mock);
-    
+
     $result = $action->handle($data);
-    
+
     expect($result)->toBeTrue();
 });
 ```
@@ -172,28 +172,28 @@ use Illuminate\Support\Facades\Storage;
 
 test('it can delete a user and their avatar', function (): void {
     Storage::fake('public');
-    
+
     $user = User::factory()->create([
         'avatar_path' => 'avatars/test.jpg',
     ]);
-    
+
     Storage::disk('public')->put('avatars/test.jpg', 'content');
-    
+
     $action = new DeleteUserAction;
-    
+
     $action->handle(DeleteUserData::from(['userId' => $user->id]));
-    
+
     $this->assertDatabaseMissing('users', ['id' => $user->id]);
     Storage::disk('public')->assertMissing('avatars/test.jpg');
 });
 
 test('it can delete a user without avatar', function (): void {
     $user = User::factory()->create(['avatar_path' => null]);
-    
+
     $action = new DeleteUserAction;
-    
+
     $action->handle(DeleteUserData::from(['userId' => $user->id]));
-    
+
     $this->assertDatabaseMissing('users', ['id' => $user->id]);
 });
 ```
@@ -346,27 +346,27 @@ use Illuminate\Support\Facades\Event;
 
 test('it can process order with successful payment', function (): void {
     Event::fake();
-    
+
     $paymentGateway = mock(PaymentGateway::class);
     $paymentGateway->shouldReceive('charge')
         ->once()
         ->with(1000, 'tok_visa')
         ->andReturn(['id' => 'ch_123', 'status' => 'succeeded']);
-    
+
     $order = Order::factory()->create(['total' => 1000]);
-    
+
     $action = new ProcessOrderAction($paymentGateway);
-    
+
     $result = $action->handle(ProcessOrderData::from([
         'orderId' => $order->id,
         'paymentToken' => 'tok_visa',
     ]));
-    
+
     expect($result)
         ->toBeInstanceOf(Order::class)
         ->status->toBe('paid')
         ->payment_id->toBe('ch_123');
-    
+
     Event::assertDispatched(OrderProcessed::class);
 });
 
@@ -375,11 +375,11 @@ test('it throws exception when payment fails', function (): void {
     $paymentGateway->shouldReceive('charge')
         ->once()
         ->andThrow(new PaymentException('Card declined'));
-    
+
     $order = Order::factory()->create();
-    
+
     $action = new ProcessOrderAction($paymentGateway);
-    
+
     $action->handle(ProcessOrderData::from([
         'orderId' => $order->id,
         'paymentToken' => 'tok_visa',
@@ -474,7 +474,7 @@ function createAction(): MyAction
 
 ## Quality Standards
 
-- All unit tests must pass PHPStan level 9
+- All unit tests must pass PHPStan level 8
 - 100% type coverage required
 - Code formatted with Pint
 - 90% overall test coverage required
@@ -529,14 +529,14 @@ Unit tests verify isolated behavior, feature tests verify integration:
 test('it can register user with correct locale', function (): void {
     $localisation = createLocalisation();
     $action = new RegisterUserAction($localisation);
-    
+
     $user = $action->handle(RegisterData::from([
         'name' => 'Test',
         'email' => 'test@example.com',
         'language' => 'fr',
         'password' => 'password',
     ]));
-    
+
     expect($user->language)->toBe('fr_FR');
 });
 
@@ -549,7 +549,7 @@ test('new users can register with locale', function (): void {
         'password' => 'password',
         'password_confirmation' => 'password',
     ])->assertRedirect(route('dashboard.index'));
-    
+
     expect(User::query()->sole()->language)->toBe('fr_FR');
 });
 ```

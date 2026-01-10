@@ -395,7 +395,7 @@ return [
 
 ## Quality Standards
 
-- All translation files must pass PHPStan level 9
+- All translation files must pass PHPStan level 8
 - Code formatted with Pint
 - Consistent key naming (snake_case)
 - All locales have same key structure

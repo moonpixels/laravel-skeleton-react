@@ -447,7 +447,7 @@ final class DatabaseSeeder extends Seeder
 
 ## Quality Standards
 
-- All seeders must pass PHPStan level 9
+- All seeders must pass PHPStan level 8
 - Code formatted with Pint
 - Use factories for data generation
 - Idempotent where possible
