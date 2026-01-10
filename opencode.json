@@ -1,5 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "default_agent": "plan",
   "mcp": {
     "laravel-boost": {
       "type": "local",
@@ -16,19 +17,9 @@
       "command": ["npx", "-y", "@upstash/context7-mcp"],
       "enabled": true
     },
-    "fetch": {
-      "type": "local",
-      "command": ["uvx", "mcp-server-fetch"],
-      "enabled": true
-    },
     "git": {
       "type": "local",
       "command": ["uvx", "mcp-server-git"],
-      "enabled": true
-    },
-    "filesystem": {
-      "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem", "./"],
       "enabled": true
     },
     "playwright": {
@@ -36,5 +27,28 @@
       "command": ["npx", "@playwright/mcp@latest"],
       "enabled": true
     }
-  }
+  },
+  "permission": {
+    "bash": {
+      "*": "allow",
+      "rm -rf*": "deny",
+      "git push --force": "ask",
+      "php artisan migrate:fresh": "ask",
+      "php artisan migrate:fresh --seed": "ask"
+    },
+    "edit": "allow",
+    "webfetch": "allow"
+  },
+  "formatter": {
+    "pint": {
+      "command": ["./vendor/bin/pint", "$FILE"],
+      "extensions": [".php"]
+    },
+    "prettier": {
+      "command": ["npx", "prettier", "--write", "$FILE"],
+      "extensions": [".js", ".jsx", ".ts", ".tsx", ".json", ".md"]
+    }
+  },
+  "share": "manual",
+  "autoupdate": true
 }
