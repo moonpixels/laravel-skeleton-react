@@ -5,152 +5,137 @@ description: Create specialized agent configurations (subagents and primary agen
 
 # Create Agentic Subagents
 
-Create specialized agent configurations (subagents and primary agents) for OpenCode. Primary agents are main assistants users switch between with Tab, while subagents are specialists invoked via @mention for focused tasks with isolated context.
+Create specialized agent configurations for OpenCode. Subagents are specialists invoked via @mention that operate in isolated context, while primary agents are main assistants users switch between with Tab.
 
-## Understanding Agents in OpenCode
+## Core Principle: Start Simple
 
-OpenCode provides two types of agents:
-
-### Primary Agents
-
-**Primary agents** are the main assistants you interact with directly:
-
-- Switch between them using **Tab** key
-- Handle the main conversation
-- Can access all configured tools
-- Can invoke subagents for specialized tasks
-- Examples: `build` (default, full access), `plan` (restricted, for analysis)
-
-### Subagents
-
-**Subagents** are specialized assistants invoked for focused tasks:
-
-- Invoked by **@mentioning** them or automatically by primary agents
-- Operate in isolated context (don't pollute main conversation)
-- Can have restricted tool access for safety
-- Can use different models or temperatures
-- Return compressed results to parent agent
-- Examples: `general` (research), `explore` (fast codebase analysis)
-
-### Decision Tree
+**Always begin with the simplest solution that could work.** Agentic systems trade latency and cost for capability. Only add complexity when simpler approaches fail.
 
 ```
-Need automation?
-├─ Just a prompt shortcut with arguments?
+Need to automate something?
+├─ Can a single prompt with good context solve it?
+│  └─ → Use main conversation (don't create an agent)
+│
+├─ Need reusable prompt with arguments?
 │  └─ → Custom command (.opencode/command/)
 │
-├─ Need specialized AI behavior?
-│  ├─ Will users switch to it frequently as main agent?
-│  │  └─ → Primary agent (mode: primary)
-│  │
-│  └─ Invoked for focused subtasks?
-│     └─ → Subagent (mode: subagent)
+├─ Need isolated context to prevent pollution?
+│  └─ → Subagent with focused system prompt
 │
-├─ Need to restrict tools for safety?
-│  └─ → Subagent with tool restrictions
+├─ Need restricted tools for safety?
+│  └─ → Subagent with tool/permission restrictions
 │
-├─ Need isolated context to avoid pollution?
-│  └─ → Subagent with subtask: true
+├─ Need to switch between different modes?
+│  └─ → Primary agent (mode: primary)
 │
-└─ Complex orchestration of multiple specialists?
-   └─ → Primary orchestrator agent + multiple subagents
+└─ Complex orchestration of specialists?
+   └─ → Primary orchestrator + multiple subagents
 ```
-
-**Important**: Start with the simplest solution. Many tasks only need a single LLM call with good prompting.
 
 ## File Structure
 
-**Project-specific:**
+**Project-specific:** `.opencode/agent/{name}.md`
+**Global (all projects):** `~/.config/opencode/agent/{name}.md`
 
-```
-.opencode/agent/{name}.md
-```
+The filename becomes the agent identifier: `test-fixer.md` → `@test-fixer`
 
-**Global (all projects):**
-
-```
-~/.config/opencode/agent/{name}.md
-```
-
-**Naming conventions:**
-
-- Lowercase with hyphens: `test-fixer.md`, `code-reviewer.md`
-- Use noun or role: `reviewer`, `auditor`, `fixer`, `builder`
-- File name becomes agent: `test-fixer.md` → `@test-fixer`
-
-## Agent Configuration Structure
+## Configuration Structure
 
 ```markdown
 ---
 description: What the agent does and when to use it (REQUIRED)
-mode: subagent # primary, subagent, or all (optional, defaults to all)
-temperature: 0.1 # 0.0-1.0 (optional, for creativity control)
+mode: subagent # primary | subagent | all (default: all)
+temperature: 0.1 # 0.0-1.0 (optional)
 hidden: false # Hide from @autocomplete (optional, subagents only)
 tools: # Tool restrictions (optional)
   write: false
   edit: false
   bash: false
-permission: # Permission overrides (optional)
+disallowedTools: # Explicit tool denials (optional)
+  - mcp__server__tool
+skills: # Skills to load at startup (optional)
+  - creating-feature-tests
+hooks: # Lifecycle hooks (optional)
+  PreToolUse:
+    - matcher: 'Bash'
+      hooks:
+        - type: command
+          command: './scripts/validate.sh'
+permission: # Fine-grained permissions (optional)
   edit: deny
   bash:
     '*': ask
     'git status': allow
+permissionMode: default # default | acceptEdits | dontAsk | plan (optional)
+maxSteps: 50 # Limit agentic iterations (optional)
 ---
 
-System prompt for the agent.
-Define its role, capabilities, and behavior clearly.
+System prompt defining role, capabilities, and behavior.
 ```
 
-### Configuration Options
+### Required Fields
 
-#### Required Fields
+**`description`** - Critical for automatic delegation. Agents read this to decide when to invoke the subagent.
 
-**`description`** (required):
+**Description formula:**
 
-- Clear description of agent's purpose and when to use it
-- Used for semantic matching by primary agents
-- Include trigger phrases users might say
-- Format: "Does X. Use when Y or when user mentions Z."
+```
+[What it does]. [Use proactively after X]. Use when [contexts] or when user mentions [keywords].
+```
 
-#### Optional Fields
+**Effective example:**
 
-**`mode`** (optional, defaults to `all`):
+```yaml
+description: Reviews code for quality, security, and best practices without making changes. Use proactively after code changes. Use for code review, quality checks, or when user mentions reviewing code or auditing quality.
+```
 
-- `primary`: Main agent, switch with Tab key
-- `subagent`: Invoked with @mention or automatically
-- `all`: Can be used as both primary and subagent
+Including "use proactively" encourages automatic delegation.
 
-**`temperature`** (optional):
+### Optional Fields
 
-- **0.0-0.2**: Focused, deterministic (code review, analysis, planning)
-- **0.3-0.5**: Balanced (general development)
-- **0.6-1.0**: Creative (brainstorming, exploration)
+| Field             | Purpose                   | Values                                                              |
+| ----------------- | ------------------------- | ------------------------------------------------------------------- |
+| `mode`            | How agent can be used     | `primary`, `subagent`, `all`                                        |
+| `temperature`     | Creativity vs determinism | 0.0-0.2 (analytical), 0.3-0.5 (balanced), 0.6-1.0 (creative)        |
+| `hidden`          | Hide from @autocomplete   | `true`, `false`                                                     |
+| `tools`           | Enable/disable tools      | `write`, `edit`, `bash`, `read`, `glob`, `grep`, `skill`, MCP tools |
+| `disallowedTools` | Deny specific tools       | Array of tool names                                                 |
+| `skills`          | Load skills at startup    | Array of skill names                                                |
+| `hooks`           | Lifecycle callbacks       | `PreToolUse`, `PostToolUse`, `Stop`                                 |
+| `permission`      | Fine-grained control      | `allow`, `ask`, `deny` per tool/command                             |
+| `permissionMode`  | Permission behavior       | `default`, `acceptEdits`, `dontAsk`, `plan`                         |
+| `maxSteps`        | Iteration limit           | Number (for cost control)                                           |
 
-**`hidden`** (optional, subagents only):
+**Important:** Omit `model` unless user explicitly requests a specific model.
 
-- Set to `true` to hide from @autocomplete menu
-- Still invokable by other agents via Task tool
+## Workflow Patterns
 
-**`tools`** (optional):
+Design subagents around proven workflow patterns:
 
-- Control which tools are available: `write`, `edit`, `bash`, `read`, `glob`, `grep`
-- Set to `true` (enable) or `false` (disable)
+### Evaluator-Optimizer (Iterative)
 
-**`permission`** (optional):
+Best for agents that iterate until success (test fixers, quality auditors):
 
-- Fine-grained control: `allow`, `ask`, `deny`
-- Can specify per-tool or per-bash-command
-- Last matching rule wins
+```markdown
+Workflow:
 
-**`maxSteps`** (optional):
+1. Run check/test
+2. If passes → Report success and exit
+3. Analyze failures
+4. Fix issues
+5. Repeat from step 1 until all pass
 
-- Limit agentic iterations for cost control
+Exit criteria:
 
-**Important**: Do NOT include `model` field unless user explicitly requests a specific model.
+- All tests passing
+- Coverage ≥90%
+```
 
-## Quick Reference: Common Configurations
+**Key elements:** Clear exit criteria, feedback loop with ground truth (test results).
 
 ### Read-Only Reviewer
+
+Best for analysis without side effects (code review, security audit):
 
 ```yaml
 tools:
@@ -161,14 +146,133 @@ permission:
   edit: deny
 ```
 
-### Test Fixer (Full Access)
+**Key elements:** Cannot make changes, provides structured feedback.
+
+### Orchestrator-Workers
+
+Best for complex multi-step tasks delegated to specialists:
+
+```yaml
+permission:
+  task:
+    '*': deny
+    'code-reviewer': allow
+    'test-fixer': allow
+```
+
+**Key elements:** Delegates to specialists, synthesizes results.
+
+See [references/patterns.md](references/patterns.md) for complete pattern templates.
+
+## System Prompt Design
+
+### Structure for Effective Prompts
+
+1. **Role statement** (1-2 sentences)
+2. **Focus areas** (what to examine/do)
+3. **Workflow** (numbered steps with clear exit criteria)
+4. **Guidelines** (what to do and avoid)
+5. **Output format** (how to structure results)
+
+### Key Principles
+
+**Be specific about behavior:**
+
+```markdown
+# Good
+
+Fix the root cause, not symptoms. Never remove failing tests to make them pass.
+
+# Bad
+
+Fix issues.
+```
+
+**Include ground truth feedback loops:**
+
+```markdown
+1. Run tests
+2. Analyze results (ground truth)
+3. Make changes
+4. Re-run tests (verify against ground truth)
+5. Repeat until passing
+```
+
+**Define clear exit criteria:**
+
+```markdown
+Exit when:
+
+- All tests pass
+- Coverage ≥90%
+- No PHPStan errors
+
+Final report format:
+✅ All checks passing
+✅ Coverage: X%
+```
+
+## Context and Cost Considerations
+
+### The 15× Token Multiplier
+
+Multi-agent systems use approximately **15× more tokens** than single conversations due to:
+
+- Multiple isolated context windows
+- Repeated tool calls across agents
+- Parent-child communication overhead
+
+### When Multi-Agent Is Worth It
+
+**Use subagents when:**
+
+- Context isolation genuinely helps (exploration won't pollute main conversation)
+- Tool restrictions are needed for safety
+- Task produces verbose output you don't need in main context
+- Specialization produces measurably better results
+
+**Stay single-agent when:**
+
+- Task is simple or direct
+- Sequential tasks share cumulative context
+- Task value doesn't justify overhead
+
+### Background vs Foreground
+
+**Foreground subagents** (blocking):
+
+- Permission prompts pass through to user
+- Can ask clarifying questions
+- Better for tasks needing human input
+
+**Background subagents** (concurrent):
+
+- Inherit parent permissions, auto-deny others
+- Cannot ask questions (fail silently if needed)
+- Better for parallel, independent tasks
+
+## Quick Reference: Common Configurations
+
+### Read-Only Reviewer
+
+```yaml
+temperature: 0.1
+tools:
+  write: false
+  edit: false
+  bash: false
+permission:
+  edit: deny
+```
+
+### Iterative Fixer (Full Access)
 
 ```yaml
 temperature: 0.2
-# No tool restrictions - needs to edit and run tests
+# No tool restrictions - needs to edit and run commands
 ```
 
-### Documentation Writer (Path-Restricted)
+### Path-Restricted Writer
 
 ```yaml
 permission:
@@ -179,7 +283,7 @@ permission:
     '*': deny
 ```
 
-### Orchestrator (Controlled Delegation)
+### Controlled Orchestrator
 
 ```yaml
 permission:
@@ -189,14 +293,10 @@ permission:
     'test-fixer': allow
 ```
 
-See `references/patterns.md` for complete pattern templates.
-
 ## Anti-Patterns
 
-### Don't Do This
-
 **Creating too many agents:**
-Over-specialization creates confusion. Most tasks need a single `quality-auditor` or commands.
+Over-specialization creates confusion. Most tasks need one `quality-auditor` or custom commands.
 
 **Vague descriptions:**
 
@@ -204,62 +304,48 @@ Over-specialization creates confusion. Most tasks need a single `quality-auditor
 description: Helps with code review # ❌ No triggers, no context
 ```
 
-**Missing tool restrictions for reviewers:**
-Reviewers should be read-only. Without restrictions, they might make unintended changes.
-
-**Unnecessarily specifying model:**
-Only add `model` if user explicitly asks for specific model.
-
-**No workflow in iterative agents:**
-Include clear steps, exit criteria, and success conditions.
-
-### Do This Instead
-
-**Focused agents with clear purposes:**
-
-```yaml
-.opencode/agent/
-├── code-reviewer.md       # Comprehensive code review
-├── test-fixer.md         # Iterative test fixing
-└── quality-auditor.md    # All quality checks
-```
-
-**Rich descriptions with triggers:**
-
-```yaml
-description: Reviews code for quality, security, and best practices without making changes. Use for code review, quality checks, or when user mentions reviewing code, checking security, or auditing quality.
-```
-
-**Clear workflow steps:**
+**Missing exit criteria for iterative agents:**
 
 ```markdown
-Workflow:
+# ❌ No clear stopping point
 
-1. Run tests to identify failures
-2. If all pass → Report success and exit
-3. If failures → Fix each failure
-4. Re-run tests
-5. Repeat until all pass
+Fix issues until done.
+
+# ✅ Clear exit criteria
+
+Repeat until all tests pass and coverage ≥90%.
+```
+
+**Skipping ground truth feedback:**
+
+```markdown
+# ❌ No verification
+
+Make changes to fix the issue.
+
+# ✅ Verified against ground truth
+
+Make changes, run tests, verify fix worked.
 ```
 
 ## Quality Checklist
 
 Before finalizing an agent:
 
-- [ ] Clear `description` with purpose and trigger keywords
+- [ ] Clear `description` with purpose, triggers, and "use proactively" if appropriate
 - [ ] Appropriate `mode` (primary vs subagent)
-- [ ] System prompt defines role and behavior clearly
+- [ ] Role and behavior clearly defined in system prompt
 - [ ] Tool restrictions appropriate for agent purpose
 - [ ] Permissions configured for safety
-- [ ] Temperature set appropriately (if needed)
-- [ ] `model` field omitted unless user specifically requested it
-- [ ] Workflow has clear steps (for iterative agents)
-- [ ] Exit criteria defined
+- [ ] Workflow has numbered steps (for iterative agents)
+- [ ] Exit criteria explicitly defined
 - [ ] Output format specified
+- [ ] Ground truth feedback loop included (where applicable)
+- [ ] `model` field omitted unless user specifically requested it
 - [ ] Agent documented in AGENTS.md
 
 ## References
 
-- `references/patterns.md` - Complete pattern templates for common agent types
-- `references/examples.md` - Full production-ready agent configurations
-- `references/permissions.md` - Permission patterns, context management, and cost considerations
+- [references/patterns.md](references/patterns.md) - Complete workflow patterns from Anthropic research
+- [references/examples.md](references/examples.md) - Production-ready agent configurations
+- [references/permissions.md](references/permissions.md) - Permission patterns, hooks, and context management
