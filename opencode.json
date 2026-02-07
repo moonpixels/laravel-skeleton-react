@@ -6,8 +6,8 @@
   "mcp": {
     "laravel-boost": {
       "type": "local",
-      "command": ["php", "./artisan", "boost:mcp"],
-      "enabled": true
+      "enabled": true,
+      "command": ["php", "artisan", "boost:mcp"]
     },
     "shadcn": {
       "type": "local",
