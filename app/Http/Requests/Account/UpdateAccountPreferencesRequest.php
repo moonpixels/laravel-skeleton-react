@@ -10,6 +10,7 @@ use App\Support\Localisation\Rules\SupportedLocale;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\ValidatorAwareRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Override;
 
 final class UpdateAccountPreferencesRequest extends FormRequest
 {
@@ -30,6 +31,7 @@ final class UpdateAccountPreferencesRequest extends FormRequest
         );
     }
 
+    #[Override]
     protected function prepareForValidation(): void
     {
         // Convert the language string to ISO 15897 format

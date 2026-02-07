@@ -1,11 +1,13 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "default_agent": "plan",
+  "share": "manual",
+  "autoupdate": true,
   "mcp": {
     "laravel-boost": {
       "type": "local",
-      "command": ["php", "./artisan", "boost:mcp"],
-      "enabled": true
+      "enabled": true,
+      "command": ["php", "artisan", "boost:mcp"]
     },
     "shadcn": {
       "type": "local",
@@ -35,9 +37,7 @@
       "git push --force": "ask",
       "php artisan migrate:fresh": "ask",
       "php artisan migrate:fresh --seed": "ask"
-    },
-    "edit": "allow",
-    "webfetch": "allow"
+    }
   },
   "formatter": {
     "pint": {
@@ -48,7 +48,5 @@
       "command": ["npx", "prettier", "--write", "$FILE"],
       "extensions": [".js", ".jsx", ".ts", ".tsx", ".json", ".md"]
     }
-  },
-  "share": "manual",
-  "autoupdate": true
+  }
 }

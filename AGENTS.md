@@ -1,118 +1,82 @@
 # Laravel Skeleton React
 
-Full-stack Laravel + React + Inertia.js application with domain-driven design patterns.
+Laravel 12 + Inertia v2 + React 19 starter for building full-stack Moon Pixels applications.
 
-## Quick Commands
+## What
 
-- **Dev**: `npm run dev` (Vite HMR - auto-starts via Herd)
-- **Build**: `npm run build` (production assets)
-- **Test**: `composer test` (Pest with coverage)
-- **Backend Quality**: `composer run checks` (Rector, Pint, PHPStan, coverage, type coverage)
-- **Frontend Quality**: `npm run checks` (ESLint + Prettier)
-- **Fresh DB**: `php artisan migrate:fresh --seed`
+### Tech Stack
 
-## Tech Stack
+- Backend: PHP 8.5, Laravel 12, PostgreSQL, Redis
+- Frontend: React 19, TypeScript 5, Inertia.js v2, Tailwind CSS v4, Vite 7
+- Realtime/ops: Laravel Reverb, Horizon, Telescope
+- Testing and quality: Pest 4, Playwright (browser tests), PHPStan/Larastan, Rector, Pint, ESLint, Prettier
 
-- **Backend**: PHP 8.5, Laravel 12, PostgreSQL 17
-- **Frontend**: React 19, TypeScript 5, Inertia.js v2, Tailwind CSS v4
-- **Testing**: Pest v4 with browser testing (Playwright)
-- **Quality**: Rector, Pint, PHPStan/Larastan (level 8), 90% code coverage, 100% type coverage
-- **Environment**: Laravel Herd (auto HTTPS, PostgreSQL, Redis, MinIO, Reverb)
-- **Real-time**: Laravel Reverb for WebSockets, Laravel Echo for frontend
+### Key Directories
 
-## Key Directories
-
-- `app/Actions/{Domain}/` - Business logic operations (domain-driven)
-- `app/DTOs/{Domain}/` - Data transfer objects for type-safe data passing
-- `app/Http/Controllers/` - Thin route handlers (delegate to Actions)
-- `app/Http/Requests/` - Form validation with `toDTO()` methods
-- `app/Http/Resources/` - API response formatting
-- `app/Models/` - Eloquent models with PHPDoc properties
-- `app/Support/` - Custom packages (ImageProcessor, Localisation, TwoFactorAuthentication)
-- `resources/js/components/` - Reusable React components
-- `resources/js/components/ui/` - Base UI components (Radix UI primitives)
+- `app/Actions/` - business logic entry points
+- `app/DTOs/` - readonly data transfer objects
+- `app/Http/Controllers/` - HTTP orchestration only
+- `app/Http/Requests/` - validation and request-to-DTO mapping
+- `app/Http/Resources/` - API response transformers
+- `app/Support/` - internal support modules (ImageProcessor, Localisation, TwoFactorAuthentication, query filters)
 - `resources/js/pages/` - Inertia page components
-- `resources/js/layouts/` - Layout wrappers for pages
-- `resources/js/contexts/` - React Context providers for global state
-- `resources/js/hooks/` - Custom React hooks
-- `resources/js/locales/` - Frontend i18n translations (i18next)
-- `tests/Feature/` - HTTP endpoint tests (most common)
-- `tests/Unit/` - Isolated business logic tests
-- `tests/Browser/` - End-to-end browser tests (Playwright)
+- `resources/js/components/` - reusable React components
+- `resources/js/layouts/` - application/page layout wrappers
+- `resources/js/contexts/` - shared React state providers
+- `routes/` - route definitions (`web.php`, `auth.php`, `console.php`, `channels.php`)
+- `tests/Feature`, `tests/Unit`, `tests/Browser` - HTTP, unit, and browser test suites
 
-## Architecture Decisions
+## Why
 
-- **Business Logic**: Action classes in `app/Actions/{Domain}/` following domain-driven design
-- **Validation**: Form Requests with `toDTO()` methods convert to type-safe DTOs
-- **Controllers**: Thin controllers that delegate to Actions (single responsibility)
-- **React Components**: Function components with TypeScript, no `FC` type, use `import type`
-- **State Management**: React Context for global state, form state via React Hook Form
-- **Testing Strategy**: Feature tests for all HTTP endpoints, browser tests for complex UI flows
-- **Type Safety**: 100% type coverage (PHPStan level 8, TypeScript strict mode)
-- **Strict Types**: All PHP files use `declare(strict_types=1);`
-- **Final Classes**: PHP classes marked `final` by default
-- **Internationalization**: i18next for React, Laravel localization for backend
-- **Component Library**: Radix UI primitives following shadcn/ui patterns
-- **Form Handling**: React Hook Form with Zod validation schemas
+### Architecture Decisions
 
-## Before Committing
+- Business logic lives in Actions; controllers stay thin and delegate.
+- Input validation belongs in Form Requests, then mapped to DTOs.
+- Inertia routes render React pages from `resources/js/pages` instead of Blade page views.
+- Strict typing is enforced in both PHP and TypeScript (`declare(strict_types=1);`, strict TS config).
+- Architecture constraints are tested (naming, strict types, DTO/read-only patterns, env usage).
 
-All code must pass:
+## How
 
-- Rector (automated refactoring)
-- Pint (code formatting)
-- PHPStan level 8 (static analysis)
-- 90% code coverage minimum
-- 100% type coverage
-- ESLint + Prettier (frontend)
-- TypeScript compilation (no errors)
+### Quick Commands
 
-Run `composer run checks` to verify all backend checks.
-Run `npm run checks` to verify all frontend checks.
+- Install dependencies: `composer install --no-interaction --prefer-dist --optimize-autoloader && npm ci`
+- Start frontend dev server: `npm run dev`
+- Build assets: `npm run build`
+- Run frontend checks: `npm run checks`
+- Run tests (parallel Pest): `composer test`
+- Run full backend gate: `composer run checks`
+- Run focused tests while iterating: `php artisan test --compact --filter=TestName`
+- Reset local database: `php artisan migrate:fresh --seed`
 
-Formatters run automatically on save (Pint for PHP, Prettier for JS/TS/JSON).
+### Universal Workflow Rules
 
-## Environment Notes
+- Reuse existing components/modules before creating new files.
+- Keep new files in the existing directory structure unless a new base folder is approved.
+- Prefer Eloquent models/relationships over raw SQL; avoid `env()` outside config files.
+- Use Laravel Boost tooling for docs, logs, routes, and app-aware debugging.
+- For frontend work not reflected in browser, run `npm run dev` or `npm run build`.
 
-- Laravel Herd provides automatic HTTPS at URL in `APP_URL` (.env)
-- No need to run `php artisan serve` - always available via Herd
-- PostgreSQL, Redis, MinIO, and Reverb automatically configured and running
-- Vite HMR works with Herd's HTTPS automatically
-- MinIO dashboard: [https://minio.herd.test](https://minio.herd.test)
-- Horizon dashboard: `/horizon` in development
-- Telescope dashboard: `/telescope` in development
+### Before Committing
 
-## Available Skills
+Run the same checks expected by CI:
 
-Load skills on-demand for specific tasks:
+- `npm run checks`
+- `composer run checks`
+- `npm run build`
 
-**Backend**: `creating-actions`, `creating-dtos`, `creating-form-requests`, `creating-controllers`, `creating-migrations`, `managing-models`, `creating-enums`, `creating-helpers`, `creating-middleware`, `creating-service-providers`, `creating-support-classes`, `creating-api-resources`, `creating-factories`, `creating-seeders`, `managing-config-files`, `defining-routes`, `managing-localisation`, `creating-model-mixins`
+### Available Skills
 
-**Frontend**: `creating-react-components`, `creating-inertia-pages`, `creating-hooks`, `creating-layouts`, `creating-contexts`, `defining-typescript-types`, `creating-react-utils`, `managing-react-localisation`, `managing-npm-packages`
+- Core app skills: `pest-testing`, `inertia-react-development`, `tailwindcss-development`
+- Agentic/meta skills: `agentic-config`, `agentic-commands`, `agentic-subagents`, `agentic-skills`
 
-**Testing**: `writing-feature-tests`, `writing-unit-tests`, `writing-browser-tests`
+### Specialized Agents
 
-**Quality**: `ensuring-laravel-quality`, `ensuring-frontend-quality`
+- No project-local specialized subagents are configured in `.opencode/agents/`.
+- Use built-in `general` and `explore` subagents for multi-step research/execution tasks.
 
-**Meta**: `creating-agentic-skills`, `creating-agentic-commands`, `creating-agentic-subagents`
+### Progressive Disclosure
 
-## Specialized Agents
-
-Invoke specialized subagents with `@` for focused workflows:
-
-**@quality-auditor**: Runs all quality checks (Rector, Pint, PHPStan, tests, coverage) and fixes issues iteratively. Use before committing or when ensuring code quality.
-
-**@code-reviewer**: Reviews code for quality, security, and best practices without making changes. Use for code review feedback before implementation.
-
-**@test-fixer**: Runs tests iteratively and fixes failures until all tests pass with adequate coverage. Use when debugging test failures.
-
-**@feature-builder**: Builds complete features following domain-driven patterns (Actions, DTOs, FormRequests, thin Controllers). Use when implementing new functionality.
-
-**@security-auditor**: Performs security audits identifying vulnerabilities and risks. Use for security reviews before deployment.
-
-## For More Context
-
-- Skill files in `.opencode/skill/` provide detailed patterns for specific tasks
-- Agent files in `.opencode/agent/` contain specialized subagent configurations
-- Load skills automatically by mentioning task types (e.g., "create an Action")
-- README.md contains comprehensive setup and feature documentation
+- Project overview and setup: `README.md`
+- CI quality gates: `.github/workflows/standards.yml`, `.github/workflows/tests.yml`
+- Laravel Boost and project operating rules: `CLAUDE.md`
