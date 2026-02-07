@@ -7,50 +7,55 @@ You are initializing OpenCode for this project by creating or improving the AGEN
 
 ## Your Task
 
-Load the `creating-agentic-config` skill and follow its comprehensive guidance to create the best possible AGENTS.md file for this project.
+Load the `agentic-config` skill and follow its comprehensive guidance to create the best possible AGENTS.md file for this project.
 
 ## Process
 
 1. **Load the skill:**
-   Load the `creating-agentic-config` skill immediately to access best practices.
+   Load the `agentic-config` skill immediately to access best practices.
 
 2. **Perform thorough analysis:**
    Follow the skill's research process:
-   - Analyze project structure comprehensively
-   - Identify tech stack and versions
-   - Extract all relevant commands from package.json, composer.json, Makefile, etc.
-   - Map key directories with their purposes
-   - Identify architecture decisions and patterns
-   - Determine quality standards and verification requirements
+
+- Analyze project structure comprehensively
+- Identify tech stack and versions
+- Extract all relevant commands from package.json, astro.config.mjs, Makefile, etc.
+- Map key directories with their purposes
+- Identify architecture decisions and patterns
+- Determine quality standards and verification requirements
 
 3. **Handle existing AGENTS.md:**
    If AGENTS.md already exists:
-   - Read it completely first
-   - Preserve good, universal, accurate content
-   - Update outdated information
-   - Remove non-universal instructions
-   - Reduce length if over 100 lines (use progressive disclosure)
 
-   If AGENTS.md doesn't exist:
-   - Create from scratch following the skill's structure
+- Read it completely first
+- Preserve good, universal, accurate content
+- Update outdated information
+- Remove non-universal instructions
+- Reduce length if over 100 lines (use progressive disclosure)
+
+If AGENTS.md doesn't exist:
+
+- Create from scratch following the skill's structure
 
 4. **Create the file:**
-   - Follow the WHAT-WHY-HOW framework
-   - Aim for 60-100 lines (optimal)
-   - Only include universal, actionable instructions
-   - Use exact command syntax
-   - No code snippets, no style rules
-   - Reference external docs for detailed guides
+
+- Follow the WHAT-WHY-HOW framework
+- Aim for 60-100 lines (optimal)
+- Only include universal, actionable instructions
+- Use exact command syntax
+- No code snippets, no style rules
+- Reference external docs for detailed guides
 
 5. **Validate quality:**
    Ensure the file meets all criteria from the skill's quality checklist.
 
 6. **Explain your work:**
    After creating/updating, explain to the user:
-   - What sections were included
-   - Key decisions made
-   - What was intentionally excluded (and why)
-   - Recommend committing AGENTS.md to Git
+
+- What sections were included
+- Key decisions made
+- What was intentionally excluded (and why)
+- Recommend committing AGENTS.md to Git
 
 ## Important Principles
 
